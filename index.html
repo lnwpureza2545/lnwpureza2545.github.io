@@ -53,13 +53,12 @@
         .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
         
         /* ==========================================
-           PRINT FIX (แก้ปัญหาเซฟ PDF แล้วหน้าตัดขาด)
+           PRINT FIX (แก้ปัญหาเซฟ PDF)
         ========================================== */
         @media print {
             body { background: #050505 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            nav, .btn-group { display: none !important; }
+            nav, .btn-group, #image-lightbox { display: none !important; }
             
-            /* กาง Modal ทุกอันออกมาให้ปรินต์ได้ ไม่ซ้อนกัน */
             .modal-overlay {
                 position: relative !important; display: block !important; opacity: 1 !important;
                 background: transparent !important; padding: 0 !important; z-index: 1;
@@ -71,7 +70,6 @@
             }
             .close-btn { display: none !important; }
             
-            /* กันข้อความและรูปโดนตัดครึ่งหน้ากระดาษ */
             .dialog-box, li, .img-box, .project-card, .card, .video-container {
                 page-break-inside: avoid !important; break-inside: avoid !important;
             }
@@ -262,8 +260,16 @@
         .dialog-line strong { color: var(--neon-cyan); display: inline-block; width: 65px;}
 
         /* ==========================================
-           MULTIPLE IMAGES CONTAINER (แก้ปัญหารูปโดนตัด)
+           MULTIPLE IMAGES CONTAINER
         ========================================== */
+        .gif-container {
+            width: 100%; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-subtle);
+            margin-bottom: 2rem; background: #000; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex; justify-content: center; align-items: center;
+        }
+        .gif-container img { width: 100%; height: auto; display: block; cursor: zoom-in; transition: transform 0.3s; }
+        .gif-container img:hover { opacity: 0.8; }
+
         .img-grid-2 {
             display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;
         }
@@ -273,19 +279,39 @@
         .img-box {
             background: #000; border: 1px solid var(--border-subtle); border-radius: 8px;
             overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
         }
         .img-box img {
-            width: 100%; 
-            height: 250px; 
-            /* object-fit: contain ทำให้ภาพโชว์เต็มใบ ไม่โดนซูมตัดขอบ */
-            object-fit: contain; 
-            background-color: #050505;
-            border-bottom: 1px solid var(--border-subtle);
+            width: 100%; height: 250px; object-fit: contain; background-color: #050505;
+            border-bottom: 1px solid var(--border-subtle); cursor: zoom-in; transition: transform 0.3s;
+        }
+        .img-box img:hover {
+            opacity: 0.8;
         }
         .img-label {
             padding: 0.6rem; text-align: center; color: var(--neon-cyan); font-size: 0.85rem;
             font-weight: 700; font-family: 'Montserrat', sans-serif; text-transform: uppercase; background: #121212;
+            pointer-events: none;
         }
+
+        /* ==========================================
+           IMAGE LIGHTBOX (ซูมรูปเต็มจอ)
+        ========================================== */
+        .lightbox-overlay {
+            display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.95); align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.3s ease; cursor: zoom-out;
+        }
+        .lightbox-overlay.show { opacity: 1; }
+        .lightbox-content {
+            max-width: 90%; max-height: 90vh; border-radius: 4px; box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            transform: scale(0.95); transition: transform 0.3s ease; cursor: default;
+        }
+        .lightbox-overlay.show .lightbox-content { transform: scale(1); }
+        .lightbox-close {
+            position: absolute; top: 20px; right: 30px; color: #fff; font-size: 40px; font-weight: bold; cursor: pointer; transition: color 0.2s;
+        }
+        .lightbox-close:hover { color: var(--neon-cyan); }
 
         /* ==========================================
            VIDEO CONTAINER
@@ -530,6 +556,11 @@
         <p>&copy; 2026 Peemapol Phuangcharoen. Built for Game Development.</p>
     </footer>
 
+    <div id="image-lightbox" class="lightbox-overlay" onclick="closeLightbox()">
+        <span class="lightbox-close">&times;</span>
+        <img id="lightbox-img" class="lightbox-content" src="" alt="Enlarged Image">
+    </div>
+
     <div id="modal-ramen-rider" class="modal-overlay">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('modal-ramen-rider')">&times;</button>
@@ -545,15 +576,15 @@
                 <h4>Progress</h4>
                 <div class="img-grid-3">
                     <div class="img-box">
-                        <img src="ramen-progress-1.jpg" alt="Ramen Rider In Progress 1">
+                        <img src="ramen-progress-1.jpg" alt="Ramen Rider In Progress 1" onclick="openLightbox(this.src)" title="Click to enlarge">
                         <div class="img-label">In Progress</div>
                     </div>
                     <div class="img-box">
-                        <img src="ramen-progress-2.jpg" alt="Ramen Rider In Progress 2">
+                        <img src="ramen-progress-2.jpg" alt="Ramen Rider In Progress 2" onclick="openLightbox(this.src)" title="Click to enlarge">
                         <div class="img-label">In Progress</div>
                     </div>
                     <div class="img-box">
-                        <img src="ramen-progress-3.jpg" alt="Ramen Rider In Progress 3">
+                        <img src="ramen-progress-3.jpg" alt="Ramen Rider In Progress 3" onclick="openLightbox(this.src)" title="Click to enlarge">
                         <div class="img-label">In Progress</div>
                     </div>
                 </div>
@@ -652,11 +683,11 @@
                 <h4>Asset Creation Process</h4>
                 <div class="img-grid-2">
                     <div class="img-box">
-                        <img src="3d-reference.jpg" alt="Reference (AI)">
+                        <img src="3d-reference.jpg" alt="Reference (AI)" onclick="openLightbox(this.src)" title="Click to enlarge">
                         <div class="img-label">Reference (AI)</div>
                     </div>
                     <div class="img-box">
-                        <img src="3d-realwork.jpg" alt="Real Work">
+                        <img src="3d-realwork.jpg" alt="Real Work" onclick="openLightbox(this.src)" title="Click to enlarge">
                         <div class="img-label">Real Work</div>
                     </div>
                 </div>
@@ -704,6 +735,7 @@
     </div>
 
     <script>
+        // ฟังก์ชันเปิด Modal โปรเจกต์
         function openModal(modalId) {
             const modal = document.getElementById(modalId);
             modal.style.display = 'flex';
@@ -711,23 +743,43 @@
             document.body.style.overflow = 'hidden'; 
         }
 
+        // ฟังก์ชันปิด Modal โปรเจกต์
         function closeModal(modalId) {
             const modal = document.getElementById(modalId);
             modal.classList.remove('show');
             
-            // สั่งให้วิดีโอหยุดเล่นเมื่อปิดหน้าต่าง
             const video = modal.querySelector('video');
-            if (video) {
-                video.pause();
-            }
+            if (video) { video.pause(); }
 
             setTimeout(() => { modal.style.display = 'none'; }, 300);
             document.body.style.overflow = 'auto'; 
         }
 
+        // ==========================================
+        // ฟังก์ชันสำหรับ Lightbox (ซูมรูป)
+        // ==========================================
+        function openLightbox(imgSrc) {
+            const lightbox = document.getElementById('image-lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = imgSrc;
+            lightbox.style.display = 'flex';
+            setTimeout(() => { lightbox.classList.add('show'); }, 10);
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('image-lightbox');
+            lightbox.classList.remove('show');
+            setTimeout(() => { lightbox.style.display = 'none'; }, 300);
+        }
+
+        // เช็คการคลิกพื้นที่ว่างเพื่อปิดหน้าต่าง
         window.onclick = function(event) {
             if (event.target.classList.contains('modal-overlay')) {
                 closeModal(event.target.id);
+            }
+            // ถ้าคลิกพื้นหลังของกล่องซูมรูป ให้ปิดกล่องซูมรูป
+            if (event.target.classList.contains('lightbox-overlay')) {
+                closeLightbox();
             }
         }
 
