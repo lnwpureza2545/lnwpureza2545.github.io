@@ -53,6 +53,31 @@
         .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
         
         /* ==========================================
+           PRINT FIX (แก้ปัญหาเซฟ PDF แล้วหน้าตัดขาด)
+        ========================================== */
+        @media print {
+            body { background: #050505 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            nav, .btn-group { display: none !important; }
+            
+            /* กาง Modal ทุกอันออกมาให้ปรินต์ได้ ไม่ซ้อนกัน */
+            .modal-overlay {
+                position: relative !important; display: block !important; opacity: 1 !important;
+                background: transparent !important; padding: 0 !important; z-index: 1;
+            }
+            .modal-content {
+                box-shadow: none !important; border: 1px solid var(--border-subtle) !important;
+                transform: none !important; max-height: none !important; overflow: visible !important;
+                padding: 2rem !important; margin-bottom: 2rem !important; page-break-inside: avoid;
+            }
+            .close-btn { display: none !important; }
+            
+            /* กันข้อความและรูปโดนตัดครึ่งหน้ากระดาษ */
+            .dialog-box, li, .img-box, .project-card, .card, .video-container {
+                page-break-inside: avoid !important; break-inside: avoid !important;
+            }
+        }
+
+        /* ==========================================
            ANIMATIONS
         ========================================== */
         @keyframes fadeInUp {
@@ -239,13 +264,6 @@
         /* ==========================================
            MULTIPLE IMAGES CONTAINER (แก้ปัญหารูปโดนตัด)
         ========================================== */
-        .gif-container {
-            width: 100%; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-subtle);
-            margin-bottom: 2rem; background: #000; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            display: flex; justify-content: center; align-items: center;
-        }
-        .gif-container img { width: 100%; height: auto; display: block; }
-
         .img-grid-2 {
             display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;
         }
@@ -253,14 +271,15 @@
             display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem;
         }
         .img-box {
-            background: #050505; border: 1px solid var(--border-subtle); border-radius: 8px;
+            background: #000; border: 1px solid var(--border-subtle); border-radius: 8px;
             overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
         .img-box img {
             width: 100%; 
-            height: 250px; /* เพิ่มความสูงของกล่องรูป */
-            object-fit: contain; /* เปลี่ยนจาก cover เป็น contain เพื่อโชว์ภาพเต็มใบ ไม่ให้โดนตัดขอบ */
-            background-color: #050505; /* ใส่สีดำถมพื้นหลังส่วนที่เหลือให้เนียน */
+            height: 250px; 
+            /* object-fit: contain ทำให้ภาพโชว์เต็มใบ ไม่โดนซูมตัดขอบ */
+            object-fit: contain; 
+            background-color: #050505;
             border-bottom: 1px solid var(--border-subtle);
         }
         .img-label {
@@ -311,7 +330,7 @@
             .btn-group { justify-content: center; }
             .modal-content { padding: 1.5rem; }
             .img-grid-2, .img-grid-3 { grid-template-columns: 1fr; }
-            .img-box img { height: auto; max-height: 300px;}
+            .img-box img { height: auto; max-height: 250px; }
         }
     </style>
 </head>
