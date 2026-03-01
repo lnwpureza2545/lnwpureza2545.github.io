@@ -133,9 +133,7 @@
             font-size: 2.5rem; margin-bottom: 3rem; font-weight: 900; text-transform: uppercase;
             display: inline-flex; align-items: center; gap: 15px;
         }
-        .section-header::before {
-            content: ''; display: block; width: 40px; height: 4px; background: var(--neon-cyan);
-        }
+        .section-header::before { content: ''; display: block; width: 40px; height: 4px; background: var(--neon-cyan); }
 
         .grid-2 { display: grid; grid-template-columns: 3fr 2fr; gap: 2.5rem; }
         .card { 
@@ -221,6 +219,8 @@
         .close-btn:hover { background: #ef4444; border-color: #ef4444; color: #fff; }
 
         .modal-body h4 { margin-top: 2.5rem; margin-bottom: 1rem; color: #fff; font-size: 1.2rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.5rem;}
+        .modal-body h4:first-child { margin-top: 0; }
+        
         .modal-body ul { margin-left: 1.5rem; margin-bottom: 1rem; color: var(--text-muted); }
         .modal-body li { margin-bottom: 0.6rem; line-height: 1.6;}
         .modal-body li strong { color: #fff; }
@@ -236,38 +236,43 @@
         .dialog-line { margin-bottom: 0.6rem; color: #d4d4d8; }
         .dialog-line strong { color: var(--neon-cyan); display: inline-block; width: 65px;}
 
-        /* Video Container Styles */
+        /* ==========================================
+           MULTIPLE IMAGES CONTAINER
+        ========================================== */
+        .img-grid-2 {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;
+        }
+        .img-grid-3 {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem;
+        }
+        .img-box {
+            background: #000; border: 1px solid var(--border-subtle); border-radius: 8px;
+            overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .img-box img {
+            width: 100%; height: 180px; object-fit: cover; border-bottom: 1px solid var(--border-subtle);
+        }
+        .img-label {
+            padding: 0.6rem; text-align: center; color: var(--neon-cyan); font-size: 0.85rem;
+            font-weight: 700; font-family: 'Montserrat', sans-serif; text-transform: uppercase; background: #121212;
+        }
+
+        /* ==========================================
+           VIDEO CONTAINER
+        ========================================== */
         .video-container {
-            width: 100%;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid var(--border-subtle);
-            margin-bottom: 1.5rem;
-            background: #000;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            width: 100%; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-subtle);
+            margin-bottom: 1.5rem; background: #000; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             position: relative;
         }
         .video-container video {
-            width: 100%;
-            display: block;
-            cursor: pointer; /* ทำให้เมาส์เปลี่ยนเป็นรูปมือตอนชี้ที่วิดีโอ */
+            width: 100%; display: block; cursor: pointer; 
         }
         .video-hint {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(0,0,0,0.6);
-            color: #fff;
-            padding: 4px 10px;
-            font-size: 0.75rem;
-            border-radius: 4px;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s;
+            position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: #fff;
+            padding: 4px 10px; font-size: 0.75rem; border-radius: 4px; pointer-events: none; opacity: 0; transition: opacity 0.3s;
         }
-        .video-container:hover .video-hint {
-            opacity: 1;
-        }
+        .video-container:hover .video-hint { opacity: 1; }
 
         /* ==========================================
            CONTACT & FOOTER
@@ -294,6 +299,8 @@
             nav .links { display: none; }
             .btn-group { justify-content: center; }
             .modal-content { padding: 1.5rem; }
+            .img-grid-2, .img-grid-3 { grid-template-columns: 1fr; }
+            .img-box img { height: auto; }
         }
     </style>
 </head>
@@ -484,7 +491,7 @@
                 <p><span>EMAIL</span> <a href="mailto:lnwpureza2545@gmail.com">lnwpureza2545@gmail.com</a></p>
                 <p><span>LOCATION</span> Samut Prakan, Thailand</p>
                 <p><span>GITHUB</span> <a href="https://github.com/lnwpureza2545" target="_blank">github.com/lnwpureza2545</a></p>
-                <a href="mailto:lnwpureza2545@gmail.com" class="btn btn-primary" style="display: block; text-align: center; margin-top: 2.5rem; width: 100%;">Contact Me</a>
+                <a href="mailto:lnwpureza2545@gmail.com" class="btn btn-primary" style="display: block; text-align: center; margin-top: 2.5rem; width: 100%; color: #000 !important;">Contact Me</a>
             </div>
         </div>
     </section>
@@ -492,7 +499,6 @@
     <footer>
         <p>&copy; 2026 Peemapol Phuangcharoen. Built for Game Development.</p>
     </footer>
-
 
     <div id="modal-ramen-rider" class="modal-overlay">
         <div class="modal-content">
@@ -505,6 +511,23 @@
             </div>
 
             <div class="modal-body">
+                
+                <h4>Progress</h4>
+                <div class="img-grid-3">
+                    <div class="img-box">
+                        <img src="ramen-progress-1.jpg" alt="Ramen Rider In Progress 1">
+                        <div class="img-label">In Progress</div>
+                    </div>
+                    <div class="img-box">
+                        <img src="ramen-progress-2.jpg" alt="Ramen Rider In Progress 2">
+                        <div class="img-label">In Progress</div>
+                    </div>
+                    <div class="img-box">
+                        <img src="ramen-progress-3.jpg" alt="Ramen Rider In Progress 3">
+                        <div class="img-label">In Progress</div>
+                    </div>
+                </div>
+
                 <h4>My Responsibilities & Technical Skills</h4>
                 <ul>
                     <li><strong>Narrative & Dialog Design:</strong> ออกแบบโครงเรื่องหลัก และเขียนบทสนทนา (Dialog Script) สะท้อนคาแรคเตอร์ตัวเอกที่เป็นสายซิ่งกวนๆ</li>
@@ -595,6 +618,19 @@
                 <span>3D Modeling</span><span>PBR Texturing</span><span>Unreal/Unity</span>
             </div>
             <div class="modal-body">
+                
+                <h4>Asset Creation Process</h4>
+                <div class="img-grid-2">
+                    <div class="img-box">
+                        <img src="3d-reference.jpg" alt="Reference (AI)">
+                        <div class="img-label">Reference (AI)</div>
+                    </div>
+                    <div class="img-box">
+                        <img src="3d-realwork.jpg" alt="Real Work">
+                        <div class="img-label">Real Work</div>
+                    </div>
+                </div>
+
                 <h4>Overview</h4>
                 <p>กระบวนการสร้างสรรค์ Asset 3D สำหรับเกม (Game-Ready Asset) โดยเริ่มตั้งแต่การขึ้นโมเดล การทำ Texture สมจริงแบบ PBR และการนำไปจัดวางในเอนจินเกมเพื่อให้ออกมาเป็นฉากที่สมบูรณ์</p>
                 <h4>Workflow & Responsibilities</h4>
@@ -649,7 +685,7 @@
             const modal = document.getElementById(modalId);
             modal.classList.remove('show');
             
-            // สั่งให้วิดีโอหยุดเล่นเมื่อปิดหน้าต่าง (ป้องกันเสียงตีกัน)
+            // สั่งให้วิดีโอหยุดเล่นเมื่อปิดหน้าต่าง
             const video = modal.querySelector('video');
             if (video) {
                 video.pause();
@@ -665,7 +701,7 @@
             }
         }
 
-        // ฟังก์ชันสำหรับเปิดวิดีโอแบบเต็มจอ (Fullscreen)
+        // ฟังก์ชันสำหรับเปิดวิดีโอแบบเต็มจอ
         function toggleFullScreen(videoElement) {
             if (!document.fullscreenElement) {
                 if (videoElement.requestFullscreen) {
