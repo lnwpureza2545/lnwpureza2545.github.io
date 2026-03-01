@@ -196,7 +196,7 @@
         .project-content p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 2rem; flex: 1;}
 
         /* ==========================================
-           MODALS (Popup) & VIDEO
+           MODALS (Popup)
         ========================================== */
         .modal-overlay { 
             display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; 
@@ -237,8 +237,15 @@
         .dialog-line strong { color: var(--neon-cyan); display: inline-block; width: 65px;}
 
         /* ==========================================
-           MULTIPLE IMAGES CONTAINER
+           MULTIPLE IMAGES CONTAINER (แก้ปัญหารูปโดนตัด)
         ========================================== */
+        .gif-container {
+            width: 100%; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-subtle);
+            margin-bottom: 2rem; background: #000; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex; justify-content: center; align-items: center;
+        }
+        .gif-container img { width: 100%; height: auto; display: block; }
+
         .img-grid-2 {
             display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;
         }
@@ -246,11 +253,15 @@
             display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem;
         }
         .img-box {
-            background: #000; border: 1px solid var(--border-subtle); border-radius: 8px;
+            background: #050505; border: 1px solid var(--border-subtle); border-radius: 8px;
             overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
         .img-box img {
-            width: 100%; height: 180px; object-fit: cover; border-bottom: 1px solid var(--border-subtle);
+            width: 100%; 
+            height: 250px; /* เพิ่มความสูงของกล่องรูป */
+            object-fit: contain; /* เปลี่ยนจาก cover เป็น contain เพื่อโชว์ภาพเต็มใบ ไม่ให้โดนตัดขอบ */
+            background-color: #050505; /* ใส่สีดำถมพื้นหลังส่วนที่เหลือให้เนียน */
+            border-bottom: 1px solid var(--border-subtle);
         }
         .img-label {
             padding: 0.6rem; text-align: center; color: var(--neon-cyan); font-size: 0.85rem;
@@ -300,7 +311,7 @@
             .btn-group { justify-content: center; }
             .modal-content { padding: 1.5rem; }
             .img-grid-2, .img-grid-3 { grid-template-columns: 1fr; }
-            .img-box img { height: auto; }
+            .img-box img { height: auto; max-height: 300px;}
         }
     </style>
 </head>
