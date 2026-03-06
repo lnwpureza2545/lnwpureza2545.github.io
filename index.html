@@ -3,769 +3,1000 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Peemapol Phuangcharoen — Game Developer</title>
+<title>PEEMAPOL.EXE — GAME DEVELOPER</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
-/* ─── TOKENS ─── */
+/* ═══════════════════════════════════════
+   RETRO PIXEL ART — TOKENS
+═══════════════════════════════════════ */
 :root {
-  --bg:    #0a0a0b;
-  --bg2:   #111115;
-  --bg3:   #18181d;
-  --bg4:   #202028;
-  --line:  rgba(255,255,255,.07);
-  --line2: rgba(255,255,255,.12);
+  --black:  #0a0a0f;
+  --dark:   #12121a;
+  --panel:  #1a1a28;
+  --border: #2a2a40;
 
-  --accent: #4f9eff;
-  --a2:     #a8d0ff;
-  --adim:   rgba(79,158,255,.08);
-  --abrd:   rgba(79,158,255,.2);
+  /* 4-bit palette */
+  --green:  #00ff41;
+  --gdim:   #00aa2b;
+  --amber:  #ffb700;
+  --pink:   #ff2d78;
+  --cyan:   #00e5ff;
+  --purple: #9b59ff;
 
-  --hi:     #ffffff;
-  --t1:     #e8e8ee;
-  --t2:     #9898a8;
-  --t3:     #55556a;
+  --txt:    #c8d8e8;
+  --dim:    #6888a8;
 
-  --r: 6px;
+  /* pixel sizes */
+  --px: 4px;  /* 1 pixel unit */
 }
 
-* { margin:0; padding:0; box-sizing:border-box }
-html { scroll-behavior:smooth }
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; image-rendering: pixelated; }
+
 body {
-  background: var(--bg);
-  color: var(--t2);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 15px;
-  line-height: 1.6;
+  background: var(--black);
+  color: var(--txt);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  line-height: 1.8;
   overflow-x: hidden;
-}
-a { text-decoration: none; color: inherit }
-img { display: block; width: 100%; }
-
-::selection { background: rgba(79,158,255,.25); }
-::-webkit-scrollbar { width: 4px }
-::-webkit-scrollbar-track { background: var(--bg) }
-::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 2px }
-
-/* ─── NAV ─── */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(10,10,11,.88);
-  backdrop-filter: blur(20px) saturate(1.4);
-  border-bottom: 1px solid var(--line);
-  height: 56px;
-}
-.nav-inner {
-  max-width: 1100px; margin: 0 auto; padding: 0 2rem;
-  height: 100%; display: flex; align-items: center; justify-content: space-between;
-}
-.nav-logo {
-  font-family: 'Syne', sans-serif; font-weight: 700; font-size: .95rem;
-  letter-spacing: .02em; color: var(--hi);
-}
-.nav-logo span { color: var(--accent); }
-.nav-links {
-  display: flex; gap: 0; list-style: none;
-}
-.nav-links a {
-  display: block; padding: .4rem .9rem;
-  font-family: 'DM Mono', monospace; font-size: .7rem; letter-spacing: .05em;
-  color: var(--t3); transition: color .2s; border-radius: 4px;
-}
-.nav-links a:hover { color: var(--t1); }
-.nav-links a.active { color: var(--accent); }
-.nav-status {
-  display: flex; align-items: center; gap: .5rem;
-  font-family: 'DM Mono', monospace; font-size: .68rem; color: var(--t3);
-}
-.nav-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: #22c55e; box-shadow: 0 0 6px #22c55e;
-  animation: blink 2.5s ease-in-out infinite;
-}
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
-
-/* ─── LAYOUT ─── */
-.page { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
-
-/* ─── HERO ─── */
-.hero {
-  min-height: 100vh;
-  padding-top: 56px;
-  display: grid;
-  grid-template-columns: 1fr 380px;
-  gap: 4rem;
-  align-items: center;
-}
-.hero-left { padding: 4rem 0; }
-
-.hero-eyebrow {
-  display: inline-flex; align-items: center; gap: .6rem;
-  font-family: 'DM Mono', monospace; font-size: .7rem; letter-spacing: .1em;
-  color: var(--accent); text-transform: uppercase;
-  border: 1px solid var(--abrd); background: var(--adim);
-  padding: .3rem .8rem; border-radius: 100px;
-  margin-bottom: 1.8rem;
-}
-.hero-eyebrow::before {
-  content: ''; width: 6px; height: 6px; border-radius: 50%;
-  background: var(--accent); box-shadow: 0 0 8px var(--accent);
-  animation: blink 2s ease-in-out infinite;
+  cursor: none;
 }
 
-.hero-name {
-  font-family: 'Syne', sans-serif; font-weight: 800;
-  font-size: clamp(3rem, 6vw, 5.2rem);
-  letter-spacing: -.03em; line-height: .95;
-  color: var(--hi); margin-bottom: .6rem;
+/* ── PIXEL CURSOR ── */
+#cur {
+  position: fixed; z-index: 9999; pointer-events: none;
+  width: 12px; height: 20px;
+  image-rendering: pixelated;
+  transform-origin: top left;
 }
-.hero-role {
-  font-family: 'Syne', sans-serif; font-weight: 400;
-  font-size: clamp(1.6rem, 3vw, 2.4rem);
-  letter-spacing: -.02em; color: var(--t3);
-  margin-bottom: 2rem;
-}
-.hero-role span { color: var(--accent); }
+#cur svg { width: 100%; height: 100%; }
 
-.hero-desc {
-  font-size: 1rem; line-height: 1.8; color: var(--t2);
-  max-width: 480px; margin-bottom: 2.8rem;
-}
-
-.hero-tags {
-  display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 2.8rem;
-}
-.hero-tag {
-  font-family: 'DM Mono', monospace; font-size: .68rem;
-  letter-spacing: .05em; text-transform: uppercase;
-  color: var(--t2); border: 1px solid var(--line2);
-  padding: .3rem .75rem; border-radius: 4px;
-  transition: all .2s;
-}
-.hero-tag:hover { color: var(--accent); border-color: var(--abrd); background: var(--adim); }
-
-.hero-btns { display: flex; gap: .75rem; flex-wrap: wrap; }
-.btn {
-  display: inline-flex; align-items: center; gap: .5rem;
-  font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: .88rem;
-  padding: .7rem 1.6rem; border-radius: var(--r);
-  cursor: pointer; transition: all .2s; border: none;
-}
-.btn-primary {
-  background: var(--accent); color: #fff;
-  box-shadow: 0 0 0 0 rgba(79,158,255,.4);
-}
-.btn-primary:hover {
-  background: #6aafff;
-  box-shadow: 0 0 24px rgba(79,158,255,.3);
-  transform: translateY(-1px);
-}
-.btn-secondary {
-  background: var(--bg3); color: var(--t1);
-  border: 1px solid var(--line2);
-}
-.btn-secondary:hover {
-  background: var(--bg4); border-color: var(--line2);
-  transform: translateY(-1px);
+/* ── SCANLINES ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 9998; pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0,0,0,.12) 0px,
+    rgba(0,0,0,.12) 1px,
+    transparent 1px,
+    transparent 3px
+  );
 }
 
-/* ─── PROFILE CARD ─── */
-.profile-card {
-  background: var(--bg2);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  overflow: hidden;
+/* ── CRT VIGNETTE ── */
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 9997; pointer-events: none;
+  background: radial-gradient(ellipse 90% 85% at 50% 50%, transparent 55%, rgba(0,0,0,.7) 100%);
 }
-.profile-img {
-  width: 100%; aspect-ratio: 1/1; overflow: hidden;
-  background: var(--bg3);
+
+/* ── PIXEL BORDER MIXIN ── */
+/* 4-corner pixel box style */
+.pbox {
+  border: 4px solid var(--green);
   position: relative;
+  image-rendering: pixelated;
 }
-.profile-img img {
-  width: 100%; height: 100%; object-fit: cover;
-  filter: grayscale(.15) contrast(1.05);
-  transition: filter .4s;
-}
-.profile-card:hover .profile-img img { filter: grayscale(0) contrast(1.05); }
-.profile-img::after {
-  content: ''; position: absolute; bottom: 0; left: 0; right: 0;
-  height: 60px;
-  background: linear-gradient(to top, var(--bg2), transparent);
-}
-.profile-info { padding: 1.4rem 1.6rem; }
-.profile-name {
-  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem;
-  color: var(--hi); margin-bottom: .2rem;
-}
-.profile-title {
-  font-family: 'DM Mono', monospace; font-size: .7rem;
-  letter-spacing: .06em; color: var(--accent); margin-bottom: 1rem;
-  text-transform: uppercase;
-}
-.profile-stats {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: .5rem; margin-bottom: 1rem;
-}
-.pstat {
-  background: var(--bg3); border-radius: 6px;
-  padding: .6rem .8rem; text-align: center;
-}
-.pstat-n {
-  font-family: 'Syne', sans-serif; font-weight: 700;
-  font-size: 1.3rem; color: var(--hi);
-}
-.pstat-l {
-  font-family: 'DM Mono', monospace; font-size: .6rem;
-  letter-spacing: .05em; color: var(--t3); text-transform: uppercase;
-}
-.skill-bars { padding-top: .4rem; }
-.sbar-row { margin-bottom: .7rem; }
-.sbar-head {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: .3rem;
-}
-.sbar-label { font-size: .75rem; color: var(--t2); }
-.sbar-val {
-  font-family: 'DM Mono', monospace; font-size: .68rem; color: var(--accent);
-}
-.sbar-track {
-  height: 3px; background: var(--bg4); border-radius: 2px; overflow: hidden;
-}
-.sbar-fill {
-  height: 100%; border-radius: 2px; width: 0;
-  animation: fillBar 1.4s cubic-bezier(.16,1,.3,1) forwards;
-  animation-delay: var(--delay, 0s);
-}
-@keyframes fillBar { to { width: var(--w) } }
-.sbar-fill.blue  { background: linear-gradient(90deg, #2563eb, var(--accent)); }
-.sbar-fill.teal  { background: linear-gradient(90deg, #0d9488, #2dd4bf); }
-.sbar-fill.green { background: linear-gradient(90deg, #16a34a, #4ade80); }
-.sbar-fill.amber { background: linear-gradient(90deg, #b45309, #fbbf24); }
-.sbar-fill.pink  { background: linear-gradient(90deg, #9333ea, #c084fc); }
-
-/* ─── SECTION CHROME ─── */
-section { padding: 6rem 0; }
-.sec-label {
-  display: flex; align-items: center; gap: .75rem;
-  font-family: 'DM Mono', monospace; font-size: .68rem;
-  letter-spacing: .12em; text-transform: uppercase;
-  color: var(--accent); margin-bottom: 1rem;
-}
-.sec-label::before {
-  content: ''; width: 20px; height: 1px; background: var(--accent);
-}
-.sec-title {
-  font-family: 'Syne', sans-serif; font-weight: 700;
-  font-size: clamp(2rem, 4vw, 2.8rem); letter-spacing: -.03em;
-  color: var(--hi); margin-bottom: 1rem; line-height: 1.1;
-}
-.sec-sub {
-  font-size: 1rem; color: var(--t2); max-width: 540px; line-height: 1.75;
-  margin-bottom: 3rem;
-}
-.sec-line { border: none; border-top: 1px solid var(--line); margin-bottom: 3.5rem; }
-
-/* ─── ABOUT / BIO ─── */
-.about-grid {
-  display: grid; grid-template-columns: 3fr 2fr;
-  gap: 4rem; align-items: start;
-}
-.about-text p {
-  font-size: 1.02rem; line-height: 1.85; color: var(--t2); margin-bottom: 1.2rem;
-}
-.about-text p strong { color: var(--t1); }
-.about-text p:last-child { margin-bottom: 0; }
-
-.about-aside { display: flex; flex-direction: column; gap: 1rem; }
-.info-card {
-  background: var(--bg2); border: 1px solid var(--line);
-  border-radius: var(--r); padding: 1.2rem;
-}
-.info-card-title {
-  font-family: 'DM Mono', monospace; font-size: .65rem;
-  letter-spacing: .1em; text-transform: uppercase;
-  color: var(--t3); margin-bottom: .8rem;
-}
-.edu-item { margin-bottom: .9rem; }
-.edu-item:last-child { margin-bottom: 0; }
-.edu-school {
-  font-family: 'Syne', sans-serif; font-weight: 600;
-  font-size: .88rem; color: var(--t1); margin-bottom: .1rem;
-}
-.edu-detail {
-  font-family: 'DM Mono', monospace; font-size: .66rem;
-  color: var(--t3); letter-spacing: .03em;
-}
-.contact-list { list-style: none; display: flex; flex-direction: column; gap: .6rem; }
-.contact-list li {
-  display: flex; align-items: center; gap: .6rem;
-  font-size: .85rem; color: var(--t2);
-}
-.contact-list .ci {
-  width: 28px; height: 28px; background: var(--bg3); border-radius: 6px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: .75rem; flex-shrink: 0; border: 1px solid var(--line);
-}
-.contact-list a { color: var(--accent); transition: opacity .15s; }
-.contact-list a:hover { opacity: .75; }
-
-/* ─── SKILLS ─── */
-.skills-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
-  background: var(--line); border: 1px solid var(--line); border-radius: var(--r);
-  overflow: hidden;
-}
-.skill-group {
-  background: var(--bg2); padding: 1.8rem; transition: background .2s;
-}
-.skill-group:hover { background: var(--bg3); }
-.skill-group-title {
-  font-family: 'DM Mono', monospace; font-size: .65rem;
-  letter-spacing: .1em; text-transform: uppercase;
-  color: var(--accent); margin-bottom: 1.2rem; display: flex; align-items: center; gap: .5rem;
-}
-.skill-group-title::before {
-  content: ''; width: 4px; height: 4px; border-radius: 1px;
-  background: var(--accent); flex-shrink: 0;
-}
-.skill-list { list-style: none; display: flex; flex-direction: column; gap: .55rem; }
-.skill-list li {
-  font-size: .88rem; color: var(--t2); display: flex; align-items: center; gap: .5rem;
-  transition: color .2s;
-}
-.skill-list li::before {
-  content: ''; width: 3px; height: 3px; border-radius: 50%;
-  background: var(--t3); flex-shrink: 0;
-}
-.skill-group:hover .skill-list li { color: var(--t1); }
-.skill-group:hover .skill-list li::before { background: var(--accent); }
-
-/* ─── PROJECTS ─── */
-.projects-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 1px; background: var(--line);
-  border: 1px solid var(--line); border-radius: var(--r); overflow: hidden;
-}
-.projects-grid .prj:nth-child(1) {
-  grid-column: span 2;
-}
-
-.prj {
-  background: var(--bg2); cursor: pointer;
-  display: flex; flex-direction: column;
-  transition: background .2s;
-  position: relative;
-}
-.prj:hover { background: var(--bg3); }
-.prj-img-wrap {
-  position: relative; overflow: hidden;
-  background: var(--bg4);
-}
-.prj-img-wrap img {
-  width: 100%; aspect-ratio: 16/9; object-fit: cover;
-  filter: saturate(.4) brightness(.7);
-  transition: filter .5s, transform .6s;
-}
-.prj:hover .prj-img-wrap img {
-  filter: saturate(.85) brightness(.85);
-  transform: scale(1.03);
-}
-.prj-img-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(to top, var(--bg2) 0%, rgba(17,17,21,.3) 60%, transparent 100%);
-}
-.prj-num {
-  position: absolute; top: .75rem; left: .75rem;
-  font-family: 'DM Mono', monospace; font-size: .62rem;
-  letter-spacing: .06em; color: var(--accent);
-  background: rgba(10,10,11,.85); border: 1px solid var(--abrd);
-  padding: .15rem .55rem; border-radius: 4px;
-  backdrop-filter: blur(6px);
-}
-/* Featured badge for first project */
-.prj:first-child .prj-num::before {
-  content: '★ '; font-size: .55rem;
-}
-
-.prj-body { padding: 1.6rem 1.8rem 2rem; flex: 1; display: flex; flex-direction: column; }
-.prj-meta {
-  font-family: 'DM Mono', monospace; font-size: .64rem;
-  letter-spacing: .06em; text-transform: uppercase;
-  color: var(--t3); margin-bottom: .5rem;
-}
-.prj-title {
-  font-family: 'Syne', sans-serif; font-weight: 700;
-  font-size: 1.3rem; letter-spacing: -.02em;
-  color: var(--hi); margin-bottom: .5rem; line-height: 1.1;
-  transition: color .2s;
-}
-.prj:first-child .prj-title { font-size: 1.8rem; }
-.prj:hover .prj-title { color: var(--accent); }
-.prj-roles {
-  display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: .85rem;
-}
-.prj-role {
-  font-family: 'DM Mono', monospace; font-size: .6rem;
-  letter-spacing: .04em; color: var(--t2);
-  border: 1px solid var(--line2); border-radius: 100px;
-  padding: .2rem .7rem;
-}
-.prj-desc {
-  font-size: .9rem; color: var(--t2); line-height: 1.75;
-  flex: 1; margin-bottom: 1.4rem;
-}
-.prj-action {
-  display: inline-flex; align-items: center; gap: .4rem;
-  font-family: 'DM Mono', monospace; font-size: .68rem;
-  letter-spacing: .06em; text-transform: uppercase;
-  color: var(--t3); transition: color .2s;
-}
-.prj-action .arr {
-  width: 14px; height: 1px; background: currentColor;
-  transition: width .2s, transform .2s; position: relative;
-}
-.prj-action .arr::after {
-  content: ''; position: absolute; right: 0; top: -3px;
-  width: 0; height: 0; border-top: 3px solid transparent;
-  border-bottom: 3px solid transparent;
-  border-left: 5px solid currentColor; transition: border-color .2s;
-}
-.prj:hover .prj-action { color: var(--accent); }
-.prj:hover .prj-action .arr { width: 22px; }
-
-/* ─── CONTACT SECTION ─── */
-.contact-section {
-  background: var(--bg2); border: 1px solid var(--line);
-  border-radius: 12px; padding: 3.5rem; overflow: hidden; position: relative;
-}
-.contact-section::before {
-  content: ''; position: absolute;
-  top: -80px; right: -80px; width: 320px; height: 320px;
-  background: radial-gradient(circle, rgba(79,158,255,.06) 0%, transparent 65%);
+.pbox::before {
+  content: '';
+  position: absolute; inset: -8px;
+  border: 4px solid rgba(0,255,65,.15);
   pointer-events: none;
 }
-.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: center; position: relative; }
-.contact-left .contact-subtitle {
-  font-size: 1rem; line-height: 1.8; color: var(--t2); margin-top: 1rem;
-}
-.contact-rows { display: flex; flex-direction: column; gap: 0; }
-.contact-row {
-  display: flex; align-items: center; gap: 1rem;
-  padding: .95rem 0; border-bottom: 1px solid var(--line);
-  transition: background .15s; border-radius: 4px;
-}
-.contact-row:first-child { border-top: 1px solid var(--line); }
-.contact-key {
-  font-family: 'DM Mono', monospace; font-size: .66rem;
-  letter-spacing: .06em; text-transform: uppercase;
-  color: var(--t3); width: 80px; flex-shrink: 0;
-}
-.contact-val { font-size: .9rem; color: var(--t1); }
-.contact-val a { color: var(--accent); transition: opacity .15s; }
-.contact-val a:hover { opacity: .7; }
-.cta-btn {
-  display: flex; align-items: center; justify-content: center; gap: .6rem;
-  margin-top: 1.6rem; padding: .95rem;
-  background: var(--accent); color: #fff;
-  font-family: 'Syne', sans-serif; font-weight: 600;
-  font-size: .9rem; letter-spacing: .01em;
-  border-radius: var(--r); transition: all .2s;
-  box-shadow: 0 0 0 0 rgba(79,158,255,.4);
-}
-.cta-btn:hover {
-  background: #6aafff;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(79,158,255,.25);
+/* corner dots */
+.pbox-c::after {
+  content: '';
+  position: absolute;
+  top: -4px; left: -4px;
+  width: 4px; height: 4px;
+  background: var(--green);
+  box-shadow:
+    calc(100% + 4px) 0 var(--green),
+    0 calc(100% + 4px) var(--green),
+    calc(100% + 4px) calc(100% + 4px) var(--green);
 }
 
-/* ─── FOOTER ─── */
+/* ── PRESS START SCREEN ── */
+#intro {
+  position: fixed; inset: 0; z-index: 5000;
+  background: var(--black);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 0;
+  transition: opacity .5s;
+}
+#intro.out { opacity: 0; pointer-events: none; }
+
+.intro-logo {
+  font-size: clamp(14px, 4vw, 28px);
+  color: var(--amber);
+  text-shadow: 0 0 20px rgba(255,183,0,.4);
+  text-align: center;
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+.intro-logo .sub {
+  display: block; font-size: clamp(6px, 1.5vw, 10px);
+  color: var(--dim); margin-top: 12px; letter-spacing: .1em;
+}
+
+.intro-sprite {
+  width: 64px; height: 64px;
+  margin-bottom: 32px;
+  image-rendering: pixelated;
+}
+
+.press-start {
+  font-size: clamp(7px, 1.8vw, 11px);
+  color: var(--green);
+  animation: blink 1s step-end infinite;
+  text-shadow: 0 0 16px rgba(0,255,65,.6);
+  margin-bottom: 40px;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+.intro-copy {
+  font-size: 6px; color: var(--dim);
+  text-align: center; line-height: 2;
+}
+
+/* ── PIXEL PROGRESS BAR ── */
+.px-bar {
+  display: flex; align-items: center; gap: 4px;
+  margin-top: 24px;
+}
+.px-bar-label { font-size: 6px; color: var(--dim); }
+.px-bar-track {
+  width: 120px; height: 8px;
+  border: 2px solid var(--dim); background: #000;
+  position: relative; overflow: hidden;
+}
+.px-bar-fill {
+  position: absolute; top: 0; left: 0; height: 100%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  width: 0; transition: width .05s step-start;
+  image-rendering: pixelated;
+}
+
+/* ── NAV / HUD TOP ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  background: var(--dark);
+  border-bottom: 4px solid var(--green);
+  height: 48px;
+  display: flex; align-items: stretch;
+  image-rendering: pixelated;
+}
+nav::after {
+  content: '';
+  position: absolute; bottom: -8px; left: 0; right: 0; height: 4px;
+  background: rgba(0,255,65,.1);
+  pointer-events: none;
+}
+.nav-title {
+  display: flex; align-items: center;
+  padding: 0 20px;
+  border-right: 4px solid var(--green);
+  font-size: 9px; color: var(--amber);
+  letter-spacing: .05em;
+  text-shadow: 0 0 12px rgba(255,183,0,.4);
+  white-space: nowrap; gap: 8px;
+}
+.nav-title::before { content: '▶'; color: var(--green); font-size: 8px; }
+.nav-links {
+  display: flex; flex: 1;
+}
+.nav-links a {
+  display: flex; align-items: center; padding: 0 16px;
+  border-right: 2px solid var(--border);
+  font-size: 7px; color: var(--dim);
+  letter-spacing: .08em; transition: all .0s; /* intentionally instant */
+  gap: 6px; text-transform: uppercase;
+}
+.nav-links a::before { content: ''; font-size: 8px; opacity: 0; }
+.nav-links a:hover, .nav-links a.active {
+  color: var(--green); background: rgba(0,255,65,.07);
+}
+.nav-links a:hover::before, .nav-links a.active::before { content: '▶'; opacity: 1; }
+
+.nav-hud {
+  display: flex; align-items: center; gap: 12px;
+  padding: 0 16px; border-left: 4px solid var(--green);
+}
+.hud-hp {
+  display: flex; flex-direction: column; gap: 3px;
+}
+.hud-hp-label { font-size: 5px; color: var(--dim); }
+.hud-hp-bar { display: flex; gap: 2px; }
+.hp-block {
+  width: 8px; height: 8px;
+  background: var(--pink);
+  box-shadow: 0 0 6px rgba(255,45,120,.4);
+}
+.hp-block.empty { background: var(--border); box-shadow: none; }
+.hud-lv { font-size: 7px; color: var(--cyan); white-space: nowrap; }
+
+/* ── PAGE LAYOUT ── */
+.page { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+/* ── DIALOG BOX (RPG style) ── */
+.dialog-wrap {
+  border: 4px solid var(--green);
+  background: var(--dark);
+  position: relative;
+  padding: 20px 24px;
+  image-rendering: pixelated;
+}
+.dialog-wrap::before {
+  content: '';
+  position: absolute; inset: 4px;
+  border: 2px solid rgba(0,255,65,.15);
+  pointer-events: none;
+}
+/* pixel corners */
+.dialog-wrap::after {
+  content: '';
+  position: absolute;
+  top: -4px; left: -4px; right: -4px; bottom: -4px;
+  border-style: solid; border-width: 0;
+  box-shadow:
+    -4px -4px 0 0 var(--green),
+    4px -4px 0 0 var(--green),
+    -4px 4px 0 0 var(--green),
+    4px 4px 0 0 var(--green);
+  pointer-events: none;
+}
+
+/* ── HERO ── */
+.hero {
+  padding-top: 48px;
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+.hero-main {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  border-bottom: 4px solid var(--green);
+}
+.hero-left {
+  padding: 48px 32px 48px 0;
+  border-right: 4px solid var(--green);
+  display: flex; flex-direction: column; gap: 24px;
+}
+
+/* TITLE — pixel stacked */
+.hero-title {
+  line-height: 1.4; letter-spacing: .04em;
+}
+.ht-line1 {
+  display: block; font-size: clamp(18px, 4vw, 36px);
+  color: var(--amber);
+  text-shadow: 4px 4px 0 rgba(255,183,0,.2), 0 0 40px rgba(255,183,0,.15);
+}
+.ht-line2 {
+  display: block; font-size: clamp(10px, 2.5vw, 20px);
+  color: var(--green);
+  text-shadow: 2px 2px 0 rgba(0,255,65,.2);
+  margin-top: 8px;
+}
+.ht-line3 {
+  display: block; font-size: clamp(7px, 1.5vw, 11px);
+  color: var(--dim); margin-top: 12px;
+  line-height: 2;
+}
+
+/* cursor blink on title */
+.cursor-blink {
+  display: inline-block; width: 8px; height: 16px;
+  background: var(--green);
+  margin-left: 4px; vertical-align: middle;
+  animation: blink .8s step-end infinite;
+}
+
+/* RPG menu tags */
+.menu-box {
+  border: 4px solid var(--amber);
+  background: rgba(255,183,0,.04);
+  position: relative;
+}
+.menu-box::after {
+  content: '';
+  position: absolute;
+  top: -4px; left: -4px; right: -4px; bottom: -4px;
+  box-shadow:
+    -4px -4px 0 0 var(--amber),
+    4px -4px 0 0 var(--amber),
+    -4px 4px 0 0 var(--amber),
+    4px 4px 0 0 var(--amber);
+  pointer-events: none;
+}
+.menu-title {
+  background: var(--amber); color: var(--black);
+  padding: 4px 12px; font-size: 7px; letter-spacing: .1em;
+  display: inline-block; margin-bottom: 12px;
+}
+.menu-items { padding: 0 16px 16px; }
+.menu-item {
+  padding: 6px 0; border-bottom: 2px solid var(--border);
+  color: var(--dim); font-size: 7px; transition: color 0s;
+  cursor: default; display: flex; align-items: center; gap: 8px;
+}
+.menu-item::before { content: '  '; font-size: 8px; }
+.menu-item:last-child { border-bottom: none; }
+.menu-item:hover { color: var(--green); }
+.menu-item:hover::before { content: '▶'; color: var(--green); }
+
+.hero-desc {
+  font-size: 7px; line-height: 2.2; color: var(--dim); max-width: 420px;
+}
+
+/* BUTTONS — pixel style */
+.px-btns { display: flex; gap: 0; }
+.px-btn {
+  font-family: 'Press Start 2P', monospace; font-size: 8px;
+  padding: 12px 20px; cursor: pointer; transition: all 0s;
+  display: inline-flex; align-items: center; gap: 8px;
+  border: none; letter-spacing: .06em;
+}
+.px-btn-primary {
+  background: var(--green); color: var(--black);
+  box-shadow: 4px 4px 0 var(--gdim);
+}
+.px-btn-primary:hover {
+  background: var(--black); color: var(--green);
+  border: 4px solid var(--green);
+  box-shadow: none; margin: -4px 0 0 -4px;
+}
+.px-btn-ghost {
+  background: var(--black); color: var(--dim);
+  border: 4px solid var(--border);
+  box-shadow: 4px 4px 0 rgba(0,0,0,.5);
+}
+.px-btn-ghost:hover {
+  color: var(--amber); border-color: var(--amber);
+  box-shadow: 4px 4px 0 rgba(255,183,0,.2);
+}
+
+/* ── CHARACTER PANEL (right) ── */
+.hero-right {
+  padding: 24px 20px;
+  display: flex; flex-direction: column; gap: 16px;
+}
+.char-portrait {
+  border: 4px solid var(--cyan);
+  background: var(--panel);
+  position: relative; overflow: hidden;
+  aspect-ratio: 1/1;
+  image-rendering: pixelated;
+}
+.char-portrait img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: saturate(.6) contrast(1.1);
+  image-rendering: pixelated;
+}
+/* pixel dither overlay */
+.char-portrait::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(circle, transparent 1px, rgba(18,18,26,.5) 1px);
+  background-size: 4px 4px;
+  pointer-events: none;
+}
+.char-portrait::before {
+  content: 'PLAYER 1';
+  position: absolute; top: 0; left: 0; right: 0;
+  background: var(--cyan); color: var(--black);
+  font-size: 6px; padding: 4px 8px; text-align: center;
+  z-index: 1; letter-spacing: .1em;
+}
+
+.char-name-box {
+  background: var(--panel); border: 4px solid var(--dim);
+  padding: 8px 12px;
+}
+.cn-name { font-size: 8px; color: var(--amber); margin-bottom: 4px; }
+.cn-class { font-size: 6px; color: var(--dim); }
+
+/* STAT BARS */
+.stats-panel { display: flex; flex-direction: column; gap: 8px; }
+.stat-row { display: flex; align-items: center; gap: 6px; }
+.stat-key { font-size: 6px; color: var(--dim); width: 50px; flex-shrink: 0; }
+.stat-bar {
+  flex: 1; height: 8px; background: var(--border);
+  border: 2px solid var(--border); overflow: hidden; position: relative;
+}
+.stat-fill {
+  height: 100%; width: 0;
+  animation: fillStat 1s steps(20) forwards;
+  animation-delay: var(--d, 0s);
+  image-rendering: pixelated;
+}
+@keyframes fillStat { to { width: var(--w); } }
+.sf-g { background: var(--green); box-shadow: 0 0 6px var(--green); }
+.sf-a { background: var(--amber); box-shadow: 0 0 6px var(--amber); }
+.sf-p { background: var(--pink); box-shadow: 0 0 6px var(--pink); }
+.sf-c { background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
+.stat-num { font-size: 6px; color: var(--dim); width: 20px; text-align: right; }
+
+/* ── TICKER ── */
+.hero-ticker {
+  border-top: 4px solid var(--green);
+  height: 32px; overflow: hidden;
+  display: flex; align-items: center;
+  background: var(--dark);
+}
+.ticker-label {
+  padding: 0 16px; border-right: 4px solid var(--green);
+  font-size: 6px; color: var(--green); white-space: nowrap;
+  height: 100%; display: flex; align-items: center;
+  background: rgba(0,255,65,.05);
+}
+.ticker-inner {
+  display: flex; gap: 0;
+  animation: tick 20s linear infinite; white-space: nowrap;
+}
+.ticker-inner span {
+  font-size: 6px; color: var(--dim);
+  padding: 0 20px; border-right: 2px solid var(--border);
+}
+.ticker-inner span.hi { color: var(--amber); }
+@keyframes tick { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+
+/* ── SECTION HEADERS — RPG CHAPTER ── */
+.sec-wrap { border-bottom: 4px solid var(--green); }
+.sec-head {
+  background: var(--dark); border-bottom: 4px solid var(--green);
+  padding: 16px 0;
+  display: flex; align-items: center; gap: 0;
+}
+.sh-num {
+  padding: 0 20px; border-right: 4px solid var(--green);
+  font-size: 24px; color: var(--amber);
+  text-shadow: 4px 4px 0 rgba(255,183,0,.2);
+  min-width: 88px; text-align: center;
+}
+.sh-text { padding: 0 24px; }
+.sh-sub { font-size: 6px; color: var(--dim); margin-bottom: 6px; letter-spacing: .1em; text-transform: uppercase; }
+.sh-title { font-size: clamp(14px, 2.5vw, 22px); color: var(--green); text-shadow: 2px 2px 0 rgba(0,255,65,.15); }
+.sh-right {
+  margin-left: auto; padding: 0 20px; border-left: 4px solid var(--green);
+  font-size: 6px; color: var(--dim); text-align: center; min-width: 80px;
+}
+
+/* ── ABOUT ── */
+.about-grid {
+  display: grid; grid-template-columns: 3fr 2fr;
+}
+.about-col {
+  padding: 32px 28px;
+  border-right: 4px solid var(--green);
+}
+.about-col:last-child { border-right: none; }
+
+/* dialog text box */
+.lore-box {
+  border: 4px solid var(--dim); background: var(--dark); padding: 16px 20px; margin-bottom: 20px;
+  position: relative;
+}
+.lore-box::before {
+  content: ''; position: absolute; inset: 4px;
+  border: 2px solid rgba(255,255,255,.04); pointer-events: none;
+}
+.lore-speaker {
+  display: inline-block;
+  background: var(--green); color: var(--black);
+  font-size: 6px; padding: 3px 10px; margin-bottom: 10px; letter-spacing: .1em;
+}
+.lore-text { font-size: 7px; color: var(--txt); line-height: 2.2; }
+.lore-text strong { color: var(--amber); }
+
+/* timeline — rpg quest log */
+.quest-log { display: flex; flex-direction: column; gap: 0; }
+.quest-item {
+  border: 4px solid var(--border); background: var(--dark);
+  padding: 12px 16px; margin-bottom: 8px; position: relative;
+  transition: border-color 0s;
+}
+.quest-item:hover { border-color: var(--green); }
+.qi-year { font-size: 6px; color: var(--pink); margin-bottom: 6px; }
+.qi-title { font-size: 8px; color: var(--amber); margin-bottom: 4px; }
+.qi-sub { font-size: 6px; color: var(--dim); line-height: 1.8; }
+.quest-item .status {
+  position: absolute; top: 8px; right: 12px;
+  font-size: 5px; color: var(--green); letter-spacing: .06em;
+}
+
+/* ── SKILLS — SPELLBOOK / ITEM MENU ── */
+.skills-grid {
+  display: grid; grid-template-columns: repeat(4,1fr);
+}
+.skill-panel {
+  padding: 20px 16px;
+  border-right: 4px solid var(--green);
+}
+.skill-panel:last-child { border-right: none; }
+.sp-title {
+  border: 4px solid var(--amber); background: rgba(255,183,0,.05);
+  padding: 6px 10px; font-size: 7px; color: var(--amber); margin-bottom: 14px;
+  text-align: center; letter-spacing: .08em;
+}
+.sp-items { list-style: none; }
+.sp-items li {
+  font-size: 7px; color: var(--dim);
+  padding: 6px 0; border-bottom: 2px solid var(--border);
+  display: flex; align-items: center; gap: 6px;
+  transition: color 0s; cursor: default;
+}
+.sp-items li::before { content: '□'; color: var(--border); font-size: 8px; }
+.sp-items li:hover { color: var(--green); }
+.sp-items li:hover::before { content: '■'; color: var(--green); }
+
+/* ── PROJECTS — QUEST BOARD ── */
+.quest-board {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.qb-card:nth-child(1) { grid-column: span 2; }
+.qb-card {
+  border-right: 4px solid var(--green);
+  border-bottom: 4px solid var(--green);
+  cursor: pointer; position: relative;
+  display: flex; flex-direction: column;
+  transition: background 0s;
+}
+.qb-card:nth-child(2n+2) { border-right: none; }
+.qb-card:hover { background: rgba(0,255,65,.04); }
+
+.qb-img { position: relative; overflow: hidden; background: var(--panel); }
+.qb-img img {
+  width: 100%; aspect-ratio: 16/9; object-fit: cover;
+  filter: saturate(.2) contrast(1.1) brightness(.7);
+  image-rendering: pixelated; transition: filter 0s;
+}
+.qb-card:hover .qb-img img { filter: saturate(.6) contrast(1.1) brightness(.85); }
+/* pixel dither on image */
+.qb-img::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(circle, transparent 1px, rgba(10,10,15,.6) 1px);
+  background-size: 3px 3px;
+  pointer-events: none;
+}
+.qb-badge {
+  position: absolute; top: 0; left: 0;
+  background: var(--panel); border-bottom: 4px solid var(--green); border-right: 4px solid var(--green);
+  font-size: 6px; color: var(--green); padding: 4px 10px; z-index: 1;
+}
+.qb-badge.amber { color: var(--amber); border-color: var(--amber); }
+.qb-badge.pink  { color: var(--pink);  border-color: var(--pink); }
+.qb-badge.cyan  { color: var(--cyan);  border-color: var(--cyan); }
+
+.qb-body {
+  padding: 16px 20px 20px; flex: 1; display: flex; flex-direction: column;
+  border-top: 4px solid var(--green);
+}
+.qb-meta { font-size: 6px; color: var(--dim); margin-bottom: 8px; }
+.qb-title {
+  font-size: clamp(10px, 2vw, 16px); color: var(--amber);
+  margin-bottom: 8px; line-height: 1.3;
+  text-shadow: 2px 2px 0 rgba(255,183,0,.12);
+  transition: color 0s;
+}
+.qb-card:nth-child(1) .qb-title { font-size: clamp(14px, 2.5vw, 22px); }
+.qb-card:hover .qb-title { color: var(--green); }
+.qb-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+.qb-chip {
+  font-size: 6px; color: var(--dim);
+  border: 2px solid var(--border); padding: 2px 8px;
+}
+.qb-desc { font-size: 7px; color: var(--dim); line-height: 2; flex: 1; margin-bottom: 12px; }
+.qb-open {
+  font-size: 7px; color: var(--dim); display: flex; align-items: center; gap: 6px;
+  transition: color 0s; width: fit-content;
+}
+.qb-card:hover .qb-open { color: var(--green); }
+.qb-card:hover .qb-open::before { content: '▶ '; }
+.qb-open::before { content: '▷ '; }
+
+/* ── CONTACT ── */
+.contact-layout {
+  display: grid; grid-template-columns: 1fr 1fr;
+}
+.contact-left {
+  padding: 32px 28px;
+  border-right: 4px solid var(--green);
+  display: flex; flex-direction: column; gap: 20px;
+}
+.contact-title {
+  font-size: clamp(14px, 3vw, 24px); color: var(--amber); line-height: 1.5;
+  text-shadow: 4px 4px 0 rgba(255,183,0,.1);
+}
+.contact-title span { display: block; color: var(--green); }
+.contact-body-txt { font-size: 7px; color: var(--dim); line-height: 2.2; }
+
+.contact-right { padding: 24px 24px 24px 28px; }
+.info-rows { display: flex; flex-direction: column; gap: 0; margin-bottom: 20px; }
+.ir {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 10px 0; border-bottom: 2px solid var(--border);
+}
+.ir:first-child { border-top: 2px solid var(--border); }
+.ir-key {
+  font-size: 6px; color: var(--dim); width: 64px; flex-shrink: 0;
+  padding-top: 1px;
+}
+.ir-key::before { content: '▹ '; color: var(--green); }
+.ir-val { font-size: 7px; color: var(--txt); line-height: 2; }
+.ir-val a { color: var(--cyan); text-decoration: none; }
+.ir-val a:hover { color: var(--green); }
+
+.cta-big {
+  display: block; width: 100%;
+  background: var(--black); color: var(--green);
+  border: 4px solid var(--green);
+  font-family: 'Press Start 2P', monospace; font-size: 9px;
+  padding: 16px; text-align: center; letter-spacing: .1em;
+  cursor: pointer; position: relative; transition: all 0s;
+  box-shadow: 4px 4px 0 var(--gdim);
+}
+.cta-big:hover {
+  background: var(--green); color: var(--black);
+  box-shadow: none; transform: translate(4px,4px);
+}
+.cta-big::before { content: '[ '; }
+.cta-big::after  { content: ' ]'; }
+
+/* ── FOOTER ── */
 footer {
-  border-top: 1px solid var(--line); padding: 2rem 0;
+  background: var(--dark); border-top: 4px solid var(--green);
+  padding: 16px 24px;
   display: flex; align-items: center; justify-content: space-between;
 }
-.footer-copy {
-  font-family: 'DM Mono', monospace; font-size: .65rem;
-  letter-spacing: .05em; color: var(--t3);
-}
-.footer-links { display: flex; gap: 1.5rem; }
-.footer-links a {
-  font-family: 'DM Mono', monospace; font-size: .65rem;
-  letter-spacing: .05em; color: var(--t3); transition: color .15s;
-}
-.footer-links a:hover { color: var(--t1); }
+.ft-copy { font-size: 6px; color: var(--dim); }
+.ft-links { display: flex; gap: 16px; }
+.ft-links a { font-size: 6px; color: var(--dim); transition: color 0s; }
+.ft-links a:hover { color: var(--green); }
+.ft-links a::before { content: '▹ '; }
 
-/* ─── MODALS ─── */
+/* ── MODALS ── */
 .modal-overlay {
   display: none; position: fixed; inset: 0; z-index: 1000;
-  background: rgba(10,10,11,.92); backdrop-filter: blur(12px);
-  opacity: 0; transition: opacity .25s;
-  align-items: center; justify-content: center; padding: 1.5rem;
+  background: rgba(0,0,0,.92);
+  opacity: 0; transition: opacity .2s;
+  align-items: center; justify-content: center; padding: 16px;
 }
 .modal-overlay.show { opacity: 1; }
 .mbox {
-  background: var(--bg2); width: 100%; max-width: 820px; max-height: 88vh;
-  border: 1px solid var(--line2); border-radius: 12px;
+  background: var(--dark);
+  border: 4px solid var(--green);
+  width: 100%; max-width: 840px; max-height: 88vh;
   overflow-y: auto; overflow-x: hidden;
-  transform: translateY(16px) scale(.99);
-  transition: all .3s cubic-bezier(.16,1,.3,1);
-  box-shadow: 0 40px 80px rgba(0,0,0,.8);
+  box-shadow: 8px 8px 0 var(--gdim);
+  transform: translateY(8px);
+  transition: transform .2s cubic-bezier(.16,1,.3,1);
 }
-.mbox::-webkit-scrollbar { width: 3px; }
-.mbox::-webkit-scrollbar-thumb { background: var(--bg4); }
-.modal-overlay.show .mbox { transform: translateY(0) scale(1); }
+.mbox::before {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none;
+  border: 2px solid rgba(0,255,65,.1);
+}
+.modal-overlay.show .mbox { transform: translateY(0); }
+.mbox::-webkit-scrollbar { width: 4px; }
+.mbox::-webkit-scrollbar-thumb { background: var(--green); }
 .m-header {
   position: sticky; top: 0; z-index: 10;
-  background: var(--bg2); border-bottom: 1px solid var(--line);
-  padding: 1rem 1.5rem;
+  background: var(--green); padding: 8px 16px;
   display: flex; align-items: center; justify-content: space-between;
 }
-.m-tag {
-  font-family: 'DM Mono', monospace; font-size: .64rem;
-  letter-spacing: .08em; text-transform: uppercase;
-  color: var(--accent);
+.m-tag { font-size: 7px; color: var(--black); letter-spacing: .08em; }
+.m-close {
+  font-family: 'Press Start 2P', monospace; font-size: 7px;
+  background: var(--black); color: var(--green);
+  border: 2px solid var(--black); padding: 4px 10px; cursor: pointer;
+  transition: all 0s;
 }
-.m-close-btn {
-  width: 28px; height: 28px; border-radius: 6px;
-  background: var(--bg3); border: 1px solid var(--line2);
-  color: var(--t2); font-size: .85rem;
-  cursor: pointer; display: flex; align-items: center; justify-content: center;
-  transition: all .15s; font-family: monospace;
-}
-.m-close-btn:hover { background: var(--bg4); color: var(--hi); }
-.m-body { padding: 2.5rem; }
+.m-close:hover { background: var(--green); color: var(--black); }
+.m-body { padding: 24px; }
 .m-title {
-  font-family: 'Syne', sans-serif; font-weight: 800;
-  font-size: 2.2rem; letter-spacing: -.03em;
-  color: var(--hi); margin-bottom: .4rem; line-height: 1.05;
+  font-size: clamp(14px, 2.5vw, 22px); color: var(--amber);
+  text-shadow: 4px 4px 0 rgba(255,183,0,.15);
+  margin-bottom: 6px; line-height: 1.3;
 }
-.m-subtitle {
-  font-family: 'DM Mono', monospace; font-size: .68rem;
-  letter-spacing: .06em; color: var(--accent); margin-bottom: 1.4rem;
-  text-transform: uppercase;
+.m-sub {
+  font-size: 6px; color: var(--green); margin-bottom: 16px;
+  display: block; letter-spacing: .08em;
 }
-.m-chips { display: flex; gap: .4rem; flex-wrap: wrap; margin-bottom: 2.2rem; }
-.m-chip {
-  font-family: 'DM Mono', monospace; font-size: .62rem;
-  letter-spacing: .04em; color: var(--t2);
-  border: 1px solid var(--line2); border-radius: 4px;
-  padding: .2rem .7rem;
-}
+.m-chips { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 20px; }
+.m-chip { font-size: 6px; color: var(--dim); border: 2px solid var(--border); padding: 3px 8px; }
 .m-sec {
-  font-family: 'DM Mono', monospace; font-size: .65rem;
-  letter-spacing: .1em; text-transform: uppercase;
-  color: var(--t3); margin: 2rem 0 .9rem;
-  display: flex; align-items: center; gap: .75rem;
+  background: var(--amber); color: var(--black);
+  font-size: 7px; padding: 5px 12px; margin: 20px 0 10px; display: inline-block;
+  letter-spacing: .1em;
 }
-.m-sec::after { content: ''; flex: 1; height: 1px; background: var(--line); }
-.m-body p { color: var(--t2); line-height: 1.8; margin-bottom: .9rem; font-size: .96rem; }
-.m-body ul { margin-left: 0; margin-bottom: 1rem; list-style: none; }
+.m-body p { font-size: 7px; color: var(--dim); line-height: 2.2; margin-bottom: 10px; }
+.m-body p strong { color: var(--amber); }
+.m-body ul { list-style: none; margin-bottom: 12px; }
 .m-body li {
-  color: var(--t2); margin-bottom: .6rem; font-size: .92rem; line-height: 1.7;
-  display: flex; gap: .75rem;
+  font-size: 7px; color: var(--dim); margin-bottom: 8px;
+  line-height: 2; display: flex; gap: 8px;
 }
-.m-body li::before {
-  content: '→'; color: var(--accent); flex-shrink: 0;
-  font-family: monospace; font-size: .8rem; margin-top: .1em;
+.m-body li::before { content: '▹'; color: var(--green); flex-shrink: 0; }
+.m-body li strong { color: var(--txt); }
+
+.rpg-dialog {
+  border: 4px solid var(--dim); background: var(--dark); padding: 0; margin-bottom: 16px;
 }
-.m-body li strong { color: var(--t1); }
-.dialog-box {
-  background: var(--bg); border-left: 3px solid var(--accent);
-  border-radius: 0 var(--r) var(--r) 0;
-  padding: 1.2rem 1.5rem; margin-bottom: 1.5rem;
+.rd-head {
+  background: var(--dim); color: var(--black);
+  font-size: 6px; padding: 4px 12px; letter-spacing: .1em;
 }
-.dialog-meta {
-  font-family: 'DM Mono', monospace; font-size: .6rem;
-  letter-spacing: .08em; color: var(--t3);
-  text-transform: uppercase; margin-bottom: .8rem;
+.rd-line {
+  padding: 8px 16px; border-bottom: 2px solid var(--border);
+  font-size: 7px; color: var(--dim); line-height: 2;
 }
-.dialog-line { color: var(--t2); line-height: 1.7; margin-bottom: .4rem; font-size: .9rem; }
-.dialog-line strong { color: var(--accent); }
-.ig2 { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin-bottom: 1.8rem; }
-.ig3 { display: grid; grid-template-columns: repeat(3,1fr); gap: .75rem; margin-bottom: 1.8rem; }
-.ibox { background: var(--bg); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
-.ibox img {
-  width: 100%; height: 170px; object-fit: contain; background: var(--bg);
-  cursor: zoom-in; transition: opacity .2s; border-bottom: 1px solid var(--line);
-}
-.ibox img:hover { opacity: .75; }
-.ilbl {
-  padding: .45rem .7rem; text-align: center;
-  font-family: 'DM Mono', monospace; font-size: .6rem;
-  letter-spacing: .04em; color: var(--t3); text-transform: uppercase;
-}
-.vid { width: 100%; border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; margin-bottom: 1.5rem; }
+.rd-line:last-child { border-bottom: none; }
+.rd-line strong { color: var(--cyan); }
+
+.ig2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: 16px; }
+.ig3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 4px; margin-bottom: 16px; }
+.ibox { border: 4px solid var(--border); overflow: hidden; background: var(--black); }
+.ibox img { width: 100%; height: 140px; object-fit: contain; background: #060609; cursor: zoom-in; filter: saturate(.4); image-rendering: pixelated; transition: filter 0s; }
+.ibox img:hover { filter: saturate(1); }
+.ilbl { padding: 4px 8px; font-size: 6px; color: var(--dim); letter-spacing: .06em; border-top: 2px solid var(--border); }
+.vid { border: 4px solid var(--dim); overflow: hidden; margin-bottom: 16px; }
 .vid video { width: 100%; display: block; }
 
-/* ─── LIGHTBOX ─── */
+/* ── LIGHTBOX ── */
 .lbx {
   display: none; position: fixed; inset: 0; z-index: 2000;
-  background: rgba(0,0,0,.97); align-items: center; justify-content: center;
-  opacity: 0; transition: opacity .25s; cursor: zoom-out;
+  background: rgba(0,0,0,.97);
+  align-items: center; justify-content: center;
+  opacity: 0; transition: opacity .2s; cursor: zoom-out;
 }
 .lbx.show { opacity: 1; }
-.lbx img { max-width: 90%; max-height: 90vh; border-radius: var(--r); cursor: default; }
+.lbx img { max-width: 90%; max-height: 90vh; border: 4px solid var(--green); image-rendering: pixelated; }
 .lbx-x {
-  position: absolute; top: 1.5rem; right: 1.5rem;
-  width: 36px; height: 36px; background: rgba(255,255,255,.1);
-  border-radius: 8px; display: flex; align-items: center; justify-content: center;
-  color: #fff; cursor: pointer; font-size: .9rem; transition: background .15s;
-  font-family: monospace;
+  position: absolute; top: 16px; right: 16px;
+  font-family: 'Press Start 2P', monospace; font-size: 8px;
+  background: var(--black); color: var(--green);
+  border: 4px solid var(--green); padding: 6px 14px; cursor: pointer;
 }
-.lbx-x:hover { background: rgba(255,255,255,.2); }
+.lbx-x:hover { background: var(--green); color: var(--black); }
 
-/* ─── REVEAL ─── */
-.rev { opacity: 0; transform: translateY(24px); transition: opacity .75s cubic-bezier(.16,1,.3,1), transform .75s cubic-bezier(.16,1,.3,1); }
+/* ── REVEAL ── */
+.rev { opacity: 0; transform: translateY(16px); transition: opacity .5s, transform .5s; }
 .rev.on { opacity: 1; transform: none; }
-.d1 { transition-delay: .08s; } .d2 { transition-delay: .16s; } .d3 { transition-delay: .24s; }
+.d1 { transition-delay: .05s; } .d2 { transition-delay: .1s; } .d3 { transition-delay: .15s; }
 
-/* ─── RESPONSIVE ─── */
-@media(max-width: 960px) {
-  .hero { grid-template-columns: 1fr; gap: 3rem; padding-top: 4rem; }
-  .hero-right { order: -1; max-width: 320px; margin: 0 auto; }
-  .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+/* ── RESPONSIVE ── */
+@media(max-width: 900px) {
+  .hero-main { grid-template-columns: 1fr; }
+  .hero-right { border-top: 4px solid var(--green); border-left: none; }
+  .about-grid, .contact-layout { grid-template-columns: 1fr; }
+  .about-col { border-right: none; border-bottom: 4px solid var(--green); }
+  .contact-left { border-right: none; border-bottom: 4px solid var(--green); }
   .skills-grid { grid-template-columns: 1fr 1fr; }
-  .projects-grid { grid-template-columns: 1fr; }
-  .projects-grid .prj:nth-child(1) { grid-column: 1; }
+  .skill-panel:nth-child(2n) { border-right: none; }
+  .quest-board { grid-template-columns: 1fr; }
+  .qb-card:nth-child(1) { grid-column: 1; }
+  .qb-card { border-right: none; }
   nav .nav-links { display: none; }
-  .contact-section { padding: 2rem; }
-  footer { flex-direction: column; gap: 1rem; text-align: center; }
 }
 @media(max-width: 600px) {
   .skills-grid { grid-template-columns: 1fr; }
+  .skill-panel { border-right: none; border-bottom: 4px solid var(--green); }
   .ig2, .ig3 { grid-template-columns: 1fr; }
-  .m-body { padding: 1.5rem; }
-  .m-title { font-size: 1.6rem; }
+  .m-body { padding: 16px; }
+  .m-title { font-size: 12px; }
 }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
+<!-- PIXEL CURSOR -->
+<div id="cur">
+  <svg viewBox="0 0 12 20" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="0,0 0,16 4,12 6,20 8,19 6,11 11,11" fill="#00ff41"/>
+  </svg>
+</div>
+
+<!-- PRESS START SCREEN -->
+<div id="intro">
+  <div class="intro-logo">
+    PEEMAPOL.EXE
+    <span class="sub">GAME DEVELOPER PORTFOLIO v1.0</span>
+  </div>
+
+  <!-- pixel character sprite (SVG) -->
+  <svg class="intro-sprite" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated">
+    <rect x="5" y="0" width="6" height="6" fill="#ffb700"/>
+    <rect x="4" y="1" width="1" height="4" fill="#ffb700"/>
+    <rect x="11" y="1" width="1" height="4" fill="#ffb700"/>
+    <rect x="6" y="2" width="1" height="1" fill="#0a0a0f"/>
+    <rect x="9" y="2" width="1" height="1" fill="#0a0a0f"/>
+    <rect x="6" y="4" width="4" height="1" fill="#0a0a0f"/>
+    <rect x="5" y="6" width="6" height="5" fill="#00ff41"/>
+    <rect x="3" y="7" width="2" height="3" fill="#00ff41"/>
+    <rect x="11" y="7" width="2" height="3" fill="#00ff41"/>
+    <rect x="5" y="11" width="2" height="5" fill="#9b59ff"/>
+    <rect x="9" y="11" width="2" height="5" fill="#9b59ff"/>
+    <rect x="3" y="14" width="3" height="2" fill="#9b59ff"/>
+    <rect x="10" y="14" width="3" height="2" fill="#9b59ff"/>
+  </svg>
+
+  <div class="press-start" id="pressStart">▶ PRESS START ◀</div>
+  <div class="intro-copy">
+    © 2026 PEEMAPOL PHUANGCHAROEN<br>
+    SAMUT PRAKAN — THAILAND
+  </div>
+  <div class="px-bar">
+    <span class="px-bar-label">LOADING</span>
+    <div class="px-bar-track"><div class="px-bar-fill" id="loadBar"></div></div>
+    <span class="px-bar-label" id="loadPct">0%</span>
+  </div>
+</div>
+
+<!-- NAV / HUD -->
 <nav>
-  <div class="nav-inner">
-    <div class="nav-logo">Peemapol<span>.</span></div>
-    <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-    <div class="nav-status"><div class="nav-dot"></div>Available for internship</div>
+  <div class="nav-title">PEEMAPOL.EXE</div>
+  <div class="nav-links">
+    <a href="#about">ABOUT</a>
+    <a href="#skills">SKILLS</a>
+    <a href="#projects">PROJECTS</a>
+    <a href="#contact">CONTACT</a>
+  </div>
+  <div class="nav-hud">
+    <div class="hud-hp">
+      <div class="hud-hp-label">HP</div>
+      <div class="hud-hp-bar">
+        <div class="hp-block"></div><div class="hp-block"></div><div class="hp-block"></div>
+        <div class="hp-block"></div><div class="hp-block"></div>
+      </div>
+    </div>
+    <div class="hud-lv">LV.03</div>
   </div>
 </nav>
 
-<!-- HERO -->
+<!-- ══ HERO ══ -->
 <div class="page">
 <section id="home">
   <div class="hero">
-    <div class="hero-left">
-      <div class="hero-eyebrow">Game Developer · Bangkok, TH</div>
-      <h1 class="hero-name">Peemapol<br>Phuangcharoen</h1>
-      <p class="hero-role">Game Design <span>&amp;</span> Sound Design</p>
-      <p class="hero-desc">นักศึกษา Interactive &amp; Game Design ที่หลงใหลในการสร้างประสบการณ์ผ่าน Gameplay และ Audio มีประสบการณ์ออกแบบ Gameplay System, Narrative, Level Design และทำ Sound Design ด้วย Audacity</p>
-      <div class="hero-tags">
-        <span class="hero-tag">Unity / C#</span>
-        <span class="hero-tag">Sound Design</span>
-        <span class="hero-tag">Level Design</span>
-        <span class="hero-tag">Narrative</span>
-        <span class="hero-tag">Audacity</span>
-        <span class="hero-tag">Maya</span>
+    <div class="hero-main">
+      <div class="hero-left">
+        <div class="hero-title">
+          <span class="ht-line1">PEEMAPOL</span>
+          <span class="ht-line2">PHUANGCHAROEN<span class="cursor-blink"></span></span>
+          <span class="ht-line3">GAME DESIGNER · SOUND DESIGNER · UNITY DEV</span>
+        </div>
+
+        <div class="menu-box">
+          <div class="menu-title">▶ SKILL SET</div>
+          <div class="menu-items">
+            <div class="menu-item">Gameplay &amp; System Design</div>
+            <div class="menu-item">Sound Design (Audacity)</div>
+            <div class="menu-item">Narrative &amp; Dialog</div>
+            <div class="menu-item">Unity / C# (Intermediate)</div>
+            <div class="menu-item">Level Design</div>
+          </div>
+        </div>
+
+        <p class="hero-desc">
+          นักศึกษา Interactive &amp; Game Design — Sripatum University<br>
+          สนใจการสร้างประสบการณ์ผ่าน Gameplay และ Audio<br>
+          กำลังมองหาโอกาสฝึกงานใน Game Industry ครับ
+        </p>
+
+        <div class="px-btns">
+          <a href="#projects" class="px-btn px-btn-primary">▶ VIEW PROJECTS</a>
+          <a href="resume.pdf" download class="px-btn px-btn-ghost">⊞ RESUME PDF</a>
+        </div>
       </div>
-      <div class="hero-btns">
-        <a href="#projects" class="btn btn-primary">View Projects →</a>
-        <a href="resume.pdf" download class="btn btn-secondary">Download Resume</a>
+
+      <div class="hero-right">
+        <div class="char-portrait">
+          <img src="profile.png" alt="Peemapol">
+        </div>
+        <div class="char-name-box">
+          <div class="cn-name">PEEMAPOL P.</div>
+          <div class="cn-class">CLASS: GAME DEVELOPER</div>
+        </div>
+        <div class="stats-panel">
+          <div class="stat-row"><span class="stat-key">DESIGN</span><div class="stat-bar"><div class="stat-fill sf-g" style="--w:88%;--d:.6s"></div></div><span class="stat-num">88</span></div>
+          <div class="stat-row"><span class="stat-key">AUDIO</span><div class="stat-bar"><div class="stat-fill sf-p" style="--w:82%;--d:.8s"></div></div><span class="stat-num">82</span></div>
+          <div class="stat-row"><span class="stat-key">UNITY</span><div class="stat-bar"><div class="stat-fill sf-a" style="--w:70%;--d:1s"></div></div><span class="stat-num">70</span></div>
+          <div class="stat-row"><span class="stat-key">NARRAT</span><div class="stat-bar"><div class="stat-fill sf-c" style="--w:85%;--d:1.2s"></div></div><span class="stat-num">85</span></div>
+          <div class="stat-row"><span class="stat-key">3D ART</span><div class="stat-bar"><div class="stat-fill sf-g" style="--w:65%;--d:1.4s"></div></div><span class="stat-num">65</span></div>
+        </div>
       </div>
     </div>
-    <div class="hero-right">
-      <div class="profile-card">
-        <div class="profile-img"><img src="profile.png" alt="Peemapol Phuangcharoen"></div>
-        <div class="profile-info">
-          <div class="profile-name">Peemapol Phuangcharoen</div>
-          <div class="profile-title">Game Developer · Lv. 03</div>
-          <div class="profile-stats">
-            <div class="pstat"><div class="pstat-n">5</div><div class="pstat-l">Projects</div></div>
-            <div class="pstat"><div class="pstat-n">3+</div><div class="pstat-l">Years study</div></div>
-            <div class="pstat"><div class="pstat-n">2</div><div class="pstat-l">Solo builds</div></div>
-            <div class="pstat"><div class="pstat-n">TH</div><div class="pstat-l">Location</div></div>
-          </div>
-          <div class="skill-bars">
-            <div class="sbar-row">
-              <div class="sbar-head"><span class="sbar-label">Game Design</span><span class="sbar-val">88</span></div>
-              <div class="sbar-track"><div class="sbar-fill blue" style="--w:88%;--delay:.8s"></div></div>
-            </div>
-            <div class="sbar-row">
-              <div class="sbar-head"><span class="sbar-label">Sound Design</span><span class="sbar-val">82</span></div>
-              <div class="sbar-track"><div class="sbar-fill teal" style="--w:82%;--delay:1s"></div></div>
-            </div>
-            <div class="sbar-row">
-              <div class="sbar-head"><span class="sbar-label">Unity / C#</span><span class="sbar-val">70</span></div>
-              <div class="sbar-track"><div class="sbar-fill green" style="--w:70%;--delay:1.2s"></div></div>
-            </div>
-            <div class="sbar-row">
-              <div class="sbar-head"><span class="sbar-label">Narrative</span><span class="sbar-val">85</span></div>
-              <div class="sbar-track"><div class="sbar-fill amber" style="--w:85%;--delay:1.4s"></div></div>
-            </div>
-            <div class="sbar-row">
-              <div class="sbar-head"><span class="sbar-label">3D Art</span><span class="sbar-val">65</span></div>
-              <div class="sbar-track"><div class="sbar-fill pink" style="--w:65%;--delay:1.6s"></div></div>
-            </div>
-          </div>
+
+    <div class="hero-ticker">
+      <div class="ticker-label">★ NEWS</div>
+      <div class="ticker-inner">
+        <span class="hi">OPEN TO INTERNSHIP 2026</span>
+        <span>GAME DESIGNER</span><span>SOUND DESIGNER</span><span>NARRATIVE DESIGNER</span>
+        <span class="hi">SAMUT PRAKAN — THAILAND</span>
+        <span>UNITY / C#</span><span>AUDACITY</span><span>MAYA</span><span>LEVEL DESIGN</span>
+        <span class="hi">OPEN TO INTERNSHIP 2026</span>
+        <span>GAME DESIGNER</span><span>SOUND DESIGNER</span><span>NARRATIVE DESIGNER</span>
+        <span class="hi">SAMUT PRAKAN — THAILAND</span>
+        <span>UNITY / C#</span><span>AUDACITY</span><span>MAYA</span><span>LEVEL DESIGN</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ABOUT ══ -->
+<section id="about" class="sec-wrap">
+  <div class="sec-head rev">
+    <div class="sh-num">01</div>
+    <div class="sh-text">
+      <div class="sh-sub">WHO I AM</div>
+      <div class="sh-title">ABOUT</div>
+    </div>
+    <div class="sh-right">BIO &amp;<br>EDU</div>
+  </div>
+  <div class="about-grid">
+    <div class="about-col rev d1">
+      <div class="lore-box">
+        <div class="lore-speaker">PLAYER LOG</div>
+        <div class="lore-text">
+          ผมเป็นนักศึกษา Interactive &amp; Game Design ที่ Sripatum University สนใจด้าน <strong>Game Design</strong> ทั้ง Gameplay, System, Level Design และ <strong>Sound Design</strong> ด้วย Audacity<br><br>
+          มีความเข้าใจพื้นฐาน C# ใน Unity และสามารถใช้ <strong>AI Tools</strong> ช่วยงาน Development ได้ กำลังมองหาโอกาสฝึกงานในอุตสาหกรรม Game ครับ
+        </div>
+      </div>
+      <div class="lore-box" style="border-color:var(--amber)">
+        <div class="lore-speaker" style="background:var(--amber)">CONTACT</div>
+        <div class="lore-text" style="line-height:2.4">
+          <strong>📞</strong> 095-505-8088<br>
+          <strong>✉</strong> lnwpureza2545@gmail.com<br>
+          <strong>⌂</strong> Samut Prakan, Thailand<br>
+          <strong>⊞</strong> github.com/lnwpureza2545
+        </div>
+      </div>
+    </div>
+    <div class="about-col rev d2">
+      <div style="font-size:7px;color:var(--green);margin-bottom:12px;letter-spacing:.1em">▶ QUEST LOG — EDUCATION</div>
+      <div class="quest-log">
+        <div class="quest-item">
+          <div class="qi-year">2023 — PRESENT</div>
+          <div class="qi-title">SRIPATUM UNIVERSITY</div>
+          <div class="qi-sub">Interactive &amp; Game Design<br>Faculty of Digital Media Technology</div>
+          <div class="status">IN PROGRESS</div>
+        </div>
+        <div class="quest-item">
+          <div class="qi-year">2019 — 2022</div>
+          <div class="qi-title">THAIGLOBAL COLLEGE</div>
+          <div class="qi-sub">Computer Business</div>
+          <div class="status" style="color:var(--amber)">COMPLETED</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ABOUT -->
-<section id="about">
-  <div class="rev">
-    <p class="sec-label">01 — About</p>
-    <h2 class="sec-title">A bit about me</h2>
-    <hr class="sec-line">
-  </div>
-  <div class="about-grid rev d1">
-    <div class="about-text">
-      <p>ผมเป็นนักศึกษาคณะ Interactive &amp; Game Design ที่ Sripatum University สนใจด้าน <strong>Game Design</strong> เป็นหลัก ทั้งการออกแบบ Gameplay, Game System รวมถึงการเขียน Story และ Narrative</p>
-      <p>นอกจากนี้ยังสนใจด้าน <strong>Sound Design</strong> โดยใช้ Audacity ในการตัดต่อ ปรับแต่ง และออกแบบเสียงสำหรับเกม รวมถึงมีความเข้าใจพื้นฐาน C# ใน Unity สามารถประยุกต์ใช้ <strong>AI Tools</strong> ในงาน Development ได้</p>
-      <p>กำลังมองหาโอกาสฝึกงานเพื่อเรียนรู้จากสภาพแวดล้อมการทำงานจริงในอุตสาหกรรม Game ครับ</p>
+<!-- ══ SKILLS ══ -->
+<section id="skills" class="sec-wrap">
+  <div class="sec-head rev">
+    <div class="sh-num">02</div>
+    <div class="sh-text">
+      <div class="sh-sub">SPELLBOOK</div>
+      <div class="sh-title">SKILLS</div>
     </div>
-    <div class="about-aside">
-      <div class="info-card">
-        <div class="info-card-title">Education</div>
-        <div class="edu-item">
-          <div class="edu-school">Sripatum University</div>
-          <div class="edu-detail">Interactive &amp; Game Design · 2023–Present</div>
-        </div>
-        <div class="edu-item">
-          <div class="edu-school">Thaiglobal College</div>
-          <div class="edu-detail">Computer Business · 2019–2022</div>
-        </div>
-      </div>
-      <div class="info-card">
-        <div class="info-card-title">Contact</div>
-        <ul class="contact-list">
-          <li><span class="ci">📞</span><span>095-505-8088</span></li>
-          <li><span class="ci">✉️</span><a href="mailto:lnwpureza2545@gmail.com">lnwpureza2545@gmail.com</a></li>
-          <li><span class="ci">🔗</span><a href="https://github.com/lnwpureza2545" target="_blank">github.com/lnwpureza2545</a></li>
-          <li><span class="ci">📍</span><span>Samut Prakan, TH</span></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SKILLS -->
-<section id="skills">
-  <div class="rev">
-    <p class="sec-label">02 — Skills</p>
-    <h2 class="sec-title">What I work with</h2>
-    <hr class="sec-line">
+    <div class="sh-right">4<br>CLASSES</div>
   </div>
   <div class="skills-grid rev d1">
-    <div class="skill-group">
-      <div class="skill-group-title">Core Design</div>
-      <ul class="skill-list">
+    <div class="skill-panel">
+      <div class="sp-title">CORE DESIGN</div>
+      <ul class="sp-items">
         <li>Gameplay Design</li>
         <li>Level Design</li>
         <li>Game System Design</li>
@@ -773,29 +1004,29 @@ footer {
         <li>Audio Implementation</li>
       </ul>
     </div>
-    <div class="skill-group">
-      <div class="skill-group-title">Technical</div>
-      <ul class="skill-list">
-        <li>Unity (Intermediate)</li>
+    <div class="skill-panel">
+      <div class="sp-title">TECHNICAL</div>
+      <ul class="sp-items">
+        <li>Unity — Intermediate</li>
         <li>C# Scripting</li>
-        <li>Unreal Engine (Basic)</li>
-        <li>Audacity (Advanced)</li>
+        <li>Unreal — Basic</li>
+        <li>Audacity — Advanced</li>
         <li>AI-assisted workflow</li>
       </ul>
     </div>
-    <div class="skill-group">
-      <div class="skill-group-title">3D / Art</div>
-      <ul class="skill-list">
+    <div class="skill-panel">
+      <div class="sp-title">3D / ART</div>
+      <ul class="sp-items">
         <li>Maya</li>
         <li>Substance Painter</li>
         <li>PBR Texturing</li>
         <li>UV Unwrapping</li>
-        <li>Asset Pipeline</li>
+        <li>After Effects</li>
       </ul>
     </div>
-    <div class="skill-group">
-      <div class="skill-group-title">Soft Skills</div>
-      <ul class="skill-list">
+    <div class="skill-panel">
+      <div class="sp-title">SOFT SKILLS</div>
+      <ul class="sp-items">
         <li>Team Collaboration</li>
         <li>Problem Solving</li>
         <li>Fast Iteration</li>
@@ -806,182 +1037,171 @@ footer {
   </div>
 </section>
 
-<!-- PROJECTS -->
-<section id="projects">
-  <div class="rev">
-    <p class="sec-label">03 — Projects</p>
-    <h2 class="sec-title">Selected work</h2>
-    <hr class="sec-line">
+<!-- ══ PROJECTS ══ -->
+<section id="projects" class="sec-wrap">
+  <div class="sec-head rev">
+    <div class="sh-num">03</div>
+    <div class="sh-text">
+      <div class="sh-sub">QUEST BOARD</div>
+      <div class="sh-title">PROJECTS</div>
+    </div>
+    <div class="sh-right">5<br>QUESTS</div>
   </div>
-  <div class="projects-grid rev d1">
+  <div class="quest-board rev d1">
 
-    <div class="prj" onclick="openModal('mr')">
-      <div class="prj-img-wrap">
+    <div class="qb-card" onclick="openModal('mr')">
+      <div class="qb-img">
         <img src="project-ramen.jpg" alt="Ramen Rider">
-        <div class="prj-img-overlay"></div>
-        <div class="prj-num">Featured</div>
+        <div class="qb-badge amber">★ FEATURED</div>
       </div>
-      <div class="prj-body">
-        <div class="prj-meta">Time Management · Unity / C# · Team of 5</div>
-        <h3 class="prj-title">Ramen Rider</h3>
-        <div class="prj-roles">
-          <span class="prj-role">Story</span>
-          <span class="prj-role">Dialog System</span>
-          <span class="prj-role">Sound Design</span>
-          <span class="prj-role">Programmer</span>
+      <div class="qb-body">
+        <div class="qb-meta">TIME MANAGEMENT · UNITY/C# · TEAM x5</div>
+        <div class="qb-title">RAMEN RIDER</div>
+        <div class="qb-chips">
+          <span class="qb-chip">STORY</span><span class="qb-chip">DIALOG SYS</span>
+          <span class="qb-chip">SOUND</span><span class="qb-chip">PROGRAMMER</span>
         </div>
-        <p class="prj-desc">รับบทลูกชายร้านราเมงสายซิ่ง เกม Time Management สำหรับทีม 5 คน พัฒนาระบบ Dialog และออกแบบเสียง SFX</p>
-        <div class="prj-action">View details <span class="arr"></span></div>
+        <div class="qb-desc">รับบทลูกชายร้านราเมงสายซิ่ง พัฒนาระบบ Dialog System ทั้งหมดเอง และออกแบบ SFX ด้วย Audacity</div>
+        <div class="qb-open">OPEN CASE STUDY</div>
       </div>
     </div>
 
-    <div class="prj" onclick="openModal('ma')">
-      <div class="prj-img-wrap">
+    <div class="qb-card" onclick="openModal('ma')">
+      <div class="qb-img">
         <img src="project1.jpg" alt="Abandoned Rails">
-        <div class="prj-img-overlay"></div>
-        <div class="prj-num">Solo</div>
+        <div class="qb-badge">SOLO</div>
       </div>
-      <div class="prj-body">
-        <div class="prj-meta">Horror · First-Person · Unity</div>
-        <h3 class="prj-title">Abandoned Rails</h3>
-        <div class="prj-roles">
-          <span class="prj-role">Game Designer</span>
-          <span class="prj-role">Programmer</span>
-        </div>
-        <p class="prj-desc">เกม Horror First-Person สำรวจทางรถไฟร้าง เน้นบรรยากาศและ Environmental Storytelling</p>
-        <div class="prj-action">View details <span class="arr"></span></div>
+      <div class="qb-body">
+        <div class="qb-meta">HORROR · FIRST-PERSON · UNITY</div>
+        <div class="qb-title">ABANDONED RAILS</div>
+        <div class="qb-chips"><span class="qb-chip">GAME DESIGNER</span><span class="qb-chip">PROGRAMMER</span></div>
+        <div class="qb-desc">Horror exploration ทางรถไฟร้าง ไม่มีระบบต่อสู้ เน้น Environmental Storytelling</div>
+        <div class="qb-open">OPEN CASE STUDY</div>
       </div>
     </div>
 
-    <div class="prj" onclick="openModal('mk')">
-      <div class="prj-img-wrap">
+    <div class="qb-card" onclick="openModal('mk')">
+      <div class="qb-img">
         <img src="project2.jpg" alt="Unknown Knight">
-        <div class="prj-img-overlay"></div>
-        <div class="prj-num">Co-op</div>
+        <div class="qb-badge cyan">CO-OP</div>
       </div>
-      <div class="prj-body">
-        <div class="prj-meta">Action RPG · 3D · Co-op</div>
-        <h3 class="prj-title">Unknown Knight</h3>
-        <div class="prj-roles">
-          <span class="prj-role">Sub-Developer</span>
-          <span class="prj-role">Level Design</span>
-          <span class="prj-role">Narrative</span>
-        </div>
-        <p class="prj-desc">3D Action RPG Co-op จัดฉากดันเจี้ยน เขียนเนื้อเรื่อง และพัฒนาระบบ Checkpoint</p>
-        <div class="prj-action">View details <span class="arr"></span></div>
+      <div class="qb-body">
+        <div class="qb-meta">ACTION RPG · 3D · CO-OP</div>
+        <div class="qb-title">UNKNOWN KNIGHT</div>
+        <div class="qb-chips"><span class="qb-chip">LEVEL DESIGN</span><span class="qb-chip">NARRATIVE</span></div>
+        <div class="qb-desc">3D Action RPG Co-op จัดฉากดันเจี้ยน เขียน lore และพัฒนา Checkpoint System</div>
+        <div class="qb-open">OPEN CASE STUDY</div>
       </div>
     </div>
 
-    <div class="prj" onclick="openModal('m3')">
-      <div class="prj-img-wrap">
-        <img src="project3.jpg" alt="3D Asset Workflow">
-        <div class="prj-img-overlay"></div>
-        <div class="prj-num">Art</div>
+    <div class="qb-card" onclick="openModal('m3')">
+      <div class="qb-img">
+        <img src="project3.jpg" alt="3D Asset">
+        <div class="qb-badge pink">ART</div>
       </div>
-      <div class="prj-body">
-        <div class="prj-meta">3D Art · Maya · Substance · Unreal</div>
-        <h3 class="prj-title">3D Asset Workflow</h3>
-        <div class="prj-roles">
-          <span class="prj-role">3D Artist</span>
-          <span class="prj-role">Modeling</span>
-          <span class="prj-role">PBR Texture</span>
-        </div>
-        <p class="prj-desc">กระบวนการ High-Poly → Low-Poly → PBR Bake → Engine integration ครบวงจร</p>
-        <div class="prj-action">View details <span class="arr"></span></div>
+      <div class="qb-body">
+        <div class="qb-meta">3D ART · MAYA · SUBSTANCE · UNREAL</div>
+        <div class="qb-title">3D ASSET WORKFLOW</div>
+        <div class="qb-chips"><span class="qb-chip">3D ARTIST</span><span class="qb-chip">PBR</span></div>
+        <div class="qb-desc">Full pipeline: High-Poly → Low-Poly → UV → PBR Bake → Engine</div>
+        <div class="qb-open">OPEN CASE STUDY</div>
       </div>
     </div>
 
-    <div class="prj" onclick="openModal('mb')">
-      <div class="prj-img-wrap">
-        <img src="project-ball.jpg" alt="2D Ball Platformer">
-        <div class="prj-img-overlay"></div>
-        <div class="prj-num">Year 1</div>
+    <div class="qb-card" onclick="openModal('mb')">
+      <div class="qb-img">
+        <img src="project-ball.jpg" alt="Ball Platformer">
+        <div class="qb-badge">YEAR 1</div>
       </div>
-      <div class="prj-body">
-        <div class="prj-meta">2D Platformer · Unity 2D · C#</div>
-        <h3 class="prj-title">2D Ball Platformer</h3>
-        <div class="prj-roles">
-          <span class="prj-role">Developer</span>
-          <span class="prj-role">Game Design</span>
-        </div>
-        <p class="prj-desc">Casual 2D Platformer — บังคับลูกบอล 3 ด่าน พร้อมระบบเลือด คะแนน และ Respawn</p>
-        <div class="prj-action">View details <span class="arr"></span></div>
+      <div class="qb-body">
+        <div class="qb-meta">2D PLATFORMER · UNITY 2D · C#</div>
+        <div class="qb-title">2D BALL PLATFORMER</div>
+        <div class="qb-chips"><span class="qb-chip">DEVELOPER</span><span class="qb-chip">GAME DESIGN</span></div>
+        <div class="qb-desc">Casual 2D platformer 3 ด่าน พร้อม score, health และ respawn system</div>
+        <div class="qb-open">OPEN CASE STUDY</div>
       </div>
     </div>
 
   </div>
 </section>
 
-<!-- CONTACT -->
-<section id="contact">
-  <div class="rev">
-    <p class="sec-label">04 — Contact</p>
-    <h2 class="sec-title">Let's work together</h2>
-    <hr class="sec-line">
+<!-- ══ CONTACT ══ -->
+<section id="contact" class="sec-wrap">
+  <div class="sec-head rev">
+    <div class="sh-num">04</div>
+    <div class="sh-text">
+      <div class="sh-sub">GUILD BOARD</div>
+      <div class="sh-title">CONTACT</div>
+    </div>
+    <div class="sh-right">OPEN<br>INTERN</div>
   </div>
-  <div class="contact-section rev d1">
-    <div class="contact-grid">
-      <div class="contact-left">
-        <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.4rem;color:var(--hi);letter-spacing:-.02em;">Looking for an internship</h3>
-        <p class="contact-subtitle">สนใจฝึกงานในตำแหน่ง Game Designer, Narrative Designer หรือ Sound Designer ครับ พร้อมเรียนรู้และมีส่วนร่วมในทีมอย่างเต็มที่</p>
+  <div class="contact-layout">
+    <div class="contact-left rev d1">
+      <div class="contact-title">
+        LOOKING FOR<br>
+        <span>A PARTY.</span>
       </div>
-      <div class="contact-right">
-        <div class="contact-rows">
-          <div class="contact-row"><span class="contact-key">Phone</span><span class="contact-val">095-505-8088</span></div>
-          <div class="contact-row"><span class="contact-key">Email</span><span class="contact-val"><a href="mailto:lnwpureza2545@gmail.com">lnwpureza2545@gmail.com</a></span></div>
-          <div class="contact-row"><span class="contact-key">Location</span><span class="contact-val">Samut Prakan, Thailand</span></div>
-          <div class="contact-row"><span class="contact-key">GitHub</span><span class="contact-val"><a href="https://github.com/lnwpureza2545" target="_blank">github.com/lnwpureza2545</a></span></div>
-        </div>
-        <a href="mailto:lnwpureza2545@gmail.com" class="cta-btn">Send an email →</a>
+      <p class="contact-body-txt">
+        สนใจฝึกงานในตำแหน่ง Game Designer,<br>
+        Sound Designer หรือ Narrative Designer<br>
+        พร้อมร่วมทีมและเรียนรู้เต็มที่ครับ
+      </p>
+    </div>
+    <div class="rev d2" style="padding:24px">
+      <div class="info-rows">
+        <div class="ir"><span class="ir-key">PHONE</span><span class="ir-val">095-505-8088</span></div>
+        <div class="ir"><span class="ir-key">EMAIL</span><span class="ir-val"><a href="mailto:lnwpureza2545@gmail.com">lnwpureza2545@gmail.com</a></span></div>
+        <div class="ir"><span class="ir-key">LOCATION</span><span class="ir-val">Samut Prakan, Thailand</span></div>
+        <div class="ir"><span class="ir-key">GITHUB</span><span class="ir-val"><a href="https://github.com/lnwpureza2545" target="_blank">github.com/lnwpureza2545</a></span></div>
       </div>
+      <a href="mailto:lnwpureza2545@gmail.com" class="cta-big">SEND MESSAGE</a>
     </div>
   </div>
 </section>
 </div>
 
 <footer>
-  <div class="page" style="display:flex;align-items:center;justify-content:space-between;width:100%;">
-    <span class="footer-copy">© 2026 Peemapol Phuangcharoen</span>
-    <div class="footer-links">
-      <a href="mailto:lnwpureza2545@gmail.com">Email</a>
-      <a href="https://github.com/lnwpureza2545" target="_blank">GitHub</a>
-      <a href="resume.pdf" download>Resume</a>
-    </div>
+  <div class="ft-copy">© 2026 PEEMAPOL PHUANGCHAROEN — ALL RIGHTS RESERVED</div>
+  <div class="ft-links">
+    <a href="mailto:lnwpureza2545@gmail.com">EMAIL</a>
+    <a href="https://github.com/lnwpureza2545" target="_blank">GITHUB</a>
+    <a href="resume.pdf" download>RESUME</a>
   </div>
 </footer>
 
 <!-- LIGHTBOX -->
-<div id="lbx" class="lbx"><div class="lbx-x" onclick="closeLbx()">✕</div><img id="lbxImg" src="" alt=""></div>
+<div id="lbx" class="lbx">
+  <div class="lbx-x" onclick="closeLbx()">[ CLOSE ]</div>
+  <img id="lbxImg" src="" alt="">
+</div>
 
 <!-- MODALS -->
 <div id="mr" class="modal-overlay">
   <div class="mbox">
-    <div class="m-header"><span class="m-tag">Project 01 — Ramen Rider</span><button class="m-close-btn" onclick="closeModal('mr')">✕</button></div>
+    <div class="m-header"><span class="m-tag">▶ CASE STUDY 01 — RAMEN RIDER</span><button class="m-close" onclick="closeModal('mr')">[ X ]</button></div>
     <div class="m-body">
-      <h2 class="m-title">Ramen Rider</h2>
-      <span class="m-subtitle">Sound · Story · Dialog System · Programmer · Team of 5</span>
-      <div class="m-chips"><span class="m-chip">Time Management</span><span class="m-chip">Action Casual</span><span class="m-chip">Unity / C#</span><span class="m-chip">Audacity</span></div>
-      <div class="m-sec">Screenshots</div>
+      <div class="m-title">RAMEN RIDER</div>
+      <span class="m-sub">SOUND · STORY · DIALOG SYSTEM · PROGRAMMER — TEAM x5</span>
+      <div class="m-chips"><span class="m-chip">TIME MGMT</span><span class="m-chip">UNITY/C#</span><span class="m-chip">AUDACITY</span></div>
+      <div class="m-sec">SCREENSHOTS</div>
       <div class="ig3">
-        <div class="ibox"><img src="ramen-progress-1.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">WIP 1</div></div>
-        <div class="ibox"><img src="ramen-progress-2.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">WIP 2</div></div>
-        <div class="ibox"><img src="ramen-progress-3.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">WIP 3</div></div>
+        <div class="ibox"><img src="ramen-progress-1.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">WIP 01</div></div>
+        <div class="ibox"><img src="ramen-progress-2.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">WIP 02</div></div>
+        <div class="ibox"><img src="ramen-progress-3.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">WIP 03</div></div>
       </div>
-      <div class="m-sec">My Contributions</div>
+      <div class="m-sec">MY CONTRIBUTIONS</div>
       <ul>
-        <li><strong>Narrative &amp; Dialog Design</strong> — ออกแบบโครงเรื่องและเขียนบทสนทนาที่สะท้อนคาแรคเตอร์ตัวเอกสายซิ่ง</li>
-        <li><strong>Dialog System (C#)</strong> — พัฒนาระบบ Dialog เองทั้งหมด ควบคุม trigger และ event-based text display</li>
-        <li><strong>SFX (Audacity)</strong> — ใช้ Distortion + Pitch Shift สร้างเสียงที่เข้ากับสไตล์ Comic Action</li>
+        <li><strong>Narrative &amp; Dialog Design</strong> — เขียนโครงเรื่องและบทสนทนาสำหรับตัวเอกสายซิ่ง</li>
+        <li><strong>Dialog System (C#)</strong> — พัฒนาระบบ event-based dialog trigger เอง</li>
+        <li><strong>SFX (Audacity)</strong> — Distortion + Pitch Shift สร้างเสียงสไตล์ Comic Action</li>
       </ul>
-      <div class="m-sec">Story Overview</div>
-      <p><strong>Kobayashi Ren</strong> — เด็กหนุ่มสายซิ่งที่โตมากับกลิ่นน้ำซุปร้านราเมงเก่าแก่ เขาสาบานจะไม่ยืนหลังเคาน์เตอร์ แต่เมื่อร้านต้องการความช่วยเหลือ ธุรกิจเดลิเวอรี่ราเมงสายซิ่งจึงเริ่มต้น</p>
-      <div class="m-sec">Sample Dialog</div>
-      <div class="dialog-box">
-        <div class="dialog-meta">Scene: Arriving at the Shop</div>
-        <div class="dialog-line"><strong>Father</strong>: เมืองเปลี่ยนไปเยอะใช่ไหมล่ะ</div>
-        <div class="dialog-line"><strong>Ren</strong>: เปลี่ยนมาก ถนนเละ โค้งเยอะ รถติด… เหมาะกับเด็กแว้นสุดๆ</div>
-        <div class="dialog-line"><strong>Father</strong>: นี่ไม่ใช่สนามแข่งนะ!</div>
-        <div class="dialog-line"><strong>Ren</strong>: สำหรับผม มันคือด่านแรกของเกมครับพ่อ</div>
+      <div class="m-sec">SAMPLE DIALOG</div>
+      <div class="rpg-dialog">
+        <div class="rd-head">SCENE: ARRIVING AT THE SHOP</div>
+        <div class="rd-line"><strong>FATHER:</strong> เมืองเปลี่ยนไปเยอะใช่ไหมล่ะ</div>
+        <div class="rd-line"><strong>REN:</strong> เปลี่ยนมาก ถนนเละ โค้งเยอะ รถติด… เหมาะกับเด็กแว้นสุดๆ</div>
+        <div class="rd-line"><strong>FATHER:</strong> นี่ไม่ใช่สนามแข่งนะ!</div>
+        <div class="rd-line"><strong>REN:</strong> สำหรับผม มันคือด่านแรกของเกมครับพ่อ</div>
       </div>
     </div>
   </div>
@@ -989,19 +1209,19 @@ footer {
 
 <div id="ma" class="modal-overlay">
   <div class="mbox">
-    <div class="m-header"><span class="m-tag">Project 02 — Abandoned Rails</span><button class="m-close-btn" onclick="closeModal('ma')">✕</button></div>
+    <div class="m-header"><span class="m-tag">▶ CASE STUDY 02 — ABANDONED RAILS</span><button class="m-close" onclick="closeModal('ma')">[ X ]</button></div>
     <div class="m-body">
-      <h2 class="m-title">Abandoned Rails</h2>
-      <span class="m-subtitle">Solo Project — Game Designer &amp; Programmer · Unity (C#)</span>
-      <div class="m-chips"><span class="m-chip">First-Person</span><span class="m-chip">Exploration</span><span class="m-chip">Horror</span><span class="m-chip">Solo</span></div>
+      <div class="m-title">ABANDONED RAILS</div>
+      <span class="m-sub">SOLO — GAME DESIGNER &amp; PROGRAMMER · UNITY (C#)</span>
+      <div class="m-chips"><span class="m-chip">FIRST-PERSON</span><span class="m-chip">HORROR</span><span class="m-chip">SOLO</span></div>
       <div class="vid"><video controls autoplay loop muted playsinline ondblclick="toggleFS(this)"><source src="abandoned-rails-video.mp4" type="video/mp4"></video></div>
-      <div class="m-sec">Overview</div>
-      <p>ผู้เล่นรับบทเป็นนักสำรวจที่มายังทางรถไฟร้างเพื่อค้นหาความจริงในอดีต ไม่มีระบบต่อสู้ ความน่ากลัวเกิดจากบรรยากาศ เสียง และ Environmental Storytelling เป้าหมายคือรวบรวมกุญแจ 3 ดอกเพื่อเข้าสู่อุโมงค์</p>
-      <div class="m-sec">Key Features</div>
+      <div class="m-sec">OVERVIEW</div>
+      <p>ผู้เล่นรับบทนักสำรวจที่มายังทางรถไฟร้างเพื่อค้นหาความจริง ไม่มีระบบต่อสู้ — ความน่ากลัวทั้งหมดเกิดจากบรรยากาศ เสียง และ Environmental Storytelling</p>
+      <div class="m-sec">DESIGN DECISIONS</div>
       <ul>
-        <li>Atmospheric Horror — ไม่มีศัตรู แต่ทุกเสียงและเงาคือภัยคุกคาม</li>
-        <li>Environmental Storytelling — ข้อมูลเล่าผ่านสภาพแวดล้อมและกระดาษโน้ต</li>
-        <li>Psychological tension — ผีที่มองเห็นแต่ไม่ทำอันตรายโดยตรง สร้างความตึงเครียด</li>
+        <li>ตัดสินใจไม่ใส่ศัตรู — ให้ผู้เล่นกลัวสิ่งที่มองไม่เห็น</li>
+        <li>Environmental Storytelling ผ่านกระดาษโน้ตและสภาพแวดล้อม</li>
+        <li>ผีที่ปรากฏได้แต่ไม่ทำร้าย — ใช้การมองเห็นสร้าง tension</li>
       </ul>
     </div>
   </div>
@@ -1009,19 +1229,19 @@ footer {
 
 <div id="mk" class="modal-overlay">
   <div class="mbox">
-    <div class="m-header"><span class="m-tag">Project 03 — Unknown Knight</span><button class="m-close-btn" onclick="closeModal('mk')">✕</button></div>
+    <div class="m-header"><span class="m-tag">▶ CASE STUDY 03 — UNKNOWN KNIGHT</span><button class="m-close" onclick="closeModal('mk')">[ X ]</button></div>
     <div class="m-body">
-      <h2 class="m-title">Unknown Knight</h2>
-      <span class="m-subtitle">Sub-Developer · Level Designer · Narrative · Co-op</span>
-      <div class="m-chips"><span class="m-chip">Action RPG</span><span class="m-chip">Third-Person 3D</span><span class="m-chip">Co-op</span></div>
+      <div class="m-title">UNKNOWN KNIGHT</div>
+      <span class="m-sub">SUB-DEV · LEVEL DESIGNER · NARRATIVE · CO-OP</span>
+      <div class="m-chips"><span class="m-chip">ACTION RPG</span><span class="m-chip">3D</span><span class="m-chip">CO-OP</span></div>
       <div class="vid"><video controls autoplay loop muted playsinline ondblclick="toggleFS(this)"><source src="unknown-knight-video.mp4" type="video/mp4"></video></div>
-      <div class="m-sec">Story</div>
-      <p>ตื่นขึ้นมาในดันเจี้ยนพร้อมอัศวินปริศนา ไม่รู้อดีต ไม่รู้ทิศทาง มีแค่ดาบและพันธมิตรที่ไม่เคยพูด ต้องต่อสู้ฝ่ามอนสเตอร์เพื่อหาทางออก</p>
-      <div class="m-sec">Contributions</div>
+      <div class="m-sec">STORY</div>
+      <p>ตื่นขึ้นมาในดันเจี้ยนพร้อมอัศวินปริศนา ไม่รู้อดีต ไม่รู้จุดหมาย มีแค่ดาบ ต้องต่อสู้เพื่อหาทางออก</p>
+      <div class="m-sec">CONTRIBUTIONS</div>
       <ul>
-        <li><strong>Level Design</strong> — จัดวาง 3D Asset สร้างฉากดันเจี้ยนที่รองรับการต่อสู้ Co-op</li>
-        <li><strong>Narrative Design</strong> — เขียนโครงเรื่อง บทสนทนา และ lore ของ universe</li>
-        <li><strong>Checkpoint System (C#)</strong> — เขียนระบบ save point สำหรับผู้เล่น 2 คน</li>
+        <li><strong>Level Design</strong> — จัดวาง 3D Asset สร้างฉากดันเจี้ยน Co-op</li>
+        <li><strong>Narrative Design</strong> — โครงเรื่อง, character backstory, world lore</li>
+        <li><strong>Checkpoint System (C#)</strong> — save point สำหรับ 2 players</li>
       </ul>
     </div>
   </div>
@@ -1029,21 +1249,20 @@ footer {
 
 <div id="m3" class="modal-overlay">
   <div class="mbox">
-    <div class="m-header"><span class="m-tag">Project 04 — 3D Asset Workflow</span><button class="m-close-btn" onclick="closeModal('m3')">✕</button></div>
+    <div class="m-header"><span class="m-tag">▶ CASE STUDY 04 — 3D ASSET</span><button class="m-close" onclick="closeModal('m3')">[ X ]</button></div>
     <div class="m-body">
-      <h2 class="m-title">3D Asset Workflow</h2>
-      <span class="m-subtitle">3D Artist · Maya · Substance Painter · Unreal · Unity</span>
-      <div class="m-chips"><span class="m-chip">3D Modeling</span><span class="m-chip">PBR</span><span class="m-chip">Maya</span><span class="m-chip">Substance</span></div>
-      <div class="m-sec">Process</div>
+      <div class="m-title">3D ASSET WORKFLOW</div>
+      <span class="m-sub">3D ARTIST · MAYA · SUBSTANCE · UNREAL · UNITY</span>
+      <div class="m-chips"><span class="m-chip">3D</span><span class="m-chip">PBR</span><span class="m-chip">MAYA</span><span class="m-chip">SUBSTANCE</span></div>
       <div class="ig2">
-        <div class="ibox"><img src="3d-reference.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">Reference</div></div>
-        <div class="ibox"><img src="3d-realwork.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">Final result</div></div>
+        <div class="ibox"><img src="3d-reference.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">REFERENCE</div></div>
+        <div class="ibox"><img src="3d-realwork.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">FINAL</div></div>
       </div>
-      <div class="m-sec">Pipeline</div>
+      <div class="m-sec">PIPELINE</div>
       <ul>
-        <li><strong>Maya</strong> — High-Poly sculpt → Low-Poly retopo → Clean UV Unwrap</li>
-        <li><strong>Substance Painter</strong> — Normal / AO / Roughness bake → PBR material</li>
-        <li><strong>Engine integration</strong> — Import, material setup, lighting in Unreal / Unity</li>
+        <li><strong>Maya</strong> — High-Poly → Low-Poly retopo → UV Unwrap</li>
+        <li><strong>Substance</strong> — Normal/AO/Roughness bake → PBR material</li>
+        <li><strong>Engine</strong> — Import, material setup, lighting</li>
       </ul>
     </div>
   </div>
@@ -1051,66 +1270,117 @@ footer {
 
 <div id="mb" class="modal-overlay">
   <div class="mbox">
-    <div class="m-header"><span class="m-tag">Project 05 — 2D Ball Platformer</span><button class="m-close-btn" onclick="closeModal('mb')">✕</button></div>
+    <div class="m-header"><span class="m-tag">▶ CASE STUDY 05 — 2D BALL PLATFORMER</span><button class="m-close" onclick="closeModal('mb')">[ X ]</button></div>
     <div class="m-body">
-      <h2 class="m-title">2D Ball Platformer</h2>
-      <span class="m-subtitle">Developer (Year 1) · Unity 2D · C#</span>
-      <div class="m-chips"><span class="m-chip">2D Platformer</span><span class="m-chip">Casual</span><span class="m-chip">C# Basics</span></div>
+      <div class="m-title">2D BALL PLATFORMER</div>
+      <span class="m-sub">DEVELOPER — YEAR 1 · UNITY 2D · C#</span>
+      <div class="m-chips"><span class="m-chip">2D</span><span class="m-chip">PLATFORMER</span><span class="m-chip">C# BASICS</span></div>
       <div class="vid"><video controls autoplay loop muted playsinline ondblclick="toggleFS(this)"><source src="ball-game-video.mp4" type="video/mp4"></video></div>
-      <div class="m-sec">Overview</div>
-      <p>First complete game project — Unity 2D Platformer สร้างในปี 1 บังคับลูกบอลผ่าน 3 ด่านที่ความยากเพิ่มขึ้นเรื่อยๆ</p>
-      <div class="m-sec">Features built</div>
+      <div class="m-sec">OVERVIEW</div>
+      <p>First complete game — Unity 2D Platformer 3 ด่าน เป็น project แรกที่ได้ build ครบวงจร</p>
+      <div class="m-sec">FEATURES</div>
       <ul>
-        <li><strong>Physics movement</strong> — Rolling, jumping บน platform หลากหลายรูปแบบ</li>
-        <li><strong>Score system</strong> — Gem collection และ score counter</li>
-        <li><strong>Health &amp; respawn</strong> — Heart UI และ checkpoint-based respawn</li>
-        <li><strong>3-level progression</strong> — Scene transition พร้อม difficulty scaling</li>
+        <li><strong>Physics movement</strong> — rolling &amp; jumping บน platforms</li>
+        <li><strong>Score system</strong> — gem collection + counter UI</li>
+        <li><strong>Health &amp; respawn</strong> — heart system + checkpoint</li>
+        <li><strong>3-level progression</strong> — scene transition + difficulty scaling</li>
       </ul>
     </div>
   </div>
 </div>
 
 <script>
-/* ── Scroll reveal ── */
-const ro = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); }), { threshold: .06 });
+/* ── CURSOR ── */
+const cur = document.getElementById('cur');
+document.addEventListener('mousemove', e => {
+  cur.style.left = e.clientX + 'px';
+  cur.style.top  = e.clientY + 'px';
+});
+
+/* ── INTRO / PRESS START ── */
+let loaded = false;
+const fill = document.getElementById('loadBar');
+const pct  = document.getElementById('loadPct');
+let p = 0;
+const loadInt = setInterval(() => {
+  p += Math.random() * 8 + 2;
+  if (p >= 100) { p = 100; clearInterval(loadInt); }
+  fill.style.width = p + '%';
+  pct.textContent  = Math.floor(p) + '%';
+}, 80);
+
+const dismiss = () => {
+  if (loaded) return; loaded = true;
+  document.getElementById('intro').classList.add('out');
+  setTimeout(() => document.getElementById('intro').style.display = 'none', 600);
+};
+document.addEventListener('keydown', dismiss);
+document.addEventListener('click',   dismiss);
+document.getElementById('pressStart').addEventListener('click', dismiss);
+setTimeout(dismiss, 6000); // auto-skip after 6s
+
+/* ── SCROLL REVEAL ── */
+const ro = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) e.target.classList.add('on');
+}), { threshold: .05 });
 document.querySelectorAll('.rev').forEach(el => ro.observe(el));
 
-/* ── Active nav ── */
-const navLinks = document.querySelectorAll('.nav-links a');
-const sectionIds = ['home','about','skills','projects','contact'];
-const setActive = () => {
-  const y = window.scrollY + 100;
-  sectionIds.forEach(id => {
-    const el = document.getElementById(id); if (!el) return;
-    const top = el.offsetTop, bot = top + el.offsetHeight;
-    const link = document.querySelector(`.nav-links a[href="#${id}"]`);
-    if (link) link.classList.toggle('active', y >= top && y < bot);
+/* ── ACTIVE NAV ── */
+const ids = ['home','about','skills','projects','contact'];
+window.addEventListener('scroll', () => {
+  const y = scrollY + 80;
+  ids.forEach(id => {
+    const s = document.getElementById(id); if (!s) return;
+    const a = document.querySelector(`.nav-links a[href="#${id}"]`);
+    if (a) a.classList.toggle('active', y >= s.offsetTop && y < s.offsetTop + s.offsetHeight);
   });
+}, { passive:true });
+
+/* ── MODALS ── */
+const openModal = id => {
+  const m = document.getElementById(id);
+  m.style.display = 'flex';
+  setTimeout(() => m.classList.add('show'), 10);
+  document.body.style.overflow = 'hidden';
 };
-window.addEventListener('scroll', setActive, { passive: true });
-
-/* ── Modals ── */
-const openModal = id => { const m = document.getElementById(id); m.style.display = 'flex'; setTimeout(() => m.classList.add('show'), 10); document.body.style.overflow = 'hidden'; };
-const closeModal = id => { const m = document.getElementById(id); m.classList.remove('show'); const v = m.querySelector('video'); if (v) v.pause(); setTimeout(() => m.style.display = 'none', 300); document.body.style.overflow = ''; };
-window.addEventListener('click', e => { if (e.target.classList.contains('modal-overlay')) closeModal(e.target.id); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { document.querySelectorAll('.modal-overlay.show').forEach(m => closeModal(m.id)); closeLbx(); } });
-
-/* ── Lightbox ── */
-const openLbx = src => { const lb = document.getElementById('lbx'); document.getElementById('lbxImg').src = src; lb.style.display = 'flex'; setTimeout(() => lb.classList.add('show'), 10); };
-const closeLbx = () => { const lb = document.getElementById('lbx'); lb.classList.remove('show'); setTimeout(() => lb.style.display = 'none', 280); };
-document.getElementById('lbx').addEventListener('click', e => { if (e.target !== document.getElementById('lbxImg')) closeLbx(); });
-
-/* ── Fullscreen video ── */
-const toggleFS = v => { if (!document.fullscreenElement) (v.requestFullscreen || v.webkitRequestFullscreen).call(v); else document.exitFullscreen && document.exitFullscreen(); };
-
-/* ── Smooth hero entrance ── */
-window.addEventListener('load', () => {
-  document.querySelectorAll('.hero-left > *').forEach((el, i) => {
-    el.style.opacity = '0'; el.style.transform = 'translateY(18px)';
-    el.style.transition = `opacity .7s ease ${i*.1+.2}s, transform .7s ease ${i*.1+.2}s`;
-    setTimeout(() => { el.style.opacity = '1'; el.style.transform = 'none'; }, 60);
-  });
+const closeModal = id => {
+  const m = document.getElementById(id);
+  m.classList.remove('show');
+  m.querySelector('video')?.pause();
+  setTimeout(() => m.style.display = 'none', 250);
+  document.body.style.overflow = '';
+};
+window.addEventListener('click', e => {
+  if (e.target.classList.contains('modal-overlay')) closeModal(e.target.id);
 });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.show').forEach(m => closeModal(m.id));
+    closeLbx();
+  }
+});
+
+/* ── LIGHTBOX ── */
+const openLbx = src => {
+  const lb = document.getElementById('lbx');
+  document.getElementById('lbxImg').src = src;
+  lb.style.display = 'flex';
+  setTimeout(() => lb.classList.add('show'), 10);
+};
+const closeLbx = () => {
+  const lb = document.getElementById('lbx');
+  lb.classList.remove('show');
+  setTimeout(() => lb.style.display = 'none', 250);
+};
+document.getElementById('lbx').addEventListener('click', e => {
+  if (e.target !== document.getElementById('lbxImg')) closeLbx();
+});
+
+/* ── FULLSCREEN ── */
+const toggleFS = v => {
+  if (!document.fullscreenElement) (v.requestFullscreen || v.webkitRequestFullscreen).call(v);
+  else document.exitFullscreen?.();
+};
 </script>
 </body>
 </html>
