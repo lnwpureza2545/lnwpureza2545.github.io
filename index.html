@@ -6,783 +6,411 @@
 <title>PEEMAPOL — GAME DEVELOPER</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Share+Tech+Mono&family=Barlow:ital,wght@0,300;0,400;0,600;1,700;1,900&family=Barlow+Condensed:ital,wght@0,700;0,900;1,700;1,900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Share+Tech+Mono&family=Barlow:ital,wght@0,300;0,400;0,600;1,700;1,900&family=Barlow+Condensed:ital,wght@0,300;0,600;0,700;0,900;1,700;1,900&display=swap" rel="stylesheet">
 <style>
-/* ══════════════════════════════════════════
-   ROOT
-══════════════════════════════════════════ */
+/* ══════════════════ TOKENS — VIOLET STORM ══════════════════ */
 :root{
-  --black:#04030a;
-  --deep:#07050f;
-  --layer:#0d0b18;
-  --surface:#141226;
-  --panel:#1a1730;
+  --ink:   #05030d;
+  --deep:  #09061a;
+  --layer: #100d24;
+  --card:  #16122e;
+  --lift:  #1d1940;
 
-  --gold:#f0a500;
-  --gold2:#ffd166;
-  --gold-dim:rgba(240,165,0,0.12);
-  --gold-border:rgba(240,165,0,0.3);
-  --red:#e8003d;
-  --blue:#2d6cff;
-  --white:#faf8f5;
+  /* PRIMARY */
+  --v:     #8b5cf6;
+  --v2:    #c4b5fd;
+  --vdim:  rgba(139,92,246,.1);
+  --vbrd:  rgba(139,92,246,.28);
+  --vglow: rgba(139,92,246,.55);
 
-  --text:#c8c4d8;
-  --text-dim:#5a5572;
-  --border:rgba(255,255,255,0.06);
-  --border-bright:rgba(255,255,255,0.12);
+  /* ACCENT */
+  --m:     #e879f9;
+  --m2:    #f5d0fe;
+
+  --cyan:  #22d3ee;
+  --red:   #e879f9;
+
+  --tx:    #9490b8;
+  --tx2:   #ccc8e8;
+  --txd:   #3a3560;
+
+  --bdr:   rgba(255,255,255,.06);
+  --bdrb:  rgba(255,255,255,.11);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{background:var(--black);color:var(--text);font-family:'Barlow',sans-serif;overflow-x:hidden;cursor:none}
-::-webkit-scrollbar{width:3px}
-::-webkit-scrollbar-track{background:var(--black)}
-::-webkit-scrollbar-thumb{background:var(--gold)}
+body{background:var(--ink);color:var(--tx);font-family:'Barlow',sans-serif;overflow-x:hidden;cursor:none}
 a{text-decoration:none}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--ink)}
+::-webkit-scrollbar-thumb{background:var(--v);border-radius:2px}
 
-/* ══════════════════════════════════════════
-   CURSOR
-══════════════════════════════════════════ */
-.cur{position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
-.cur-dot{width:7px;height:7px;background:var(--gold);border-radius:50%;box-shadow:0 0 10px var(--gold),0 0 20px rgba(240,165,0,0.4);transition:transform .15s,background .2s}
-.cur-cross{position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%)}
-.cur-cross::before,.cur-cross::after{content:'';position:absolute;background:rgba(240,165,0,0.5)}
-.cur-cross::before{width:1px;height:24px;left:50%;top:-12px}
-.cur-cross::after{width:24px;height:1px;top:50%;left:-12px}
+/* ══════════════════ CURSOR ══════════════════ */
+#cDot{position:fixed;z-index:9999;pointer-events:none;transform:translate(-50%,-50%);width:8px;height:8px;background:var(--v);border-radius:50%;box-shadow:0 0 12px var(--vglow),0 0 24px rgba(139,92,246,.3);transition:width .15s,height .15s,background .2s}
+#cRing{position:fixed;z-index:9998;pointer-events:none;transform:translate(-50%,-50%);width:32px;height:32px;border:1.5px solid rgba(139,92,246,.4);border-radius:50%;transition:all .12s ease}
 
-/* ══════════════════════════════════════════
-   BOOT SCREEN
-══════════════════════════════════════════ */
-#boot{
-  position:fixed;inset:0;z-index:9000;
-  background:var(--black);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  transition:opacity 1s ease;
-}
+/* ══════════════════ BOOT ══════════════════ */
+#boot{position:fixed;inset:0;z-index:9000;background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .9s ease}
 #boot.out{opacity:0;pointer-events:none}
-.boot-logo{
-  font-family:'Anton',sans-serif;
-  font-size:clamp(3rem,7vw,5.5rem);
-  letter-spacing:10px;text-transform:uppercase;
-  color:var(--white);line-height:1;margin-bottom:0.2rem;
-}
-.boot-logo b{color:var(--gold);text-shadow:0 0 30px rgba(240,165,0,0.5)}
-.boot-tagline{
-  font-family:'Share Tech Mono',monospace;
-  font-size:0.68rem;letter-spacing:5px;text-transform:uppercase;
-  color:var(--text-dim);margin-bottom:3rem;
-}
-.boot-lines{
-  width:min(500px,88vw);
-  font-family:'Share Tech Mono',monospace;
-  font-size:0.68rem;color:rgba(240,165,0,0.7);
-  line-height:1.9;margin-bottom:2rem;min-height:96px;
-  padding-left:1rem;border-left:2px solid var(--gold-border);
-}
-.boot-bar-wrap{width:min(500px,88vw)}
-.boot-bar-head{display:flex;justify-content:space-between;
-  font-family:'Share Tech Mono',monospace;font-size:0.65rem;
-  color:var(--text-dim);margin-bottom:0.5rem}
-.boot-track{height:2px;background:rgba(255,255,255,0.06)}
-.boot-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--gold2));
-  transition:width .04s linear;box-shadow:0 0 8px var(--gold)}
-.boot-skip{
-  position:absolute;bottom:2.5rem;right:2.5rem;
-  font-family:'Share Tech Mono',monospace;font-size:0.65rem;
-  letter-spacing:3px;color:var(--text-dim);cursor:pointer;
-  transition:color .2s;text-transform:uppercase;
-}
-.boot-skip:hover{color:var(--gold)}
+.b-logo{font-family:'Anton',sans-serif;font-size:clamp(2.8rem,6vw,5rem);letter-spacing:10px;color:#fff;margin-bottom:.2rem}
+.b-logo span{color:var(--v);text-shadow:0 0 28px var(--vglow)}
+.b-sub{font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:5px;color:var(--txd);margin-bottom:2.5rem;text-transform:uppercase}
+.b-log{width:min(480px,86vw);font-family:'Share Tech Mono',monospace;font-size:.66rem;color:rgba(139,92,246,.7);line-height:1.9;min-height:88px;border-left:2px solid var(--vbrd);padding-left:1rem;margin-bottom:1.8rem}
+.b-bar-wrap{width:min(480px,86vw)}
+.b-bar-top{display:flex;justify-content:space-between;font-family:'Share Tech Mono',monospace;font-size:.64rem;color:var(--txd);margin-bottom:.5rem}
+.b-track{height:2px;background:rgba(255,255,255,.05)}
+.b-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--v),var(--m));box-shadow:0 0 10px var(--v);transition:width .04s linear}
+.b-skip{position:absolute;bottom:2.5rem;right:2.5rem;font-family:'Share Tech Mono',monospace;font-size:.63rem;letter-spacing:3px;color:var(--txd);cursor:pointer;transition:color .2s;text-transform:uppercase}
+.b-skip:hover{color:var(--v)}
 
-/* ══════════════════════════════════════════
-   CANVAS
-══════════════════════════════════════════ */
+/* ══════════════════ CANVAS / FX ══════════════════ */
 #bgCv{position:fixed;inset:0;z-index:0;pointer-events:none}
+.vig{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 85% 75% at 50% 50%,transparent 35%,rgba(5,3,13,.75) 100%)}
 
-/* VIGNETTE */
-.vignette{
-  position:fixed;inset:0;z-index:1;pointer-events:none;
-  background:radial-gradient(ellipse 80% 70% at 50% 50%,transparent 30%,rgba(4,3,10,0.7) 100%);
-}
+/* ══════════════════ LAYOUT ══════════════════ */
+.w{max-width:1220px;margin:0 auto;padding:0 2.5rem;position:relative;z-index:2}
 
-/* ══════════════════════════════════════════
-   WRAP / LAYOUT
-══════════════════════════════════════════ */
-.wrap{max-width:1200px;margin:0 auto;padding:0 2.5rem;position:relative;z-index:2}
+/* ══════════════════ NAV ══════════════════ */
+nav{position:sticky;top:0;z-index:500;background:rgba(5,3,13,.82);backdrop-filter:blur(20px);border-bottom:1px solid var(--bdr)}
+.nw{display:flex;align-items:stretch;justify-content:space-between;height:60px}
+.nl{display:flex;align-items:center;gap:1rem;padding-right:2rem;border-right:1px solid var(--bdr)}
+.nl-gem{width:22px;height:22px;background:var(--v);transform:rotate(45deg);flex-shrink:0;position:relative;box-shadow:0 0 12px var(--vglow);animation:gemSpin 6s linear infinite}
+.nl-gem::after{content:'';position:absolute;inset:5px;background:var(--ink);transform:rotate(0deg)}
+@keyframes gemSpin{to{transform:rotate(405deg)}}
+.nl-txt{font-family:'Anton',sans-serif;font-size:.95rem;letter-spacing:4px;color:#fff;text-transform:uppercase}
+.nlinks{display:flex}
+.nlinks a{display:flex;align-items:center;padding:0 1.5rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--txd);border-left:1px solid var(--bdr);transition:all .3s;position:relative;overflow:hidden}
+.nlinks a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--v),var(--m));box-shadow:0 0 8px var(--v);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.nlinks a:hover{color:var(--v2);background:var(--vdim)}
+.nlinks a:hover::after{transform:scaleX(1)}
+.n-ping{display:flex;align-items:center;gap:.55rem;padding:0 1.5rem;border-left:1px solid var(--bdr);font-family:'Share Tech Mono',monospace;font-size:.62rem;color:#00ff88}
+.ndot{width:5px;height:5px;border-radius:50%;background:#00ff88;box-shadow:0 0 7px #00ff88;animation:nd 2s ease-in-out infinite}
+@keyframes nd{0%,100%{opacity:1}50%{opacity:.2}}
 
-/* ══════════════════════════════════════════
-   NAV
-══════════════════════════════════════════ */
-nav{
-  position:sticky;top:0;z-index:500;
-  background:rgba(4,3,10,0.8);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--border);
-}
-.nav-wrap{display:flex;align-items:stretch;justify-content:space-between;height:62px}
-.nav-brand{
-  display:flex;align-items:center;gap:1rem;padding-right:2rem;
-  border-right:1px solid var(--border);
-}
-/* Animated brand mark */
-.brand-mark{
-  width:28px;height:28px;position:relative;flex-shrink:0;
-}
-.brand-mark::before{
-  content:'';position:absolute;inset:0;
-  background:var(--gold);transform:rotate(45deg);
-  animation:bm 4s ease-in-out infinite;
-}
-.brand-mark::after{
-  content:'';position:absolute;inset:6px;
-  background:var(--black);transform:rotate(45deg);
-}
-@keyframes bm{0%,100%{box-shadow:0 0 0 0 rgba(240,165,0,0.4)}50%{box-shadow:0 0 0 8px rgba(240,165,0,0)}}
-.brand-text{
-  font-family:'Anton',sans-serif;font-size:1.15rem;letter-spacing:4px;
-  color:var(--white);text-transform:uppercase;
-}
+/* ══════════════════ HERO ══════════════════ */
+.hero{min-height:calc(100vh - 60px);display:grid;grid-template-columns:1fr 400px;gap:0;position:relative;overflow:hidden}
+.hero-left{display:flex;flex-direction:column;justify-content:center;padding:5rem 4rem 5rem 0;position:relative;z-index:1}
+.hero-right{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem 0;z-index:1}
+.hero-right::before{content:'';position:absolute;inset:0;left:-60px;background:linear-gradient(160deg,rgba(139,92,246,.03) 0%,rgba(232,121,249,.05) 100%);border-left:1px solid var(--vbrd);clip-path:polygon(60px 0%,100% 0%,100% 100%,0% 100%);pointer-events:none}
+.hero-wm{position:absolute;inset:0;display:flex;align-items:center;justify-content:flex-start;padding-left:0;overflow:hidden;pointer-events:none;z-index:0}
+.hero-wm-txt{font-family:'Anton',sans-serif;font-size:clamp(12rem,30vw,26rem);line-height:.8;letter-spacing:-10px;color:rgba(139,92,246,.028);white-space:nowrap;user-select:none;margin-left:-2rem}
 
-.nav-links{display:flex}
-.nav-links a{
-  display:flex;align-items:center;padding:0 1.5rem;
-  font-family:'Barlow Condensed',sans-serif;font-weight:700;
-  font-size:0.75rem;letter-spacing:3px;text-transform:uppercase;
-  color:var(--text-dim);border-left:1px solid var(--border);
-  transition:all .3s;position:relative;overflow:hidden;
-}
-.nav-links a::after{
-  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
-  background:var(--gold);transform:scaleX(0);transform-origin:left;
-  transition:transform .3s;box-shadow:0 0 8px var(--gold);
-}
-.nav-links a:hover{color:var(--gold);background:var(--gold-dim)}
-.nav-links a:hover::after{transform:scaleX(1)}
-.nav-ping{
-  display:flex;align-items:center;gap:.6rem;padding:0 1.5rem;
-  border-left:1px solid var(--border);
-  font-family:'Share Tech Mono',monospace;font-size:.65rem;color:#00ff88;
-}
-.ping{width:6px;height:6px;border-radius:50%;background:#00ff88;
-  box-shadow:0 0 8px #00ff88;animation:pblink 2s ease-in-out infinite}
-@keyframes pblink{0%,100%{opacity:1}50%{opacity:.2}}
+/* eyebrow */
+.h-eye{display:flex;align-items:center;gap:1rem;margin-bottom:2rem}
+.h-eye-line{width:36px;height:2px;background:linear-gradient(90deg,var(--v),var(--m));box-shadow:0 0 8px var(--vglow)}
+.h-eye-txt{font-family:'Share Tech Mono',monospace;font-size:.68rem;letter-spacing:4px;text-transform:uppercase;color:var(--v2)}
 
-/* ══════════════════════════════════════════
-   HERO — FULL CINEMATIC
-══════════════════════════════════════════ */
-.hero{
-  min-height:calc(100vh - 62px);
-  display:grid;grid-template-columns:1fr 380px;
-  gap:4rem;align-items:center;
-  padding:6rem 0;
-  position:relative;
-}
+/* title */
+.h-title{font-family:'Anton',sans-serif;line-height:.88;letter-spacing:-1px;text-transform:uppercase;color:#fff;font-size:clamp(5rem,10vw,10rem);margin-bottom:1rem}
+.h-title .hollow{display:block;color:transparent;-webkit-text-stroke:2.5px var(--v);text-shadow:0 0 60px rgba(139,92,246,.2)}
+.g{position:relative;display:inline-block}
+.g::before,.g::after{content:attr(data-t);position:absolute;inset:0;font:inherit;-webkit-text-stroke:inherit;pointer-events:none}
+.g::before{color:var(--cyan);-webkit-text-stroke:2px var(--cyan);clip-path:polygon(0 0,100% 0,100% 35%,0 35%);animation:ga 8s infinite}
+.g::after{color:var(--m);-webkit-text-stroke:0;clip-path:polygon(0 68%,100% 68%,100% 100%,0 100%);animation:gb 8s infinite}
+@keyframes ga{0%,91%,100%{transform:translate(0);opacity:0}92%{transform:translate(-5px);opacity:.9}94%{transform:translate(3px);opacity:.6}96%{opacity:0}}
+@keyframes gb{0%,91%,100%{transform:translate(0);opacity:0}93%{transform:translate(5px);opacity:.8}95%{transform:translate(-3px);opacity:.5}97%{opacity:0}}
 
-/* Diagonal stripe bg element */
-.hero::before{
-  content:'';position:absolute;
-  right:-100px;top:-100px;bottom:-100px;width:55%;
-  background:linear-gradient(150deg,rgba(240,165,0,0.025) 0%,rgba(45,108,255,0.02) 100%);
-  border-left:1px solid var(--gold-border);
-  transform:skewX(-8deg);pointer-events:none;
-  clip-path:polygon(8% 0%,100% 0%,100% 100%,0% 100%);
-}
+/* subtitle bar */
+.h-bar{display:flex;align-items:center;gap:1.2rem;margin:1.8rem 0 1.5rem}
+.h-bar-line{width:40px;height:1px;background:rgba(255,255,255,.2)}
+.h-bar-txt{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-style:italic;font-size:1.1rem;letter-spacing:5px;text-transform:uppercase;color:var(--tx2)}
+.h-bar-line2{flex:1;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.15),transparent)}
 
-/* Huge watermark */
-.hero-wm{
-  position:absolute;
-  left:-2rem;top:50%;transform:translateY(-50%);
-  font-family:'Anton',sans-serif;
-  font-size:clamp(10rem,24vw,22rem);
-  line-height:0.85;letter-spacing:-8px;
-  color:rgba(240,165,0,0.03);
-  pointer-events:none;user-select:none;white-space:nowrap;
-}
+/* pills */
+.h-pills{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem}
+.pill{font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--v2);border:1px solid var(--vbrd);padding:.28rem .85rem;background:var(--vdim)}
 
-.hero-content{position:relative;z-index:1}
+/* desc */
+.h-desc{font-size:1rem;line-height:1.9;color:var(--tx);max-width:500px;margin-bottom:2.8rem;padding-left:1.2rem;border-left:3px solid var(--v)}
 
-.hero-eyebrow{
-  display:flex;align-items:center;gap:1rem;margin-bottom:2rem;
-}
-.eyebrow-dash{
-  width:40px;height:2px;background:var(--gold);
-  box-shadow:0 0 8px var(--gold);
-}
-.eyebrow-label{
-  font-family:'Share Tech Mono',monospace;font-size:.7rem;
-  letter-spacing:4px;text-transform:uppercase;color:var(--gold);
-}
-
-/* GIANT TITLE */
-.hero-title{
-  font-family:'Anton',sans-serif;
-  font-size:clamp(4.5rem,10vw,9.5rem);
-  line-height:.88;letter-spacing:-2px;
-  text-transform:uppercase;
-  color:var(--white);
-}
-.hero-title .line2{
-  display:block;
-  color:transparent;
-  -webkit-text-stroke:2px var(--gold);
-  text-shadow:none;
-  position:relative;
-}
-/* Glitch */
-.glitch{position:relative;display:inline-block}
-.glitch::before,.glitch::after{content:attr(data-t);position:absolute;inset:0;font:inherit;-webkit-text-stroke:inherit}
-.glitch::before{color:var(--blue);-webkit-text-stroke:2px var(--blue);clip-path:polygon(0 0,100% 0,100% 38%,0 38%);animation:g1 7s infinite}
-.glitch::after{color:var(--red);-webkit-text-stroke:0;color:var(--red);clip-path:polygon(0 65%,100% 65%,100% 100%,0 100%);animation:g2 7s infinite}
-@keyframes g1{0%,88%,100%{transform:translateX(0);opacity:0}89%{transform:translateX(-5px);opacity:.9}91%{transform:translateX(3px);opacity:.6}93%{opacity:0}}
-@keyframes g2{0%,88%,100%{transform:translateX(0);opacity:0}90%{transform:translateX(5px);opacity:.8}92%{transform:translateX(-3px);opacity:.5}94%{opacity:0}}
-
-.hero-rule{
-  display:flex;align-items:center;gap:1.5rem;margin:2rem 0 1.5rem;
-}
-.rule-text{
-  font-family:'Barlow Condensed',sans-serif;font-weight:700;font-style:italic;
-  font-size:1.3rem;letter-spacing:4px;text-transform:uppercase;
-  color:var(--text);white-space:nowrap;
-}
-.rule-line{flex:1;height:1px;background:linear-gradient(90deg,var(--gold-border),transparent)}
-
-.hero-pills{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem}
-.pill{
-  font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:2px;
-  text-transform:uppercase;color:var(--gold2);
-  border:1px solid var(--gold-border);padding:.3rem .9rem;background:var(--gold-dim);
-}
-
-.hero-desc{
-  color:var(--text);font-size:1rem;line-height:1.9;
-  max-width:530px;margin-bottom:3rem;
-  padding-left:1.2rem;
-  border-left:3px solid var(--gold);
-}
-
-/* BUTTONS */
-.btns{display:flex;gap:1rem;flex-wrap:wrap}
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:.6rem;
-  font-family:'Barlow Condensed',sans-serif;font-weight:900;font-style:italic;
-  font-size:1rem;letter-spacing:3px;text-transform:uppercase;
-  padding:.9rem 2.5rem;cursor:pointer;transition:all .3s;
-  position:relative;overflow:hidden;
-}
+/* buttons */
+.btns{display:flex;gap:.9rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-style:italic;font-size:1rem;letter-spacing:3px;text-transform:uppercase;padding:.85rem 2.4rem;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;clip-path:polygon(12px 0%,100% 0%,100% calc(100% - 12px),calc(100% - 12px) 100%,0% 100%,0% 12px)}
 .btn::after{content:'';position:absolute;inset:0;transform:translateX(-110%);transition:transform .4s ease}
 .btn:hover::after{transform:translateX(0)}
-.btn-gold{
-  background:var(--gold);color:var(--black) !important;border:none;
-  clip-path:polygon(12px 0%,100% 0%,100% calc(100% - 12px),calc(100% - 12px) 100%,0% 100%,0% 12px);
-  box-shadow:0 0 30px rgba(240,165,0,.3),4px 4px 0 rgba(240,165,0,.2);
-}
-.btn-gold::after{background:rgba(255,255,255,.25)}
-.btn-gold:hover{transform:translate(-2px,-3px);box-shadow:0 0 40px rgba(240,165,0,.5),6px 7px 0 rgba(240,165,0,.2)}
-.btn-ghost{
-  background:transparent;color:var(--white) !important;
-  border:2px solid rgba(255,255,255,.2);
-  clip-path:polygon(12px 0%,100% 0%,100% calc(100% - 12px),calc(100% - 12px) 100%,0% 100%,0% 12px);
-}
-.btn-ghost::after{background:rgba(255,255,255,.06)}
-.btn-ghost:hover{border-color:var(--gold);color:var(--gold) !important;transform:translate(-2px,-3px)}
+.btn-g{background:linear-gradient(135deg,var(--v),var(--m));color:#fff !important;border:none;box-shadow:0 0 28px rgba(139,92,246,.35),5px 5px 0 rgba(139,92,246,.18)}
+.btn-g::after{background:rgba(255,255,255,.18)}
+.btn-g:hover{transform:translate(-2px,-3px);box-shadow:0 0 45px rgba(139,92,246,.6),7px 8px 0 rgba(139,92,246,.18)}
+.btn-w{background:transparent;color:#fff !important;border:2px solid var(--bdrb)}
+.btn-w::after{background:rgba(139,92,246,.07)}
+.btn-w:hover{border-color:var(--v);color:var(--v2) !important;transform:translate(-2px,-3px)}
 
-/* ══ HERO VISUAL ══ */
-.hero-vis{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:2rem}
-
-/* Profile hexagon */
-.pf-wrap{position:relative;width:300px;height:300px}
-.pf-glow{
-  position:absolute;inset:-20px;
-  background:radial-gradient(circle,rgba(240,165,0,.12) 0%,transparent 60%);
-  animation:glowPulse 3s ease-in-out infinite;
-}
-@keyframes glowPulse{0%,100%{opacity:.6}50%{opacity:1}}
-.pf-hex-outer{
-  position:absolute;inset:0;
-  clip-path:polygon(50% 0%,95% 25%,95% 75%,50% 100%,5% 75%,5% 25%);
-  background:linear-gradient(135deg,var(--gold),rgba(240,165,0,.2));
-  animation:hexRotate 6s linear infinite;
-}
-@keyframes hexRotate{
-  0%{background:linear-gradient(135deg,var(--gold),rgba(240,165,0,.2))}
-  50%{background:linear-gradient(315deg,var(--gold),rgba(45,108,255,.3))}
-  100%{background:linear-gradient(135deg,var(--gold),rgba(240,165,0,.2))}
-}
-.pf-hex-bg{
-  position:absolute;inset:3px;
-  clip-path:polygon(50% 0%,95% 25%,95% 75%,50% 100%,5% 75%,5% 25%);
-  background:var(--deep);
-}
-.pf-img{
-  position:absolute;inset:4px;
-  clip-path:polygon(50% 0%,95% 25%,95% 75%,50% 100%,5% 75%,5% 25%);
-  overflow:hidden;
-}
+/* ── PROFILE ── */
+.pf-wrap{position:relative;width:280px;height:280px;margin-bottom:1.8rem}
+.pf-glow{position:absolute;inset:-30px;background:radial-gradient(circle,rgba(139,92,246,.1) 0%,rgba(232,121,249,.06) 50%,transparent 65%);animation:pglow 3s ease-in-out infinite}
+@keyframes pglow{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.05)}}
+.pf-spin{position:absolute;inset:-4px;clip-path:polygon(50% 0%,96% 26%,96% 74%,50% 100%,4% 74%,4% 26%);background:conic-gradient(var(--v),var(--m),var(--cyan),var(--v));animation:hexspin 6s linear infinite}
+@keyframes hexspin{to{transform:rotate(360deg)}}
+.pf-bg{position:absolute;inset:3px;clip-path:polygon(50% 0%,96% 26%,96% 74%,50% 100%,4% 74%,4% 26%);background:var(--deep)}
+.pf-img{position:absolute;inset:5px;clip-path:polygon(50% 0%,96% 26%,96% 74%,50% 100%,4% 74%,4% 26%);overflow:hidden}
 .pf-img img{width:100%;height:100%;object-fit:cover}
-/* Corner labels */
-.pf-corner{
-  position:absolute;font-family:'Share Tech Mono',monospace;
-  font-size:.6rem;letter-spacing:2px;color:var(--gold);
-  background:rgba(4,3,10,.85);padding:.2rem .5rem;
-  border:1px solid var(--gold-border);
-}
-.pf-corner.tl{top:-8px;left:50%;transform:translateX(-50%)}
-.pf-corner.br{bottom:-8px;right:0}
+.hud{position:absolute;font-family:'Share Tech Mono',monospace;font-size:.58rem;letter-spacing:2px;background:rgba(5,3,13,.88);border:1px solid var(--vbrd);padding:.2rem .55rem;white-space:nowrap}
+.hud.t{top:-10px;left:50%;transform:translateX(-50%);color:var(--v2)}
+.hud.b{bottom:-10px;right:0;color:var(--m)}
 
-/* ── STAT CARD ── */
-.stat-card{
-  width:300px;background:var(--layer);
-  border:1px solid var(--border);
-  position:relative;overflow:hidden;
-}
-.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--blue))}
-.stat-card-head{
-  padding:.9rem 1.2rem;
-  font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:3px;text-transform:uppercase;
-  color:var(--text-dim);border-bottom:1px solid var(--border);
-  display:flex;justify-content:space-between;
-}
-.stat-card-head span{color:var(--gold)}
-.stat-body{padding:1.2rem}
-.sr{display:flex;align-items:center;gap:.8rem;margin-bottom:.7rem}
-.sl{font-family:'Share Tech Mono',monospace;font-size:.58rem;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);width:76px;flex-shrink:0}
-.st{flex:1;height:3px;background:rgba(255,255,255,.05)}
+/* stat card */
+.stat-card{width:280px;background:var(--layer);border:1px solid var(--bdr);position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--v),var(--m),var(--cyan),transparent)}
+.sc-head{padding:.85rem 1.2rem;border-bottom:1px solid var(--bdr);font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--txd);display:flex;justify-content:space-between}
+.sc-head span:last-child{color:var(--v2)}
+.sc-body{padding:1.1rem 1.2rem}
+.sr{display:flex;align-items:center;gap:.8rem;margin-bottom:.65rem}
+.sl{font-family:'Share Tech Mono',monospace;font-size:.56rem;letter-spacing:1px;text-transform:uppercase;color:var(--txd);width:74px;flex-shrink:0}
+.st{flex:1;height:3px;background:rgba(255,255,255,.05);overflow:hidden}
 .sf{height:100%;width:0%;animation:sfa 1.6s cubic-bezier(.16,1,.3,1) forwards;animation-delay:var(--d,0s)}
 @keyframes sfa{to{width:var(--p)}}
-.sf.c1{background:linear-gradient(90deg,var(--gold),var(--gold2));box-shadow:0 0 6px var(--gold)}
-.sf.c2{background:linear-gradient(90deg,#2d6cff,#7ab4ff);box-shadow:0 0 6px #2d6cff}
-.sf.c3{background:linear-gradient(90deg,#00ff88,#00ffcc);box-shadow:0 0 6px #00ff88}
-.sf.c4{background:linear-gradient(90deg,#c026d3,#f0abfc);box-shadow:0 0 6px #c026d3}
-.sf.c5{background:linear-gradient(90deg,var(--red),#ff6b8a);box-shadow:0 0 6px var(--red)}
-.sp{font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--text-dim);width:24px;text-align:right}
+.sf.c1{background:linear-gradient(90deg,var(--v),var(--v2));box-shadow:0 0 5px var(--v)}
+.sf.c2{background:linear-gradient(90deg,var(--m),var(--m2));box-shadow:0 0 5px var(--m)}
+.sf.c3{background:linear-gradient(90deg,#22d3ee,#a5f3fc);box-shadow:0 0 5px #22d3ee}
+.sf.c4{background:linear-gradient(90deg,#6366f1,#a5b4fc);box-shadow:0 0 5px #6366f1}
+.sf.c5{background:linear-gradient(90deg,#f472b6,#fbcfe8);box-shadow:0 0 5px #f472b6}
+.sp{font-family:'Share Tech Mono',monospace;font-size:.58rem;color:var(--txd);width:22px;text-align:right}
 
-/* ══════════════════════════════════════════
-   SECTION COMMON
-══════════════════════════════════════════ */
+/* ══════════════════ SECTIONS ══════════════════ */
 section{padding:8rem 0}
+.sh{margin-bottom:4rem}
+.sh-row{display:flex;align-items:flex-end;gap:1.5rem;margin-bottom:1.5rem}
+.sh-n{font-family:'Anton',sans-serif;font-size:5.5rem;line-height:.9;letter-spacing:-2px;color:var(--v);text-shadow:0 0 40px rgba(139,92,246,.22);flex-shrink:0;position:relative}
+.sh-n::after{content:attr(data-n);position:absolute;top:3px;left:3px;color:rgba(139,92,246,.12);z-index:-1}
+.sh-tag{display:block;font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--txd);margin-bottom:.3rem}
+.sh-title{font-family:'Anton',sans-serif;font-size:3rem;letter-spacing:2px;text-transform:uppercase;color:#fff;line-height:1}
+.sh-div{flex:1;height:1px;background:linear-gradient(90deg,rgba(139,92,246,.38),transparent);margin-bottom:.4rem}
+.sh-rule{height:1px;background:var(--bdr);position:relative}
+.sh-rule::before{content:'◆';position:absolute;right:0;top:50%;transform:translateY(-50%);font-size:.55rem;color:var(--v);text-shadow:0 0 8px var(--vglow)}
 
-.sh{margin-bottom:4rem;position:relative}
-.sh-row{display:flex;align-items:flex-end;gap:1.5rem}
-.sh-num{
-  font-family:'Anton',sans-serif;
-  font-size:6rem;line-height:.9;letter-spacing:-2px;
-  color:var(--gold);
-  text-shadow:0 0 40px rgba(240,165,0,.2);
-  flex-shrink:0;
-}
-.sh-text{}
-.sh-tag{display:block;font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:var(--text-dim);margin-bottom:.3rem}
-.sh-title{
-  font-family:'Anton',sans-serif;
-  font-size:3.2rem;letter-spacing:2px;text-transform:uppercase;
-  color:var(--white);line-height:1;
-}
-.sh-divider{
-  flex:1;height:1px;
-  background:linear-gradient(90deg,rgba(240,165,0,.4),transparent);
-  margin-bottom:.5rem;
-}
-.sh-line{
-  margin-top:1.5rem;height:1px;
-  background:linear-gradient(90deg,rgba(240,165,0,.3),transparent 60%);
-}
-
-/* ══════════════════════════════════════════
-   ABOUT
-══════════════════════════════════════════ */
-.ab-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:2px;background:rgba(240,165,0,.15)}
+/* ══════════════════ ABOUT ══════════════════ */
+.ab-grid{display:grid;grid-template-columns:3fr 2fr;gap:3px;background:rgba(139,92,246,.15)}
 .ab-panel{background:var(--layer);padding:3rem;position:relative;overflow:hidden}
-.ab-panel::after{content:'';position:absolute;top:0;right:0;width:80px;height:80px;border-top:2px solid var(--gold-border);border-right:2px solid var(--gold-border)}
-.pt{
-  font-family:'Barlow Condensed',sans-serif;font-weight:900;font-style:italic;
-  font-size:1.1rem;letter-spacing:3px;text-transform:uppercase;
-  color:var(--gold);margin-bottom:1.5rem;display:flex;align-items:center;gap:.8rem;
-}
-.pt::before{content:'▶';font-size:.7rem;color:var(--gold)}
-.ab-panel p{color:var(--text);font-size:.97rem;line-height:1.9;margin-bottom:1rem}
-.ab-panel p strong{color:var(--white)}
-.tl{list-style:none;margin-top:.5rem}
-.tl li{padding:1.3rem 0 1.3rem 2rem;border-left:1px solid var(--border);position:relative}
+.ab-panel::before,.ab-panel::after{content:'';position:absolute;width:20px;height:20px}
+.ab-panel::before{top:0;left:0;border-top:2px solid var(--v);border-left:2px solid var(--v)}
+.ab-panel::after{bottom:0;right:0;border-bottom:2px solid rgba(139,92,246,.25);border-right:2px solid rgba(139,92,246,.25)}
+.ap-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-style:italic;font-size:1rem;letter-spacing:3px;text-transform:uppercase;color:var(--v2);margin-bottom:1.5rem;display:flex;align-items:center;gap:.7rem}
+.ap-title::before{content:'▶';font-size:.6rem;color:var(--v)}
+.ab-panel p{color:var(--tx);font-size:.96rem;line-height:1.9;margin-bottom:1rem}
+.ab-panel p strong{color:#fff}
+.tl{list-style:none}
+.tl li{padding:1.3rem 0 1.3rem 2rem;border-left:1px solid var(--bdr);position:relative}
 .tl li:last-child{border-color:transparent}
-.tl li::before{content:'';position:absolute;left:-7px;top:1.7rem;width:12px;height:12px;background:var(--gold);transform:rotate(45deg);box-shadow:0 0 10px rgba(240,165,0,.5)}
-.tl strong{display:block;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-style:italic;font-size:1.3rem;letter-spacing:1px;color:var(--white);margin-bottom:.2rem}
-.tl span{font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--gold);letter-spacing:1px}
+.tl li::before{content:'';position:absolute;left:-7px;top:1.8rem;width:13px;height:13px;background:linear-gradient(135deg,var(--v),var(--m));transform:rotate(45deg);box-shadow:0 0 12px rgba(139,92,246,.5),0 0 20px rgba(232,121,249,.2)}
+.tl strong{display:block;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-style:italic;font-size:1.3rem;letter-spacing:1px;color:#fff;margin-bottom:.25rem;text-transform:uppercase}
+.tl span{font-family:'Share Tech Mono',monospace;font-size:.68rem;color:var(--v2);letter-spacing:1px}
 
-/* ══════════════════════════════════════════
-   SKILLS
-══════════════════════════════════════════ */
-.sk-wrap{background:var(--layer);border:1px solid var(--border);position:relative;overflow:hidden}
-.sk-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--blue),transparent)}
-.sk-grid{display:grid;grid-template-columns:1fr 1fr;background:rgba(255,255,255,.03)}
-.sk-cell{background:var(--layer);padding:2.2rem;border:1px solid var(--border)}
-.sk-cat{
-  font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:3px;text-transform:uppercase;
-  color:var(--text-dim);margin-bottom:1.2rem;padding-bottom:.6rem;
-  border-bottom:1px solid var(--border);
-  display:flex;align-items:center;gap:.7rem;
-}
-.sk-cat::before{content:'';width:6px;height:6px;background:var(--gold);transform:rotate(45deg);flex-shrink:0}
+/* ══════════════════ SKILLS ══════════════════ */
+.sk-wrap{background:var(--layer);border:1px solid var(--bdr);position:relative;overflow:hidden}
+.sk-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--v),var(--m),var(--cyan),transparent)}
+.sk-wrap::after{content:'EXPERTISE';position:absolute;bottom:-1.5rem;right:1rem;font-family:'Anton',sans-serif;font-size:5rem;color:rgba(139,92,246,.03);letter-spacing:3px;pointer-events:none}
+.sk-grid{display:grid;grid-template-columns:1fr 1fr;background:rgba(255,255,255,.025)}
+.sk-cell{background:var(--layer);padding:2.2rem;border:1px solid var(--bdr);position:relative}
+.sk-cat{font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--txd);margin-bottom:1.2rem;padding-bottom:.6rem;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:.7rem}
+.sk-cat::before{content:'';width:7px;height:7px;background:var(--v);transform:rotate(45deg);flex-shrink:0;box-shadow:0 0 7px var(--vglow)}
 .tags{display:flex;flex-wrap:wrap;gap:.5rem}
-.tag{
-  font-family:'Barlow',sans-serif;font-weight:600;font-size:.82rem;
-  padding:.45rem 1.1rem;
-  border:1px solid var(--border-bright);color:var(--text);
-  background:rgba(255,255,255,.03);transition:all .3s;cursor:default;
-  clip-path:polygon(8px 0%,100% 0%,100% 100%,0% 100%,0% 8px);
-}
-.tag:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-dim);transform:translate(-1px,-1px);box-shadow:3px 3px 0 rgba(240,165,0,.15)}
+.tag{font-family:'Barlow',sans-serif;font-weight:600;font-size:.8rem;padding:.42rem 1.05rem;border:1px solid var(--bdrb);color:var(--tx);background:rgba(255,255,255,.025);transition:all .25s;cursor:default;clip-path:polygon(8px 0%,100% 0%,100% 100%,0% 100%,0% 8px)}
+.tag:hover{border-color:var(--v);color:var(--v2);background:var(--vdim);transform:translate(-1px,-2px);box-shadow:3px 3px 0 rgba(139,92,246,.15)}
 
-/* ══════════════════════════════════════════
-   PROJECTS — EDITORIAL GRID
-══════════════════════════════════════════ */
-.prj-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  grid-template-rows:auto;
-  gap:3px;
-  background:rgba(240,165,0,.1);
-}
-/* First project spans 2 cols */
-.prj-grid .prj:first-child{grid-column:1/-1}
-
-.prj{
-  background:var(--layer);position:relative;overflow:hidden;
-  cursor:pointer;transition:background .4s;
-  display:flex;flex-direction:column;
-}
-.prj:hover{background:var(--panel)}
-
-/* HOVER BORDER EFFECT */
-.prj::after{
-  content:'';position:absolute;inset:0;
-  border:2px solid transparent;
-  transition:border-color .3s;pointer-events:none;
-}
-.prj:hover::after{border-color:var(--gold)}
-/* Gold top line */
-.prj::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:3px;
-  background:var(--gold);transform:scaleX(0);transform-origin:left;
-  transition:transform .4s cubic-bezier(.16,1,.3,1);
-  box-shadow:0 0 12px var(--gold);z-index:1;
-}
+/* ══════════════════ PROJECTS ══════════════════ */
+.prj-bento{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:auto auto;gap:3px;background:rgba(139,92,246,.12)}
+.prj-bento .prj:nth-child(1){grid-column:span 2}
+.prj-bento .prj:nth-child(5){grid-column:span 2}
+.prj{background:var(--layer);position:relative;overflow:hidden;display:flex;flex-direction:column;cursor:pointer;transition:background .35s}
+.prj:hover{background:var(--lift)}
+.prj::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--v),var(--m));transform:scaleX(0);transform-origin:left;transition:transform .45s cubic-bezier(.16,1,.3,1);z-index:2;box-shadow:0 0 12px var(--vglow)}
 .prj:hover::before{transform:scaleX(1)}
+.prj-img{position:relative;overflow:hidden;flex-shrink:0}
+.prj-img img{width:100%;display:block;aspect-ratio:16/9;object-fit:cover;transition:transform .8s ease,filter .4s,opacity .4s;filter:saturate(.35) brightness(.65);opacity:.8}
+.prj:hover .prj-img img{transform:scale(1.07);filter:saturate(.9) brightness(.85);opacity:.95}
+.prj-img-ov{position:absolute;inset:0;background:linear-gradient(to top,var(--layer) 0%,rgba(16,13,36,.35) 50%,transparent 100%)}
+.prj-num{position:absolute;top:.9rem;left:.9rem;z-index:1;font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:2px;color:var(--v2);background:rgba(0,0,0,.8);border:1px solid var(--vbrd);padding:.2rem .65rem}
+.prj-body{padding:1.6rem 1.8rem 2rem;flex:1;display:flex;flex-direction:column}
+.prj-genre{font-family:'Share Tech Mono',monospace;font-size:.58rem;letter-spacing:3px;text-transform:uppercase;color:var(--txd);margin-bottom:.45rem}
+.prj-name{font-family:'Anton',sans-serif;font-size:1.9rem;letter-spacing:1px;text-transform:uppercase;color:#fff;line-height:1;margin-bottom:.6rem}
+.prj-bento .prj:nth-child(1) .prj-name{font-size:2.8rem}
+.prj-bento .prj:nth-child(5) .prj-name{font-size:2.8rem}
+.prj-role{display:inline-flex;align-items:center;gap:.45rem;font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:1px;color:var(--v2);background:var(--vdim);border:1px solid var(--vbrd);padding:.22rem .75rem;margin-bottom:.8rem;width:fit-content}
+.prj-desc{color:var(--tx);font-size:.88rem;line-height:1.8;flex:1;margin-bottom:1.4rem}
+.prj-btn{display:inline-flex;align-items:center;gap:.55rem;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-style:italic;font-size:.85rem;letter-spacing:3px;text-transform:uppercase;color:var(--tx);background:transparent;border:1px solid var(--bdrb);padding:.55rem 1.4rem;cursor:pointer;transition:all .3s;width:fit-content;clip-path:polygon(8px 0%,100% 0%,100% 100%,0% 100%,0% 8px)}
+.prj-btn .arr{transition:transform .3s}
+.prj-btn:hover{border-color:var(--v);color:var(--v2);background:var(--vdim);box-shadow:3px 3px 0 rgba(139,92,246,.15)}
+.prj-btn:hover .arr{transform:translateX(5px)}
 
-.prj-thumb{
-  height:260px;overflow:hidden;background:#000;position:relative;flex-shrink:0;
-}
-.prj-grid .prj:first-child .prj-thumb{height:380px}
-.prj-thumb img{
-  width:100%;height:100%;object-fit:cover;
-  transition:transform .8s ease,filter .4s,opacity .4s;
-  filter:saturate(.4) brightness(.7);opacity:.8;
-}
-.prj:hover .prj-thumb img{transform:scale(1.08);filter:saturate(.9) brightness(.85);opacity:.95}
-.prj-thumb-ov{
-  position:absolute;inset:0;
-  background:linear-gradient(to top,var(--layer) 0%,rgba(13,11,24,.4) 50%,transparent 100%);
-}
-.prj-num{
-  position:absolute;top:1rem;left:1rem;z-index:1;
-  font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:2px;
-  color:var(--gold);background:rgba(0,0,0,.75);border:1px solid var(--gold-border);
-  padding:.22rem .7rem;
-}
+/* ══════════════════ CONTACT ══════════════════ */
+#contact{padding:8rem 0;background:var(--deep);border-top:1px solid var(--bdr);position:relative;overflow:hidden}
+#contact::before{content:'CONTACT';position:absolute;bottom:-3rem;left:50%;transform:translateX(-50%);font-family:'Anton',sans-serif;font-size:clamp(8rem,16vw,14rem);letter-spacing:-4px;color:rgba(139,92,246,.04);white-space:nowrap;pointer-events:none}
+#contact::after{content:'';position:absolute;top:-150px;left:50%;transform:translateX(-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(139,92,246,.06) 0%,rgba(232,121,249,.03) 40%,transparent 65%);pointer-events:none}
+.con-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;position:relative;z-index:1}
+.con-right{}
+.con-desc{font-size:1.02rem;line-height:1.9;color:var(--tx);max-width:420px;margin-top:1.5rem;border-left:3px solid var(--v);padding-left:1.3rem}
+.ct-row{display:flex;align-items:center;padding:1.1rem 0;border-bottom:1px solid var(--bdr)}
+.ct-row:first-child{border-top:1px solid var(--bdr)}
+.ct-key{font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--txd);width:95px;flex-shrink:0}
+.ct-val{color:var(--tx2);font-size:.93rem}
+.ct-val a{color:var(--v2);transition:color .2s}
+.ct-val a:hover{color:var(--m)}
+.con-cta{display:block;margin-top:2rem;text-align:center;padding:1.15rem;background:linear-gradient(135deg,var(--v),var(--m));color:#fff !important;font-family:'Anton',sans-serif;font-size:1.3rem;letter-spacing:6px;text-transform:uppercase;transition:all .3s;clip-path:polygon(12px 0%,100% 0%,100% calc(100% - 12px),calc(100% - 12px) 100%,0% 100%,0% 12px);box-shadow:0 0 28px rgba(139,92,246,.25),5px 5px 0 rgba(139,92,246,.15)}
+.con-cta:hover{transform:translate(-3px,-4px);box-shadow:0 0 50px rgba(139,92,246,.55),8px 9px 0 rgba(139,92,246,.15)}
 
-.prj-body{padding:1.8rem 2rem 2rem;flex:1;display:flex;flex-direction:column}
-.prj-genre{
-  font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:3px;
-  text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;
-  display:flex;align-items:center;gap:.6rem;
-}
-.prj-genre::before{content:'//'}
-.prj-name{
-  font-family:'Anton',sans-serif;font-size:2.2rem;letter-spacing:1px;text-transform:uppercase;
-  color:var(--white);line-height:1;margin-bottom:.7rem;
-}
-.prj-grid .prj:first-child .prj-name{font-size:3rem}
-.prj-role{
-  display:inline-flex;align-items:center;gap:.5rem;
-  font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:1px;
-  color:var(--gold);background:var(--gold-dim);border:1px solid var(--gold-border);
-  padding:.25rem .8rem;margin-bottom:.9rem;width:fit-content;
-}
-.prj-desc{color:var(--text);font-size:.9rem;line-height:1.8;flex:1;margin-bottom:1.5rem}
-.prj-btn{
-  display:inline-flex;align-items:center;gap:.6rem;
-  font-family:'Barlow Condensed',sans-serif;font-weight:900;font-style:italic;
-  font-size:.9rem;letter-spacing:3px;text-transform:uppercase;
-  color:var(--text);background:transparent;
-  border:1px solid var(--border-bright);padding:.6rem 1.5rem;cursor:pointer;
-  transition:all .3s;width:fit-content;
-  clip-path:polygon(8px 0%,100% 0%,100% 100%,0% 100%,0% 8px);
-}
-.parr{transition:transform .3s}
-.prj-btn:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-dim)}
-.prj-btn:hover .parr{transform:translateX(5px)}
+footer{background:var(--ink);border-top:1px solid var(--bdr);text-align:center;padding:1.8rem;font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:3px;color:var(--txd)}
 
-/* ══════════════════════════════════════════
-   CONTACT — FULL WIDTH DARK
-══════════════════════════════════════════ */
-#contact{
-  padding:8rem 0;
-  background:var(--deep);
-  border-top:1px solid var(--border);
-  position:relative;overflow:hidden;
-}
-/* BIG bg word */
-#contact::before{
-  content:'HIRE ME';position:absolute;
-  bottom:-2rem;left:50%;transform:translateX(-50%);
-  font-family:'Anton',sans-serif;
-  font-size:clamp(8rem,18vw,16rem);letter-spacing:-5px;
-  color:rgba(240,165,0,.03);white-space:nowrap;pointer-events:none;
-}
-/* radial glow */
-#contact::after{
-  content:'';position:absolute;
-  top:-200px;left:50%;transform:translateX(-50%);
-  width:600px;height:600px;
-  background:radial-gradient(circle,rgba(240,165,0,.05) 0%,transparent 60%);
-  pointer-events:none;
-}
-
-.con-inner{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;position:relative;z-index:1}
-.con-sh .sh-num{color:var(--gold)}
-.con-sh .sh-title{color:var(--white)}
-.con-desc{
-  color:var(--text);font-size:1.05rem;line-height:1.9;
-  max-width:440px;margin-top:1.5rem;
-  border-left:3px solid var(--gold);padding-left:1.3rem;
-}
-.con-table{}
-.ct-row{display:flex;align-items:center;padding:1.1rem 0;border-bottom:1px solid var(--border)}
-.ct-row:first-child{border-top:1px solid var(--border)}
-.ct-key{
-  font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:2px;text-transform:uppercase;
-  color:var(--text-dim);width:100px;flex-shrink:0;
-}
-.ct-val{color:var(--white);font-size:.95rem}
-.ct-val a{color:var(--gold);transition:color .2s}
-.ct-val a:hover{color:var(--gold2)}
-.con-cta{
-  display:block;margin-top:2rem;text-align:center;
-  padding:1.2rem;
-  background:var(--gold);color:var(--black) !important;
-  font-family:'Anton',sans-serif;font-size:1.3rem;letter-spacing:5px;text-transform:uppercase;
-  transition:all .3s;
-  clip-path:polygon(12px 0%,100% 0%,100% calc(100% - 12px),calc(100% - 12px) 100%,0% 100%,0% 12px);
-  box-shadow:0 0 30px rgba(240,165,0,.25),4px 4px 0 rgba(240,165,0,.15);
-}
-.con-cta:hover{transform:translate(-2px,-3px);box-shadow:0 0 50px rgba(240,165,0,.5),6px 7px 0 rgba(240,165,0,.2)}
-
-footer{
-  background:var(--black);border-top:1px solid var(--border);
-  text-align:center;padding:2rem;
-  font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:3px;color:var(--text-dim);
-}
-
-/* ══════════════════════════════════════════
-   ACHIEVEMENT TOAST
-══════════════════════════════════════════ */
-.ach{
-  position:fixed;bottom:2rem;left:50%;
-  transform:translateX(-50%) translateY(120px);
-  background:var(--layer);
-  border-top:3px solid var(--gold);
-  border:1px solid var(--gold-border);border-top:3px solid var(--gold);
-  padding:1.1rem 2rem;z-index:600;
-  display:flex;align-items:center;gap:1.2rem;
-  box-shadow:0 0 40px rgba(240,165,0,.15),0 20px 60px rgba(0,0,0,.6);
-  transition:transform .6s cubic-bezier(.16,1,.3,1);min-width:300px;
-  clip-path:polygon(10px 0%,100% 0%,100% calc(100% - 10px),calc(100% - 10px) 100%,0% 100%,0% 10px);
-}
+/* ══════════════════ ACHIEVEMENT ══════════════════ */
+.ach{position:fixed;bottom:2.5rem;left:50%;transform:translateX(-50%) translateY(130px);background:var(--card);border:1px solid var(--vbrd);border-top:3px solid var(--v);padding:1.1rem 2rem;z-index:600;display:flex;align-items:center;gap:1.3rem;box-shadow:0 0 40px rgba(139,92,246,.15),0 25px 60px rgba(0,0,0,.7);transition:transform .6s cubic-bezier(.16,1,.3,1);min-width:300px;clip-path:polygon(10px 0%,100% 0%,100% calc(100% - 10px),calc(100% - 10px) 100%,0% 100%,0% 10px)}
 .ach.show{transform:translateX(-50%) translateY(0)}
-.ach-ico{font-size:1.6rem}
-.ach-lbl{font-family:'Share Tech Mono',monospace;font-size:.58rem;letter-spacing:2px;color:var(--gold);text-transform:uppercase}
-.ach-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1rem;color:var(--white);letter-spacing:2px;text-transform:uppercase}
-.ach-xp{margin-left:auto;font-family:'Share Tech Mono',monospace;font-size:.72rem;color:var(--gold2);font-weight:700}
+.ach-ico{font-size:1.5rem}
+.ach-lbl{font-family:'Share Tech Mono',monospace;font-size:.55rem;letter-spacing:2px;color:var(--v2);text-transform:uppercase}
+.ach-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.95rem;color:#fff;letter-spacing:2px;text-transform:uppercase}
+.ach-xp{margin-left:auto;font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--m);font-weight:700}
 
-/* ══════════════════════════════════════════
-   MODALS
-══════════════════════════════════════════ */
-.modal-overlay{display:none;position:fixed;inset:0;z-index:1000;background:rgba(4,3,10,.92);backdrop-filter:blur(12px);opacity:0;transition:opacity .35s;align-items:center;justify-content:center;padding:1.5rem}
+/* ══════════════════ MODALS ══════════════════ */
+.modal-overlay{display:none;position:fixed;inset:0;z-index:1000;background:rgba(5,3,13,.92);backdrop-filter:blur(12px);opacity:0;transition:opacity .3s;align-items:center;justify-content:center;padding:1.5rem}
 .modal-overlay.show{opacity:1}
-.modal-box{
-  background:var(--surface);width:100%;max-width:900px;max-height:88vh;
-  position:relative;overflow-y:auto;overflow-x:hidden;
-  border:1px solid var(--border);
-  box-shadow:0 0 80px rgba(240,165,0,.07),0 40px 80px rgba(0,0,0,.8);
-  transform:translateY(24px) scale(.99);
-  transition:all .4s cubic-bezier(.16,1,.3,1);
-}
-.modal-overlay.show .modal-box{transform:translateY(0) scale(1)}
-.modal-box::-webkit-scrollbar{width:3px}.modal-box::-webkit-scrollbar-thumb{background:var(--gold)}
-/* titlebar */
-.m-bar{
-  position:sticky;top:0;z-index:10;background:var(--black);
-  border-bottom:1px solid var(--border);padding:1rem 1.5rem;
-  display:flex;align-items:center;justify-content:space-between;
-}
-.m-id{font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:2px;color:var(--gold)}
+.mbox{background:var(--card);width:100%;max-width:900px;max-height:88vh;position:relative;overflow-y:auto;overflow-x:hidden;border:1px solid var(--bdr);box-shadow:0 0 80px rgba(139,92,246,.07),0 40px 80px rgba(0,0,0,.8);transform:translateY(24px) scale(.99);transition:all .4s cubic-bezier(.16,1,.3,1)}
+.modal-overlay.show .mbox{transform:translateY(0) scale(1)}
+.mbox::-webkit-scrollbar{width:3px}.mbox::-webkit-scrollbar-thumb{background:var(--v)}
+.m-bar{position:sticky;top:0;z-index:10;background:var(--ink);border-bottom:1px solid var(--bdr);padding:.95rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+.m-fid{font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:2px;color:var(--v2)}
 .m-btns{display:flex;gap:.5rem}
 .wb{width:12px;height:12px;border-radius:50%;cursor:pointer;border:none;transition:filter .2s}
 .wb:hover{filter:brightness(1.4)}
 .wc{background:#ff5f57}.wm{background:#febc2e}.wx{background:#28c840}
-/* content */
-.m-content{padding:3rem}
-.m-hl{font-family:'Anton',sans-serif;font-size:3rem;letter-spacing:3px;text-transform:uppercase;color:var(--white);line-height:1;margin-bottom:.4rem}
-.m-sub{font-family:'Share Tech Mono',monospace;font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;display:block}
+.m-body{padding:3rem}
+.m-hl{font-family:'Anton',sans-serif;font-size:3rem;letter-spacing:3px;text-transform:uppercase;color:#fff;line-height:1;margin-bottom:.4rem}
+.m-sub{font-family:'Share Tech Mono',monospace;font-size:.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--v2);margin-bottom:1.5rem;display:block}
 .m-tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2.5rem}
-.m-tags span{font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold-border);background:var(--gold-dim);padding:.28rem .8rem}
-.msec{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-style:italic;font-size:1.1rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin:2.5rem 0 1rem;display:flex;align-items:center;gap:.8rem}
-.msec::after{content:'';flex:1;height:1px;background:var(--border-bright)}
-.m-content p{color:var(--text);line-height:1.9;margin-bottom:1rem;font-size:.95rem}
-.m-content ul{margin-left:1.5rem;margin-bottom:1rem}
-.m-content li{color:var(--text);margin-bottom:.6rem;line-height:1.7;font-size:.93rem}
-.m-content li strong{color:var(--white)}
-.term-box{background:#000;border-left:3px solid var(--gold);padding:1.5rem;margin-bottom:1.5rem;font-family:'Share Tech Mono',monospace;font-size:.8rem}
-.term-p{color:var(--text-dim);font-size:.62rem;letter-spacing:2px;margin-bottom:.8rem;text-transform:uppercase}
-.term-l{color:rgba(255,255,255,.7);margin-bottom:.5rem;line-height:1.6}
-.term-l strong{color:var(--gold)}
+.m-tags span{font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--v2);border:1px solid var(--vbrd);background:var(--vdim);padding:.25rem .8rem}
+.msec{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-style:italic;font-size:1.05rem;letter-spacing:3px;text-transform:uppercase;color:var(--v2);margin:2.5rem 0 1rem;display:flex;align-items:center;gap:.8rem}
+.msec::after{content:'';flex:1;height:1px;background:var(--bdrb)}
+.m-body p{color:var(--tx);line-height:1.9;margin-bottom:1rem;font-size:.93rem}
+.m-body ul{margin-left:1.5rem;margin-bottom:1rem}
+.m-body li{color:var(--tx);margin-bottom:.6rem;line-height:1.7;font-size:.92rem}
+.m-body li strong{color:#fff}
+.term-box{background:#000;border-left:3px solid var(--v);padding:1.5rem;margin-bottom:1.5rem;font-family:'Share Tech Mono',monospace;font-size:.78rem}
+.t-prompt{color:var(--txd);font-size:.6rem;letter-spacing:2px;margin-bottom:.8rem;text-transform:uppercase}
+.t-line{color:rgba(255,255,255,.7);margin-bottom:.5rem;line-height:1.6}
+.t-line strong{color:var(--v2)}
 .ig2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem}
 .ig3{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-bottom:2rem}
-.ibox{background:#000;border:1px solid var(--border);overflow:hidden;display:flex;flex-direction:column}
-.ibox img{width:100%;height:190px;object-fit:contain;background:#060410;cursor:zoom-in;transition:opacity .3s;border-bottom:1px solid var(--border)}
+.ibox{background:#000;border:1px solid var(--bdr);overflow:hidden;display:flex;flex-direction:column}
+.ibox img{width:100%;height:185px;object-fit:contain;background:#060310;cursor:zoom-in;transition:opacity .3s;border-bottom:1px solid var(--bdr)}
 .ibox img:hover{opacity:.7}
-.ilbl{padding:.5rem;text-align:center;font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:2px;color:var(--gold);background:var(--black)}
-.vid{width:100%;border:1px solid var(--border);overflow:hidden;margin-bottom:1.5rem;background:#000;position:relative}
+.ilbl{padding:.5rem;text-align:center;font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:2px;color:var(--v2);background:var(--ink)}
+.vid{width:100%;border:1px solid var(--bdr);overflow:hidden;margin-bottom:1.5rem;background:#000;position:relative}
 .vid video{width:100%;display:block}
-.vid-hint{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.8);color:var(--text-dim);padding:3px 8px;font-size:.62rem;font-family:'Share Tech Mono',monospace;letter-spacing:1px;opacity:0;transition:opacity .3s;pointer-events:none}
+.vid-hint{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.8);color:var(--txd);padding:3px 8px;font-size:.6rem;font-family:'Share Tech Mono',monospace;letter-spacing:1px;opacity:0;transition:opacity .3s;pointer-events:none}
 .vid:hover .vid-hint{opacity:1}
-
-/* LIGHTBOX */
 .lbx{display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.97);align-items:center;justify-content:center;opacity:0;transition:opacity .3s;cursor:zoom-out}
 .lbx.show{opacity:1}
 .lbx img{max-width:90%;max-height:90vh;transform:scale(.95);transition:transform .3s;cursor:default}
 .lbx.show img{transform:scale(1)}
-.lbx-x{position:absolute;top:20px;right:25px;font-family:'Anton',sans-serif;font-size:1.5rem;letter-spacing:2px;color:#fff;cursor:pointer;transition:color .2s}
-.lbx-x:hover{color:var(--gold)}
+.lbx-x{position:absolute;top:20px;right:25px;font-family:'Anton',sans-serif;font-size:1.4rem;letter-spacing:2px;color:#fff;cursor:pointer;transition:color .2s}
+.lbx-x:hover{color:var(--v)}
 
-/* ══════════════════════════════════════════
-   REVEAL
-══════════════════════════════════════════ */
-.rev{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
-.rev.on{opacity:1;transform:translateY(0)}
+/* ══════════════════ REVEAL ══════════════════ */
+.rev{opacity:0;transform:translateY(38px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+.rev.on{opacity:1;transform:none}
 .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
 
-/* ══════════════════════════════════════════
-   RESPONSIVE
-══════════════════════════════════════════ */
-@media(max-width:960px){
-  .hero{grid-template-columns:1fr;min-height:auto;padding:4rem 0;gap:3rem;text-align:center}
-  .hero-vis{order:-1}.hero-eyebrow,.hero-rule{justify-content:center}
-  .hero-desc{max-width:none;border-left:none;padding-left:0;border-top:3px solid var(--gold);padding-top:1rem}
+/* ══════════════════ RESPONSIVE ══════════════════ */
+@media(max-width:980px){
+  .hero{grid-template-columns:1fr;min-height:auto;padding:4rem 0}
+  .hero-right{order:-1}.hero-right::before{display:none}
+  .h-eye,.h-bar{justify-content:center}
+  .h-desc{max-width:none;border-left:none;padding-left:0;border-top:3px solid var(--v);padding-top:1rem}
   .btns{justify-content:center}
   .ab-grid{grid-template-columns:1fr}
   .sk-grid{grid-template-columns:1fr}
-  .prj-grid{grid-template-columns:1fr}
-  .prj-grid .prj:first-child{grid-column:1}
-  .con-inner{grid-template-columns:1fr}
-  nav .nav-links{display:none}
-  .hero-wm{font-size:8rem;left:-1rem}
+  .prj-bento{grid-template-columns:1fr}
+  .prj-bento .prj:nth-child(1),.prj-bento .prj:nth-child(5){grid-column:1}
+  .con-grid{grid-template-columns:1fr;gap:3rem}
+  nav .nlinks{display:none}
+  .hero-left{padding:3rem 0}
 }
 @media(max-width:600px){
   .ig2,.ig3{grid-template-columns:1fr}
-  .m-content{padding:1.5rem}
+  .m-body{padding:1.5rem}
   .m-hl{font-size:2rem}
-  .hero-title{font-size:4rem}
 }
 @media print{
-  #boot,body::before,.cur,.cur-dot,.cur-cross,.ach,nav,.btns,#lbx,#bgCv,.vignette{display:none!important}
+  #boot,body::before,.ach,nav,.btns,#lbx,#bgCv,.vig,#cDot,#cRing{display:none!important}
   .modal-overlay{position:relative!important;display:block!important;opacity:1!important;background:transparent!important}
-  .modal-box{box-shadow:none!important;max-height:none!important;overflow:visible!important;transform:none!important}
+  .mbox{box-shadow:none!important;max-height:none!important;overflow:visible!important;transform:none!important}
 }
 </style>
 </head>
 <body>
 <canvas id="bgCv"></canvas>
-<div class="vignette"></div>
-<div class="cur" id="curDot"><div class="cur-dot"></div></div>
-<div class="cur-cross" id="curCross"></div>
+<div class="vig"></div>
+<div id="cDot"></div>
+<div id="cRing"></div>
 
-<!-- ════ BOOT ════ -->
+<!-- ═══ BOOT ═══ -->
 <div id="boot">
-  <div class="boot-logo">PEEMAPOL<b>.</b>EXE</div>
-  <div class="boot-tagline">Game Developer Portfolio · 2026</div>
-  <div class="boot-lines" id="bootLog"></div>
-  <div class="boot-bar-wrap">
-    <div class="boot-bar-head"><span id="bStat">LOADING ASSETS</span><span id="bPct">0%</span></div>
-    <div class="boot-track"><div class="boot-fill" id="bFill"></div></div>
+  <div class="b-logo">PEEMAPOL<span>.</span>EXE</div>
+  <div class="b-sub">Game Developer Portfolio · 2026 · Samut Prakan, TH</div>
+  <div class="b-log" id="bLog"></div>
+  <div class="b-bar-wrap">
+    <div class="b-bar-top"><span id="bStat">LOADING</span><span id="bPct">0%</span></div>
+    <div class="b-track"><div class="b-fill" id="bFill"></div></div>
   </div>
-  <div class="boot-skip" onclick="skipBoot()">[ PRESS ANY KEY TO SKIP ]</div>
+  <div class="b-skip" onclick="skipBoot()">[ PRESS ANY KEY TO SKIP ]</div>
 </div>
 
-<!-- ════ NAV ════ -->
+<!-- ═══ NAV ═══ -->
 <nav>
-  <div class="wrap nav-wrap">
-    <div class="nav-brand">
-      <div class="brand-mark"></div>
-      <span class="brand-text">Peemapol</span>
+  <div class="w nw">
+    <div class="nl">
+      <div class="nl-gem"></div>
+      <span class="nl-txt">Peemapol</span>
     </div>
-    <div class="nav-links">
+    <div class="nlinks">
       <a href="#profile">Profile</a>
       <a href="#skills">Skills</a>
       <a href="#projects">Projects</a>
       <a href="#contact">Contact</a>
     </div>
-    <div class="nav-ping"><div class="ping"></div>ONLINE</div>
+    <div class="n-ping"><div class="ndot"></div>ONLINE</div>
   </div>
 </nav>
 
-<div class="wrap">
-<!-- ════ HERO ════ -->
+<!-- ═══ HERO ═══ -->
+<div class="w">
 <header class="hero" id="home">
-  <div class="hero-wm">GAME<br>DEV</div>
-
-  <div class="hero-content">
-    <div class="hero-eyebrow">
-      <div class="eyebrow-dash"></div>
-      <span class="eyebrow-label">Portfolio · 2026 · Samut Prakan, TH</span>
+  <div class="hero-wm"><div class="hero-wm-txt">GAME</div></div>
+  <div class="hero-left">
+    <div class="h-eye">
+      <div class="h-eye-line"></div>
+      <span class="h-eye-txt">Portfolio · 2026 · BKK, TH</span>
     </div>
-
-    <h1 class="hero-title">
-      <span class="glitch" data-t="GAME">GAME</span><br>
-      <span class="line2"><span class="glitch" data-t="DEVELOPER">DEVELOPER</span></span>
+    <h1 class="h-title">
+      <span class="g" data-t="GAME">GAME</span><br>
+      <span class="hollow"><span class="g" data-t="DEVELOPER">DEVELOPER</span></span>
     </h1>
-
-    <div class="hero-rule">
-      <div class="rule-line" style="max-width:50px"></div>
-      <span class="rule-text">Design · Logic · Audio</span>
-      <div class="rule-line" style="flex:1;max-width:999px"></div>
+    <div class="h-bar">
+      <div class="h-bar-line"></div>
+      <span class="h-bar-txt">Design · Logic · Audio</span>
+      <div class="h-bar-line2"></div>
     </div>
-
-    <div class="hero-pills">
+    <div class="h-pills">
       <span class="pill">Unity / C#</span>
       <span class="pill">Sound Design</span>
       <span class="pill">Level Design</span>
       <span class="pill">Narrative</span>
     </div>
-
-    <p class="hero-desc">สวัสดีครับ ผมภีมพล พ่วงเจริญ นักศึกษาที่หลงใหลใน Game Design และ Sound Design สนใจพัฒนาเกมที่ส่งมอบประสบการณ์ทางอารมณ์และบรรยากาศผ่าน Gameplay และระบบเสียง</p>
-
+    <p class="h-desc">สวัสดีครับ ผมภีมพล พ่วงเจริญ นักศึกษาที่หลงใหลใน Game Design และ Sound Design สนใจพัฒนาเกมที่ส่งมอบประสบการณ์ทางอารมณ์และบรรยากาศผ่าน Gameplay และระบบเสียง</p>
     <div class="btns">
-      <a href="#projects" class="btn btn-gold">▶ View Projects</a>
-      <a href="resume.pdf" download class="btn btn-ghost">⬇ Resume</a>
+      <a href="#projects" class="btn btn-g">▶ View Projects</a>
+      <a href="resume.pdf" download class="btn btn-w">⬇ Resume</a>
     </div>
   </div>
-
-  <div class="hero-vis">
+  <div class="hero-right">
     <div class="pf-wrap">
       <div class="pf-glow"></div>
-      <div class="pf-hex-outer"></div>
-      <div class="pf-hex-bg"></div>
+      <div class="pf-spin"></div>
+      <div class="pf-bg"></div>
       <div class="pf-img"><img src="profile.png" alt="Peemapol"></div>
-      <div class="pf-corner tl">PLAYER_01</div>
-      <div class="pf-corner br">LV.03</div>
+      <div class="hud t">PLAYER_01</div>
+      <div class="hud b">LV.03 · ONLINE</div>
     </div>
     <div class="stat-card">
-      <div class="stat-card-head"><span>// CHARACTER STATS</span><span>PEEMAPOL</span></div>
-      <div class="stat-body">
+      <div class="sc-head"><span>// CHARACTER STATS</span><span>PEEMAPOL</span></div>
+      <div class="sc-body">
         <div class="sr"><span class="sl">DESIGN</span><div class="st"><div class="sf c1" style="--p:88%;--d:1.2s"></div></div><span class="sp">88</span></div>
         <div class="sr"><span class="sl">AUDIO</span><div class="st"><div class="sf c2" style="--p:82%;--d:1.4s"></div></div><span class="sp">82</span></div>
         <div class="sr"><span class="sl">UNITY</span><div class="st"><div class="sf c3" style="--p:70%;--d:1.6s"></div></div><span class="sp">70</span></div>
@@ -793,27 +421,24 @@ footer{
   </div>
 </header>
 
-<!-- ════ ABOUT ════ -->
+<!-- ═══ ABOUT ═══ -->
 <section id="profile">
   <div class="sh rev">
     <div class="sh-row">
-      <div class="sh-num">01</div>
-      <div class="sh-text">
-        <span class="sh-tag">// ABOUT_ME.exe</span>
-        <div class="sh-title">Profile</div>
-      </div>
-      <div class="sh-divider"></div>
+      <div class="sh-n" data-n="01">01</div>
+      <div class="sh-info"><span class="sh-tag">// ABOUT_ME.exe</span><div class="sh-title">Profile</div></div>
+      <div class="sh-div"></div>
     </div>
-    <div class="sh-line"></div>
+    <div class="sh-rule"></div>
   </div>
   <div class="ab-grid rev d1">
     <div class="ab-panel">
-      <div class="pt">BIO DATA</div>
+      <div class="ap-title">Bio Data</div>
       <p>ผมเป็นนักศึกษาที่สนใจด้าน <strong>Game Design</strong> มีประสบการณ์ออกแบบ Gameplay, Game System และสามารถเขียน Story / Narrative ได้ รวมถึงสามารถทำ Sound Design โดยใช้ Audacity ในการตัดต่อ ปรับแต่ง และออกแบบเสียงสำหรับเกมได้</p>
-      <p>มีความเข้าใจพื้นฐาน C# ใน Unity และสามารถประยุกต์ใช้ AI Tools เพื่อช่วยในงาน Development และแก้ปัญหาได้อย่างรวดเร็ว กำลังมองหาโอกาสฝึกงานเพื่อพัฒนาทักษะจากสภาพแวดล้อมการทำงานจริง</p>
+      <p>มีความเข้าใจพื้นฐาน C# ใน Unity และสามารถประยุกต์ใช้ AI Tools เพื่อช่วยในงาน Development และแก้ปัญหาได้อย่างรวดเร็ว กำลังมองหาโอกาสฝึกงานเพื่อพัฒนาทักษะจากสภาพแวดล้อมการทำงานจริง พร้อมเรียนรู้และพัฒนาตัวเองอยู่เสมอ</p>
     </div>
     <div class="ab-panel">
-      <div class="pt">EDUCATION LOG</div>
+      <div class="ap-title">Education Log</div>
       <ul class="tl">
         <li><strong>Sripatum University</strong><span>Interactive &amp; Game | 2023 – Present</span></li>
         <li><strong>Thaiglobal College</strong><span>Computer Business | 2019 – 2022</span></li>
@@ -822,127 +447,80 @@ footer{
   </div>
 </section>
 
-<!-- ════ SKILLS ════ -->
+<!-- ═══ SKILLS ═══ -->
 <section id="skills">
   <div class="sh rev">
     <div class="sh-row">
-      <div class="sh-num">02</div>
-      <div class="sh-text">
-        <span class="sh-tag">// SKILL_TREE.dat</span>
-        <div class="sh-title">Expertise</div>
-      </div>
-      <div class="sh-divider"></div>
+      <div class="sh-n" data-n="02">02</div>
+      <div class="sh-info"><span class="sh-tag">// SKILL_TREE.dat</span><div class="sh-title">Expertise</div></div>
+      <div class="sh-div"></div>
     </div>
-    <div class="sh-line"></div>
+    <div class="sh-rule"></div>
   </div>
   <div class="sk-wrap rev d1">
     <div class="sk-grid">
-      <div class="sk-cell"><div class="sk-cat">CORE EXPERTISE</div><div class="tags"><span class="tag">Gameplay Design</span><span class="tag">Level Design</span><span class="tag">Story / Narrative</span><span class="tag">Audio Implementation</span></div></div>
-      <div class="sk-cell"><div class="sk-cat">SOFT SKILLS</div><div class="tags"><span class="tag">Problem Solving</span><span class="tag">Team Collaboration</span><span class="tag">Deadline Management</span><span class="tag">Fast Iteration</span></div></div>
-      <div class="sk-cell"><div class="sk-cat">TECHNICAL</div><div class="tags"><span class="tag">Unity (Intermediate)</span><span class="tag">Unreal Engine (Basic)</span><span class="tag">C# Scripting</span><span class="tag">Audacity (Advanced)</span></div></div>
-      <div class="sk-cell"><div class="sk-cat">TOOLS</div><div class="tags"><span class="tag">After Effects</span><span class="tag">Illustrator</span><span class="tag">Maya</span><span class="tag">Substance Painter</span></div></div>
+      <div class="sk-cell"><div class="sk-cat">Core Expertise</div><div class="tags"><span class="tag">Gameplay Design</span><span class="tag">Level Design</span><span class="tag">Story / Narrative</span><span class="tag">Audio Implementation</span></div></div>
+      <div class="sk-cell"><div class="sk-cat">Soft Skills</div><div class="tags"><span class="tag">Problem Solving</span><span class="tag">Team Collaboration</span><span class="tag">Deadline Management</span><span class="tag">Fast Iteration</span></div></div>
+      <div class="sk-cell"><div class="sk-cat">Technical</div><div class="tags"><span class="tag">Unity (Intermediate)</span><span class="tag">Unreal Engine (Basic)</span><span class="tag">C# Scripting</span><span class="tag">Audacity (Advanced)</span></div></div>
+      <div class="sk-cell"><div class="sk-cat">Tools</div><div class="tags"><span class="tag">After Effects</span><span class="tag">Illustrator</span><span class="tag">Maya</span><span class="tag">Substance Painter</span></div></div>
     </div>
   </div>
 </section>
 
-<!-- ════ PROJECTS ════ -->
+<!-- ═══ PROJECTS ═══ -->
 <section id="projects">
   <div class="sh rev">
     <div class="sh-row">
-      <div class="sh-num">03</div>
-      <div class="sh-text">
-        <span class="sh-tag">// PROJECT_DB.json</span>
-        <div class="sh-title">Projects</div>
-      </div>
-      <div class="sh-divider"></div>
+      <div class="sh-n" data-n="03">03</div>
+      <div class="sh-info"><span class="sh-tag">// PROJECT_DB.json</span><div class="sh-title">Projects</div></div>
+      <div class="sh-div"></div>
     </div>
-    <div class="sh-line"></div>
+    <div class="sh-rule"></div>
   </div>
-  <div class="prj-grid rev d1">
-
+  <div class="prj-bento rev d1">
     <div class="prj">
-      <div class="prj-thumb"><img src="project-ramen.jpg" alt=""><div class="prj-thumb-ov"></div><div class="prj-num">PRJ_001</div></div>
-      <div class="prj-body">
-        <div class="prj-genre">Time Management · Action Casual · Unity/C#</div>
-        <div class="prj-name">Ramen Rider</div>
-        <div class="prj-role">⚙ Story · Dialog Sys · Sound · Programmer</div>
-        <p class="prj-desc">เกม Time Management (Team of 5) รับบทลูกชายร้านราเมงสายซิ่ง พัฒนาระบบ Dialog และแต่งเสียง SFX ด้วย Audacity</p>
-        <button class="prj-btn" onclick="openModal('mr')">Open File <span class="parr">→</span></button>
-      </div>
+      <div class="prj-img"><img src="project-ramen.jpg" alt=""><div class="prj-img-ov"></div><div class="prj-num">PRJ_001</div></div>
+      <div class="prj-body"><div class="prj-genre">Time Management · Action Casual · Unity / C#</div><div class="prj-name">Ramen Rider</div><div class="prj-role">⚙ Story · Dialog Sys · Sound · Programmer</div><p class="prj-desc">เกม Time Management (Team of 5) รับบทลูกชายร้านราเมงสายซิ่ง พัฒนาระบบ Dialog และแต่งเสียง SFX ด้วย Audacity</p><button class="prj-btn" onclick="openModal('mr')">Open File <span class="arr">→</span></button></div>
     </div>
-
     <div class="prj">
-      <div class="prj-thumb"><img src="project1.jpg" alt=""><div class="prj-thumb-ov"></div><div class="prj-num">PRJ_002</div></div>
-      <div class="prj-body">
-        <div class="prj-genre">Horror · First-Person · Exploration</div>
-        <div class="prj-name">Abandoned Rails</div>
-        <div class="prj-role">⚙ Game Designer · Programmer (Solo)</div>
-        <p class="prj-desc">เกมแนว Horror พัฒนาด้วย Unity สำรวจทางรถไฟร้าง เน้นสร้างความกดดันผ่านบรรยากาศและการเล่าเรื่อง</p>
-        <button class="prj-btn" onclick="openModal('ma')">Open File <span class="parr">→</span></button>
-      </div>
+      <div class="prj-img"><img src="project1.jpg" alt=""><div class="prj-img-ov"></div><div class="prj-num">PRJ_002</div></div>
+      <div class="prj-body"><div class="prj-genre">Horror · First-Person · Exploration</div><div class="prj-name">Abandoned Rails</div><div class="prj-role">⚙ Game Designer · Programmer (Solo)</div><p class="prj-desc">เกมแนว Horror พัฒนาด้วย Unity สำรวจทางรถไฟร้าง เน้นสร้างความกดดันผ่านบรรยากาศและการเล่าเรื่อง</p><button class="prj-btn" onclick="openModal('ma')">Open File <span class="arr">→</span></button></div>
     </div>
-
     <div class="prj">
-      <div class="prj-thumb"><img src="project2.jpg" alt=""><div class="prj-thumb-ov"></div><div class="prj-num">PRJ_003</div></div>
-      <div class="prj-body">
-        <div class="prj-genre">Action RPG · 3D · Co-op</div>
-        <div class="prj-name">Unknown Knight</div>
-        <div class="prj-role">⚙ Sub-Dev · Level Designer · Narrative</div>
-        <p class="prj-desc">เกม 3D Action RPG (Co-op) จัดฉากดันเจี้ยน เขียนเนื้อเรื่อง และเขียนระบบ Checkpoint</p>
-        <button class="prj-btn" onclick="openModal('mk')">Open File <span class="parr">→</span></button>
-      </div>
+      <div class="prj-img"><img src="project2.jpg" alt=""><div class="prj-img-ov"></div><div class="prj-num">PRJ_003</div></div>
+      <div class="prj-body"><div class="prj-genre">Action RPG · 3D · Co-op</div><div class="prj-name">Unknown Knight</div><div class="prj-role">⚙ Sub-Dev · Level Designer · Narrative</div><p class="prj-desc">เกม 3D Action RPG (Co-op) จัดฉากดันเจี้ยน เขียนเนื้อเรื่อง และเขียนระบบ Checkpoint</p><button class="prj-btn" onclick="openModal('mk')">Open File <span class="arr">→</span></button></div>
     </div>
-
     <div class="prj">
-      <div class="prj-thumb"><img src="project3.jpg" alt=""><div class="prj-thumb-ov"></div><div class="prj-num">PRJ_004</div></div>
-      <div class="prj-body">
-        <div class="prj-genre">3D Art · PBR · Maya · Substance · Unreal</div>
-        <div class="prj-name">3D Asset Workflow</div>
-        <div class="prj-role">⚙ 3D Artist · Model &amp; Texture</div>
-        <p class="prj-desc">กระบวนการสร้าง Asset ตั้งแต่ Maya, PBR ใน Substance และจัดแสงใน Unreal/Unity</p>
-        <button class="prj-btn" onclick="openModal('m3')">Open File <span class="parr">→</span></button>
-      </div>
+      <div class="prj-img"><img src="project3.jpg" alt=""><div class="prj-img-ov"></div><div class="prj-num">PRJ_004</div></div>
+      <div class="prj-body"><div class="prj-genre">3D Art · PBR · Maya · Substance · Unreal</div><div class="prj-name">3D Asset Workflow</div><div class="prj-role">⚙ 3D Artist · Model &amp; Texture</div><p class="prj-desc">กระบวนการสร้าง Asset ตั้งแต่ Maya, PBR ใน Substance และจัดแสงใน Unreal/Unity</p><button class="prj-btn" onclick="openModal('m3')">Open File <span class="arr">→</span></button></div>
     </div>
-
     <div class="prj">
-      <div class="prj-thumb"><img src="project-ball.jpg" alt=""><div class="prj-thumb-ov"></div><div class="prj-num">PRJ_005</div></div>
-      <div class="prj-body">
-        <div class="prj-genre">2D Platformer · Casual · Unity 2D</div>
-        <div class="prj-name">2D Ball Platformer</div>
-        <div class="prj-role">⚙ Developer (Year 1)</div>
-        <p class="prj-desc">Unity 2D Platformer แนว Casual บังคับลูกบอลฝ่า 3 ด่าน มีระบบเลือดและการเก็บคะแนน</p>
-        <button class="prj-btn" onclick="openModal('mb')">Open File <span class="parr">→</span></button>
-      </div>
+      <div class="prj-img"><img src="project-ball.jpg" alt=""><div class="prj-img-ov"></div><div class="prj-num">PRJ_005</div></div>
+      <div class="prj-body"><div class="prj-genre">2D Platformer · Casual · Unity 2D</div><div class="prj-name">2D Ball Platformer</div><div class="prj-role">⚙ Developer — Year 1</div><p class="prj-desc">Unity 2D Platformer แนว Casual บังคับลูกบอลฝ่า 3 ด่าน มีระบบเลือดและการเก็บคะแนน</p><button class="prj-btn" onclick="openModal('mb')">Open File <span class="arr">→</span></button></div>
     </div>
-
   </div>
 </section>
-</div><!-- /wrap -->
+</div><!-- /w -->
 
-<!-- ════ CONTACT ════ -->
+<!-- ═══ CONTACT ═══ -->
 <section id="contact">
-  <div class="wrap">
-    <div class="con-inner">
+  <div class="w">
+    <div class="con-grid">
       <div class="rev">
-        <div class="sh con-sh">
+        <div class="sh">
           <div class="sh-row">
-            <div class="sh-num">04</div>
-            <div class="sh-text">
-              <span class="sh-tag">// CONTACT.init</span>
-              <div class="sh-title">Transmission</div>
-            </div>
+            <div class="sh-n" data-n="04">04</div>
+            <div class="sh-info"><span class="sh-tag">// CONTACT.init</span><div class="sh-title">Transmission</div></div>
           </div>
-          <div class="sh-line"></div>
+          <div class="sh-rule"></div>
         </div>
         <p class="con-desc">หากสนใจร่วมงาน หรือต้องการให้ผมเข้าไปเป็นส่วนหนึ่งของทีมในฐานะเด็กฝึกงาน สามารถติดต่อได้ตามช่องทางด้านล่างครับ</p>
       </div>
-      <div class="rev d1">
-        <div class="con-table">
-          <div class="ct-row"><span class="ct-key">PHONE</span><span class="ct-val">095-505-8088</span></div>
-          <div class="ct-row"><span class="ct-key">EMAIL</span><span class="ct-val"><a href="mailto:lnwpureza2545@gmail.com">lnwpureza2545@gmail.com</a></span></div>
-          <div class="ct-row"><span class="ct-key">LOCATION</span><span class="ct-val">Samut Prakan, Thailand</span></div>
-          <div class="ct-row"><span class="ct-key">GITHUB</span><span class="ct-val"><a href="https://github.com/lnwpureza2545" target="_blank">github.com/lnwpureza2545</a></span></div>
-        </div>
+      <div class="con-right rev d1">
+        <div class="ct-row"><span class="ct-key">PHONE</span><span class="ct-val">095-505-8088</span></div>
+        <div class="ct-row"><span class="ct-key">EMAIL</span><span class="ct-val"><a href="mailto:lnwpureza2545@gmail.com">lnwpureza2545@gmail.com</a></span></div>
+        <div class="ct-row"><span class="ct-key">LOCATION</span><span class="ct-val">Samut Prakan, Thailand</span></div>
+        <div class="ct-row"><span class="ct-key">GITHUB</span><span class="ct-val"><a href="https://github.com/lnwpureza2545" target="_blank">github.com/lnwpureza2545</a></span></div>
         <a href="mailto:lnwpureza2545@gmail.com" class="con-cta">▶ INITIATE CONTACT</a>
       </div>
     </div>
@@ -959,152 +537,112 @@ footer{
 </div>
 
 <!-- LIGHTBOX -->
-<div id="lbx" class="lbx" onclick="closeLbx()">
-  <span class="lbx-x">[X]</span>
-  <img id="lbxImg" src="" alt="">
-</div>
+<div id="lbx" class="lbx"><span class="lbx-x" onclick="closeLbx()">[X]</span><img id="lbxImg" src="" alt=""></div>
 
-<!-- ════ MODALS ════ -->
+<!-- ═══ MODALS ═══ -->
 <div id="mr" class="modal-overlay">
-  <div class="modal-box">
-    <div class="m-bar"><span class="m-id">FILE: PRJ_001 // RAMEN_RIDER.dat</span><div class="m-btns"><button class="wb wx"></button><button class="wb wm"></button><button class="wb wc" onclick="closeModal('mr')"></button></div></div>
-    <div class="m-content">
+  <div class="mbox">
+    <div class="m-bar"><span class="m-fid">FILE: PRJ_001 // RAMEN_RIDER.dat</span><div class="m-btns"><button class="wb wx"></button><button class="wb wm"></button><button class="wb wc" onclick="closeModal('mr')"></button></div></div>
+    <div class="m-body">
       <h2 class="m-hl">Ramen Rider</h2><span class="m-sub">Sound · Story · Dialog Sys · Programmer | Team of 5</span>
       <div class="m-tags"><span>Time Management</span><span>Action Casual</span><span>Unity / C#</span></div>
-      <div class="msec">PROGRESS SCREENSHOTS</div>
-      <div class="ig3">
-        <div class="ibox"><img src="ramen-progress-1.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">In Progress</div></div>
-        <div class="ibox"><img src="ramen-progress-2.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">In Progress</div></div>
-        <div class="ibox"><img src="ramen-progress-3.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">In Progress</div></div>
-      </div>
-      <div class="msec">RESPONSIBILITIES</div>
-      <ul>
-        <li><strong>Narrative & Dialog Design:</strong> ออกแบบโครงเรื่องหลัก และเขียนบทสนทนาสะท้อนคาแรคเตอร์ตัวเอกที่เป็นสายซิ่งกวนๆ</li>
-        <li><strong>Dialog System Programming:</strong> เขียนโค้ดพัฒนาระบบ Dialog ภายในเกมเอง ควบคุมการแสดงผลข้อความและโต้ตอบตามเหตุการณ์</li>
-        <li><strong>Audio Editing (Audacity):</strong> ใช้เทคนิค Distortion และ Pitch Shift เพื่อสร้างเอกลักษณ์ของเสียงให้เข้ากับสไตล์ Comic</li>
-      </ul>
-      <div class="msec">GAME STORY</div>
+      <div class="msec">Progress Screenshots</div>
+      <div class="ig3"><div class="ibox"><img src="ramen-progress-1.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">In Progress</div></div><div class="ibox"><img src="ramen-progress-2.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">In Progress</div></div><div class="ibox"><img src="ramen-progress-3.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">In Progress</div></div></div>
+      <div class="msec">Responsibilities</div>
+      <ul><li><strong>Narrative & Dialog Design:</strong> ออกแบบโครงเรื่องหลัก และเขียนบทสนทนาสะท้อนคาแรคเตอร์ตัวเอกที่เป็นสายซิ่งกวนๆ</li><li><strong>Dialog System Programming:</strong> เขียนโค้ดพัฒนาระบบ Dialog ภายในเกมเอง ควบคุมการแสดงผลข้อความและโต้ตอบตามเหตุการณ์</li><li><strong>Audio Editing (Audacity):</strong> ใช้เทคนิค Distortion และ Pitch Shift เพื่อสร้างเอกลักษณ์ของเสียงให้เข้ากับสไตล์ Comic</li></ul>
+      <div class="msec">Game Story</div>
       <p><strong>Kobayashi Ren</strong> เด็กหนุ่มสายซิ่งผู้โตมากับกลิ่นน้ำซุปของร้านราเมงเก่าแก่ เขาเคยสาบานว่าจะไม่ยืนหลังเคาน์เตอร์เด็ดขาด แต่ชีวิตก็ไม่ปล่อยให้หนีง่ายๆ ร้านกำลังโดนเจ้าหนี้กดดัน และธุรกิจเดลิเวอรี่ราเมงคือทางรอดเดียว</p>
-      <div class="msec">DIALOG SAMPLE</div>
-      <div class="term-box">
-        <div class="term-p">// SCENE: ARRIVING_AT_SHOP — STATUS: LOADED</div>
-        <div class="term-l"><strong>พ่อ »</strong> เมืองเปลี่ยนไปเยอะใช่ไหมล่ะ</div>
-        <div class="term-l"><strong>Ren »</strong> เปลี่ยนมาก ถนนเละ โค้งเยอะ รถติด… เหมาะกับเด็กแว้นสุดๆ</div>
-        <div class="term-l"><strong>พ่อ »</strong> นี่ไม่ใช่สนามแข่งนะ!</div>
-        <div class="term-l"><strong>Ren »</strong> สำหรับผม มันคือด่านแรกของเกมครับพ่อ</div>
-      </div>
+      <div class="msec">Dialog Sample</div>
+      <div class="term-box"><div class="t-prompt">// SCENE: ARRIVING_AT_SHOP — STATUS: LOADED</div><div class="t-line"><strong>พ่อ »</strong> เมืองเปลี่ยนไปเยอะใช่ไหมล่ะ</div><div class="t-line"><strong>Ren »</strong> เปลี่ยนมาก ถนนเละ โค้งเยอะ รถติด… เหมาะกับเด็กแว้นสุดๆ</div><div class="t-line"><strong>พ่อ »</strong> นี่ไม่ใช่สนามแข่งนะ!</div><div class="t-line"><strong>Ren »</strong> สำหรับผม มันคือด่านแรกของเกมครับพ่อ</div></div>
     </div>
   </div>
 </div>
 
 <div id="ma" class="modal-overlay">
-  <div class="modal-box">
-    <div class="m-bar"><span class="m-id">FILE: PRJ_002 // ABANDONED_RAILS.dat</span><div class="m-btns"><button class="wb wx"></button><button class="wb wm"></button><button class="wb wc" onclick="closeModal('ma')"></button></div></div>
-    <div class="m-content">
+  <div class="mbox">
+    <div class="m-bar"><span class="m-fid">FILE: PRJ_002 // ABANDONED_RAILS.dat</span><div class="m-btns"><button class="wb wx"></button><button class="wb wm"></button><button class="wb wc" onclick="closeModal('ma')"></button></div></div>
+    <div class="m-body">
       <h2 class="m-hl">Abandoned Rails</h2><span class="m-sub">Game Designer & Programmer (Solo) | Unity (C#)</span>
       <div class="m-tags"><span>First-Person</span><span>Exploration</span><span>Horror</span></div>
       <div class="vid"><span class="vid-hint">DBL-CLICK: FULLSCREEN</span><video controls autoplay loop muted playsinline ondblclick="toggleFS(this)"><source src="abandoned-rails-video.mp4" type="video/mp4"></video></div>
-      <div class="msec">GAMEPLAY OVERVIEW</div>
+      <div class="msec">Gameplay Overview</div>
       <p>ผู้เล่นรับบทเป็นนักสำรวจที่มายังทางรถไฟร้างเพื่อค้นหาความจริงในอดีต ไม่มีศัตรูหรือระบบต่อสู้ ความน่ากลัวเกิดจากบรรยากาศ เสียงที่ไม่คาดคิด และเรื่องราวที่เล่าผ่านสภาพแวดล้อม เป้าหมายคือรวบรวมกุญแจ 3 ดอก และเข้าสู่อุโมงค์เพื่อตื่นจากฝัน</p>
-      <div class="msec">KEY FEATURES</div>
-      <ul>
-        <li>สภาพแวดล้อมทางรถไฟร้างที่บรรยากาศน่าขนลุก</li>
-        <li>ไม่มีระบบต่อสู้ เน้น Psychological Horror</li>
-        <li>Environmental Storytelling ผ่านกระดาษโน้ตและเสียง</li>
-        <li>ผีที่มองเห็นได้แต่ไม่ทำอันตรายโดยตรง สร้างความตึงเครียดผ่านการมองเห็น</li>
-      </ul>
+      <div class="msec">Key Features</div>
+      <ul><li>สภาพแวดล้อมทางรถไฟร้างที่บรรยากาศน่าขนลุก</li><li>ไม่มีระบบต่อสู้ เน้น Psychological Horror</li><li>Environmental Storytelling ผ่านกระดาษโน้ตและเสียง</li><li>ผีที่มองเห็นได้แต่ไม่ทำอันตรายโดยตรง สร้างความตึงเครียดผ่านการมองเห็น</li></ul>
     </div>
   </div>
 </div>
 
 <div id="mk" class="modal-overlay">
-  <div class="modal-box">
-    <div class="m-bar"><span class="m-id">FILE: PRJ_003 // UNKNOWN_KNIGHT.dat</span><div class="m-btns"><button class="wb wx"></button><button class="wb wm"></button><button class="wb wc" onclick="closeModal('mk')"></button></div></div>
-    <div class="m-content">
+  <div class="mbox">
+    <div class="m-bar"><span class="m-fid">FILE: PRJ_003 // UNKNOWN_KNIGHT.dat</span><div class="m-btns"><button class="wb wx"></button><button class="wb wm"></button><button class="wb wc" onclick="closeModal('mk')"></button></div></div>
+    <div class="m-body">
       <h2 class="m-hl">Unknown Knight</h2><span class="m-sub">Sub-Developer & Level Designer (Co-op)</span>
       <div class="m-tags"><span>Action RPG</span><span>Third-Person 3D</span></div>
       <div class="vid"><span class="vid-hint">DBL-CLICK: FULLSCREEN</span><video controls autoplay loop muted playsinline ondblclick="toggleFS(this)"><source src="unknown-knight-video.mp4" type="video/mp4"></video></div>
-      <div class="msec">STORY CONCEPT</div>
+      <div class="msec">Story Concept</div>
       <p>วันหนึ่ง คุณตื่นขึ้นมาในดันเจี้ยน มีเพียงอัศวินปริศนาอยู่ข้างๆ รอบตัวเต็มไปด้วยมอนสเตอร์ คุณต้องหยิบดาบขึ้นมาต่อสู้เพื่อเอาชีวิตรอดและหาทางหนีออกให้จงได้</p>
-      <div class="msec">MY RESPONSIBILITIES</div>
-      <ul>
-        <li><strong>Level Design:</strong> นำ 3D Asset มาจัดวางขึ้นเป็นฉากดันเจี้ยนที่น่าสนใจและเหมาะกับการต่อสู้</li>
-        <li><strong>Narrative Design:</strong> เขียนโครงเรื่องและบทสนทนาของตัวละคร</li>
-        <li><strong>Programming:</strong> เขียนระบบ Checkpoint เพื่ออำนวยความสะดวกให้ผู้เล่น</li>
-      </ul>
+      <div class="msec">My Responsibilities</div>
+      <ul><li><strong>Level Design:</strong> นำ 3D Asset มาจัดวางขึ้นเป็นฉากดันเจี้ยนที่น่าสนใจและเหมาะกับการต่อสู้</li><li><strong>Narrative Design:</strong> เขียนโครงเรื่องและบทสนทนาของตัวละคร</li><li><strong>Programming:</strong> เขียนระบบ Checkpoint เพื่ออำนวยความสะดวกให้ผู้เล่น</li></ul>
     </div>
   </div>
 </div>
 
 <div id="m3" class="modal-overlay">
-  <div class="modal-box">
-    <div class="m-bar"><span class="m-id">FILE: PRJ_004 // 3D_ASSET_WORKFLOW.dat</span><div class="m-btns"><button class="wb wx"></button><button class="wb wm"></button><button class="wb wc" onclick="closeModal('m3')"></button></div></div>
-    <div class="m-content">
+  <div class="mbox">
+    <div class="m-bar"><span class="m-fid">FILE: PRJ_004 // 3D_ASSET_WORKFLOW.dat</span><div class="m-btns"><button class="wb wx"></button><button class="wb wm"></button><button class="wb wc" onclick="closeModal('m3')"></button></div></div>
+    <div class="m-body">
       <h2 class="m-hl">3D Asset Workflow</h2><span class="m-sub">3D Artist | Maya · Substance · Unreal · Unity</span>
       <div class="m-tags"><span>3D Modeling</span><span>PBR Texturing</span><span>Unreal/Unity</span></div>
-      <div class="msec">ASSET PROCESS</div>
-      <div class="ig2">
-        <div class="ibox"><img src="3d-reference.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">Reference (AI)</div></div>
-        <div class="ibox"><img src="3d-realwork.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">Real Work</div></div>
-      </div>
-      <div class="msec">WORKFLOW</div>
-      <ul>
-        <li><strong>3D Modeling (Maya):</strong> High-Poly, Low-Poly และ UV Unwrapping</li>
-        <li><strong>Texturing & Baking (Substance):</strong> Bake maps และ PBR Material</li>
-        <li><strong>Scene Setup:</strong> Import สู่ Engine, ตั้งค่า Material และ Lighting</li>
-      </ul>
+      <div class="msec">Asset Process</div>
+      <div class="ig2"><div class="ibox"><img src="3d-reference.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">Reference (AI)</div></div><div class="ibox"><img src="3d-realwork.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">Real Work</div></div></div>
+      <div class="msec">Workflow</div>
+      <ul><li><strong>3D Modeling (Maya):</strong> High-Poly, Low-Poly และ UV Unwrapping</li><li><strong>Texturing & Baking (Substance):</strong> Bake maps และ PBR Material</li><li><strong>Scene Setup:</strong> Import สู่ Engine, ตั้งค่า Material และ Lighting</li></ul>
     </div>
   </div>
 </div>
 
 <div id="mb" class="modal-overlay">
-  <div class="modal-box">
-    <div class="m-bar"><span class="m-id">FILE: PRJ_005 // BALL_PLATFORMER.dat</span><div class="m-btns"><button class="wb wx"></button><button class="wb wm"></button><button class="wb wc" onclick="closeModal('mb')"></button></div></div>
-    <div class="m-content">
-      <h2 class="m-hl">2D Ball Platformer</h2><span class="m-sub">Developer (Year 1 Project) | Unity 2D (C#)</span>
+  <div class="mbox">
+    <div class="m-bar"><span class="m-fid">FILE: PRJ_005 // BALL_PLATFORMER.dat</span><div class="m-btns"><button class="wb wx"></button><button class="wb wm"></button><button class="wb wc" onclick="closeModal('mb')"></button></div></div>
+    <div class="m-body">
+      <h2 class="m-hl">2D Ball Platformer</h2><span class="m-sub">Developer (Year 1) | Unity 2D (C#)</span>
       <div class="m-tags"><span>2D Platformer</span><span>Casual</span><span>C# Basic</span></div>
       <div class="vid"><span class="vid-hint">DBL-CLICK: FULLSCREEN</span><video controls autoplay loop muted playsinline ondblclick="toggleFS(this)"><source src="ball-game-video.mp4" type="video/mp4"></video></div>
-      <div class="msec">OVERVIEW</div>
+      <div class="msec">Overview</div>
       <p>โปรเจกต์เกมแรกในช่วงปี 1 เป็น 2D Platformer ที่บังคับลูกบอลชายหาดกระโดดข้ามแพลตฟอร์มต่างๆ ไปยัง Portal ในแต่ละด่าน</p>
-      <div class="msec">KEY FEATURES</div>
-      <ul>
-        <li><strong>Platforming Mechanics:</strong> ฟิสิกส์ 2D พื้นฐาน กลิ้งและกระโดดข้ามสิ่งกีดขวาง</li>
-        <li><strong>Score System:</strong> เก็บเพชรเพิ่มคะแนนในแต่ละด่าน</li>
-        <li><strong>Health & Restart:</strong> ระบบ Hearts และ Respawn</li>
-        <li><strong>3 Levels:</strong> ความยากเพิ่มขึ้นเรื่อยๆ พร้อมระบบเปลี่ยนด่าน</li>
-      </ul>
+      <div class="msec">Key Features</div>
+      <ul><li><strong>Platforming Mechanics:</strong> ฟิสิกส์ 2D พื้นฐาน กลิ้งและกระโดดข้ามสิ่งกีดขวาง</li><li><strong>Score System:</strong> เก็บเพชรเพิ่มคะแนนในแต่ละด่าน</li><li><strong>Health & Restart:</strong> ระบบ Hearts และ Respawn</li><li><strong>3 Levels:</strong> ความยากเพิ่มขึ้นเรื่อยๆ พร้อมระบบเปลี่ยนด่าน</li></ul>
     </div>
   </div>
 </div>
 
-<!-- ════ SCRIPTS ════ -->
+<!-- ═══ JS ═══ -->
 <script>
-/* ── CANVAS PARTICLES ── */
+/* ── CANVAS ── */
 const cv=document.getElementById('bgCv'),cx=cv.getContext('2d');
-let W,H,pts=[];
-function rs(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight}
-rs();window.addEventListener('resize',rs);
-class P{constructor(){this.r()}r(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.25;this.vy=(Math.random()-.5)*.25;this.sz=Math.random()*1.4+.3;this.l=Math.random();this.ml=.4+Math.random()*.6;this.c=Math.random()>.5?[240,165,0]:[45,108,255]}u(){this.x+=this.vx;this.y+=this.vy;this.l+=.0018;if(this.l>this.ml||this.x<0||this.x>W||this.y<0||this.y>H)this.r()}d(){const a=Math.sin(this.l/this.ml*Math.PI)*.5;cx.beginPath();cx.arc(this.x,this.y,this.sz,0,Math.PI*2);cx.fillStyle=`rgba(${this.c},${a})`;cx.fill()}}
-for(let i=0;i<75;i++)pts.push(new P());
-function draw(){cx.clearRect(0,0,W,H);pts.forEach(p=>{p.u();p.d()});for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const d=Math.hypot(pts[i].x-pts[j].x,pts[i].y-pts[j].y);if(d<100){cx.beginPath();cx.moveTo(pts[i].x,pts[i].y);cx.lineTo(pts[j].x,pts[j].y);cx.strokeStyle=`rgba(240,165,0,${(1-d/100)*.08})`;cx.lineWidth=.5;cx.stroke()}}requestAnimationFrame(draw)}
+let W,H,P=[];
+const rs=()=>{W=cv.width=innerWidth;H=cv.height=innerHeight};rs();addEventListener('resize',rs);
+class Pt{constructor(){this.r()}r(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.22;this.vy=(Math.random()-.5)*.22;this.sz=Math.random()*1.3+.3;this.l=Math.random();this.ml=.4+Math.random()*.6;this.col=Math.random()>.6?[139,92,246]:Math.random()>.5?[232,121,249]:[34,211,238]}u(){this.x+=this.vx;this.y+=this.vy;this.l+=.0016;if(this.l>this.ml||this.x<0||this.x>W||this.y<0||this.y>H)this.r()}d(){const a=Math.sin(this.l/this.ml*Math.PI)*.45;cx.beginPath();cx.arc(this.x,this.y,this.sz,0,Math.PI*2);cx.fillStyle=`rgba(${this.col},${a})`;cx.fill()}}
+for(let i=0;i<70;i++)P.push(new Pt());
+const draw=()=>{cx.clearRect(0,0,W,H);P.forEach(p=>{p.u();p.d()});for(let i=0;i<P.length;i++)for(let j=i+1;j<P.length;j++){const d=Math.hypot(P[i].x-P[j].x,P[i].y-P[j].y);if(d<95){cx.beginPath();cx.moveTo(P[i].x,P[i].y);cx.lineTo(P[j].x,P[j].y);cx.strokeStyle=`rgba(139,92,246,${(1-d/95)*.08})`;cx.lineWidth=.5;cx.stroke()}}requestAnimationFrame(draw)};
 draw();
 
 /* ── CURSOR ── */
-const cDot=document.getElementById('curDot'),cCross=document.getElementById('curCross');
+const cd=document.getElementById('cDot'),cr=document.getElementById('cRing');
 let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cDot.style.cssText=`left:${mx}px;top:${my}px`});
-function moveCross(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;cCross.style.cssText=`left:${rx}px;top:${ry}px`;requestAnimationFrame(moveCross)}moveCross();
-const inter=document.querySelectorAll('a,button,.tag,.prj,.prj-btn');
-inter.forEach(el=>{
-  el.addEventListener('mouseenter',()=>{const d=cDot.querySelector('.cur-dot');d.style.transform='scale(2.5)';d.style.background='var(--blue)'});
-  el.addEventListener('mouseleave',()=>{const d=cDot.querySelector('.cur-dot');d.style.transform='scale(1)';d.style.background='var(--gold)'})
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cd.style.cssText=`left:${mx}px;top:${my}px`});
+const moveRing=()=>{rx+=(mx-rx)*.1;ry+=(my-ry)*.1;cr.style.cssText=`left:${rx}px;top:${ry}px`;requestAnimationFrame(moveRing)};moveRing();
+document.querySelectorAll('a,button,.tag,.prj,.prj-btn').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cd.style.width='14px';cd.style.height='14px';cd.style.background='#e879f9';cr.style.width='50px';cr.style.height='50px';cr.style.borderColor='rgba(232,121,249,.65)'});
+  el.addEventListener('mouseleave',()=>{cd.style.width='8px';cd.style.height='8px';cd.style.background='#8b5cf6';cr.style.width='32px';cr.style.height='32px';cr.style.borderColor='rgba(139,92,246,.4)'});
 });
 
 /* ── BOOT ── */
 const logs=['INITIALIZING RENDER ENGINE...','LOADING ASSET MANIFEST...','COMPILING SHADER PROGRAMS...','MOUNTING AUDIO SUBSYSTEM...','VERIFYING PORTFOLIO DATA...','DECOMPRESSING PROJECT FILES...','CALIBRATING PHYSICS ENGINE...','STREAMING CINEMATIC ASSETS...','ALL SYSTEMS NOMINAL.','▶  WELCOME  ·  PEEMAPOL.EXE  ·  2026'];
-const stats=['LOADING ASSETS','COMPILING','MOUNTING','CALIBRATING','READY'];
+const sl=['LOADING','COMPILING','MOUNTING','CALIBRATING','READY'];
 let booting=true;
-function runBoot(){let i=0;function nl(){if(!booting)return;if(i<logs.length){const d=document.createElement('div');d.textContent='> '+logs[i];document.getElementById('bootLog').appendChild(d);i++;const p=Math.round(i/logs.length*100);document.getElementById('bFill').style.width=p+'%';document.getElementById('bPct').textContent=p+'%';document.getElementById('bStat').textContent=stats[Math.min(4,Math.floor(i/2))];setTimeout(nl,160+Math.random()*260)}else{setTimeout(()=>{if(booting){document.getElementById('boot').classList.add('out');setTimeout(()=>document.getElementById('boot').style.display='none',1000)}},600)}}setTimeout(nl,400)}
+function runBoot(){let i=0;const nl=()=>{if(!booting)return;if(i<logs.length){const d=document.createElement('div');d.textContent='> '+logs[i];document.getElementById('bLog').appendChild(d);i++;const p=Math.round(i/logs.length*100);document.getElementById('bFill').style.width=p+'%';document.getElementById('bPct').textContent=p+'%';document.getElementById('bStat').textContent=sl[Math.min(4,Math.floor(i/2))];setTimeout(nl,150+Math.random()*240)}else{setTimeout(()=>{if(booting){document.getElementById('boot').classList.add('out');setTimeout(()=>document.getElementById('boot').style.display='none',900)}},500)}};setTimeout(nl,350)}
 function skipBoot(){booting=false;document.getElementById('boot').classList.add('out');setTimeout(()=>document.getElementById('boot').style.display='none',500)}
 document.addEventListener('keydown',()=>{if(booting)skipBoot()});
 runBoot();
@@ -1116,30 +654,41 @@ document.querySelectorAll('.rev').forEach(el=>ro.observe(el));
 /* ── ACHIEVEMENTS ── */
 const achs=[{id:'profile',ico:'👤',ttl:'Profile Loaded',xp:'+50 XP'},{id:'skills',ico:'⚔️',ttl:'Skill Tree Unlocked',xp:'+75 XP'},{id:'projects',ico:'🎮',ttl:'Project Files Accessed',xp:'+150 XP'},{id:'contact',ico:'📡',ttl:'Signal Acquired',xp:'+200 XP'}];
 const done=new Set(),ae=document.getElementById('achEl');
-function showAch(a){document.getElementById('achIco').textContent=a.ico;document.getElementById('achTtl').textContent=a.ttl;document.getElementById('achXp').textContent=a.xp;ae.classList.add('show');setTimeout(()=>ae.classList.remove('show'),3500)}
-const ao=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const id=e.target.id;const a=achs.find(x=>x.id===id);if(a&&!done.has(id)){done.add(id);setTimeout(()=>showAch(a),800)}}}),{threshold:.25});
+const showAch=a=>{document.getElementById('achIco').textContent=a.ico;document.getElementById('achTtl').textContent=a.ttl;document.getElementById('achXp').textContent=a.xp;ae.classList.add('show');setTimeout(()=>ae.classList.remove('show'),3500)};
+const ao=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const id=e.target.id,a=achs.find(x=>x.id===id);if(a&&!done.has(id)){done.add(id);setTimeout(()=>showAch(a),700)}}}),{threshold:.25});
 achs.forEach(a=>{const el=document.getElementById(a.id);if(el)ao.observe(el)});
 
 /* ── MODALS ── */
-function openModal(id){const m=document.getElementById(id);m.style.display='flex';setTimeout(()=>m.classList.add('show'),10);document.body.style.overflow='hidden'}
-function closeModal(id){const m=document.getElementById(id);m.classList.remove('show');const v=m.querySelector('video');if(v)v.pause();setTimeout(()=>{m.style.display='none'},400);document.body.style.overflow=''}
+const openModal=id=>{const m=document.getElementById(id);m.style.display='flex';setTimeout(()=>m.classList.add('show'),10);document.body.style.overflow='hidden'};
+const closeModal=id=>{const m=document.getElementById(id);m.classList.remove('show');const v=m.querySelector('video');if(v)v.pause();setTimeout(()=>m.style.display='none',380);document.body.style.overflow=''};
 window.addEventListener('click',e=>{if(e.target.classList.contains('modal-overlay'))closeModal(e.target.id)});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.querySelectorAll('.modal-overlay.show').forEach(m=>closeModal(m.id));closeLbx()}});
 
 /* ── LIGHTBOX ── */
-function openLbx(src){const lb=document.getElementById('lbx');document.getElementById('lbxImg').src=src;lb.style.display='flex';setTimeout(()=>lb.classList.add('show'),10)}
-function closeLbx(){const lb=document.getElementById('lbx');lb.classList.remove('show');setTimeout(()=>lb.style.display='none',300)}
-document.getElementById('lbx').addEventListener('click',closeLbx);
+const openLbx=src=>{const lb=document.getElementById('lbx');document.getElementById('lbxImg').src=src;lb.style.display='flex';setTimeout(()=>lb.classList.add('show'),10)};
+const closeLbx=()=>{const lb=document.getElementById('lbx');lb.classList.remove('show');setTimeout(()=>lb.style.display='none',300)};
+document.getElementById('lbx').addEventListener('click',e=>{if(e.target===e.currentTarget||e.target.classList.contains('lbx-x'))closeLbx()});
 
-/* ── FULLSCREEN VIDEO ── */
-function toggleFS(v){if(!document.fullscreenElement)(v.requestFullscreen||v.webkitRequestFullscreen||v.msRequestFullscreen).call(v);else document.exitFullscreen&&document.exitFullscreen()}
+/* ── VIDEO FULLSCREEN ── */
+const toggleFS=v=>{if(!document.fullscreenElement)(v.requestFullscreen||v.webkitRequestFullscreen||v.msRequestFullscreen).call(v);else document.exitFullscreen&&document.exitFullscreen()};
 
 /* ── HERO ENTRANCE ── */
 window.addEventListener('load',()=>{
-  [...document.querySelectorAll('.hero-content > *,.hero-vis > *')].forEach((el,i)=>{
-    el.style.cssText=`opacity:0;transform:translateY(22px);transition:opacity .8s ease ${i*.12+.5}s,transform .8s ease ${i*.12+.5}s`;
-    setTimeout(()=>{el.style.opacity='1';el.style.transform='translateY(0)'},80);
+  [...document.querySelectorAll('.hero-left > *,.hero-right > *')].forEach((el,i)=>{
+    el.style.cssText=`opacity:0;transform:translateY(20px);transition:opacity .8s ease ${i*.12+.5}s,transform .8s ease ${i*.12+.5}s`;
+    setTimeout(()=>{el.style.opacity='1';el.style.transform='none'},80);
   });
+});
+
+/* ── 3D CARD TILT ── */
+document.querySelectorAll('.prj').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=((e.clientX-r.left)/r.width-.5)*10;
+    const y=((e.clientY-r.top)/r.height-.5)*-10;
+    card.style.transform=`perspective(800px) rotateX(${y}deg) rotateY(${x}deg) translateZ(4px)`;
+  });
+  card.addEventListener('mouseleave',()=>{card.style.transform='';});
 });
 </script>
 </body>
