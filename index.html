@@ -3,1205 +3,665 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PEEMAPOL.EXE — GAME DEVELOPER</title>
+<title>Peemapol Phuangcharoen — Game Developer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════
-   RETRO PIXEL ART — TOKENS
-═══════════════════════════════════════ */
 :root {
-  --black:  #0a0a0f;
-  --dark:   #12121a;
-  --panel:  #1a1a28;
-  --border: #2a2a40;
-
-  /* 4-bit palette */
-  --green:  #00ff41;
-  --gdim:   #00aa2b;
-  --amber:  #ffb700;
-  --pink:   #ff2d78;
-  --cyan:   #00e5ff;
-  --purple: #9b59ff;
-
-  --txt:    #c8d8e8;
-  --dim:    #6888a8;
-
-  /* pixel sizes */
-  --px: 4px;  /* 1 pixel unit */
+  --bg:     #fafaf8;
+  --white:  #ffffff;
+  --ink:    #1a1a1a;
+  --mid:    #555555;
+  --soft:   #999999;
+  --line:   #e8e8e4;
+  --accent: #1a1a1a;
+  --tag-bg: #f0f0ec;
+  --r: 8px;
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior: smooth; image-rendering: pixelated; }
-
+html { scroll-behavior:smooth; }
 body {
-  background: var(--black);
-  color: var(--txt);
-  font-family: 'Press Start 2P', monospace;
-  font-size: 8px;
-  line-height: 1.8;
-  overflow-x: hidden;
-  cursor: none;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
 }
+a { text-decoration: none; color: inherit; }
+img { display: block; max-width: 100%; }
+::selection { background: #d4d4d0; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
 
-/* ── PIXEL CURSOR ── */
-#cur {
-  position: fixed; z-index: 9999; pointer-events: none;
-  width: 12px; height: 20px;
-  image-rendering: pixelated;
-  transform-origin: top left;
-}
-#cur svg { width: 100%; height: 100%; }
-
-/* ── SCANLINES ── */
-body::before {
-  content: '';
-  position: fixed; inset: 0; z-index: 9998; pointer-events: none;
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(0,0,0,.12) 0px,
-    rgba(0,0,0,.12) 1px,
-    transparent 1px,
-    transparent 3px
-  );
-}
-
-/* ── CRT VIGNETTE ── */
-body::after {
-  content: '';
-  position: fixed; inset: 0; z-index: 9997; pointer-events: none;
-  background: radial-gradient(ellipse 90% 85% at 50% 50%, transparent 55%, rgba(0,0,0,.7) 100%);
-}
-
-/* ── PIXEL BORDER MIXIN ── */
-/* 4-corner pixel box style */
-.pbox {
-  border: 4px solid var(--green);
-  position: relative;
-  image-rendering: pixelated;
-}
-.pbox::before {
-  content: '';
-  position: absolute; inset: -8px;
-  border: 4px solid rgba(0,255,65,.15);
-  pointer-events: none;
-}
-/* corner dots */
-.pbox-c::after {
-  content: '';
-  position: absolute;
-  top: -4px; left: -4px;
-  width: 4px; height: 4px;
-  background: var(--green);
-  box-shadow:
-    calc(100% + 4px) 0 var(--green),
-    0 calc(100% + 4px) var(--green),
-    calc(100% + 4px) calc(100% + 4px) var(--green);
-}
-
-/* ── PRESS START SCREEN ── */
-#intro {
-  position: fixed; inset: 0; z-index: 5000;
-  background: var(--black);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  gap: 0;
-  transition: opacity .5s;
-}
-#intro.out { opacity: 0; pointer-events: none; }
-
-.intro-logo {
-  font-size: clamp(14px, 4vw, 28px);
-  color: var(--amber);
-  text-shadow: 0 0 20px rgba(255,183,0,.4);
-  text-align: center;
-  margin-bottom: 32px;
-  line-height: 1.6;
-}
-.intro-logo .sub {
-  display: block; font-size: clamp(6px, 1.5vw, 10px);
-  color: var(--dim); margin-top: 12px; letter-spacing: .1em;
-}
-
-.intro-sprite {
-  width: 64px; height: 64px;
-  margin-bottom: 32px;
-  image-rendering: pixelated;
-}
-
-.press-start {
-  font-size: clamp(7px, 1.8vw, 11px);
-  color: var(--green);
-  animation: blink 1s step-end infinite;
-  text-shadow: 0 0 16px rgba(0,255,65,.6);
-  margin-bottom: 40px;
-}
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-
-.intro-copy {
-  font-size: 6px; color: var(--dim);
-  text-align: center; line-height: 2;
-}
-
-/* ── PIXEL PROGRESS BAR ── */
-.px-bar {
-  display: flex; align-items: center; gap: 4px;
-  margin-top: 24px;
-}
-.px-bar-label { font-size: 6px; color: var(--dim); }
-.px-bar-track {
-  width: 120px; height: 8px;
-  border: 2px solid var(--dim); background: #000;
-  position: relative; overflow: hidden;
-}
-.px-bar-fill {
-  position: absolute; top: 0; left: 0; height: 100%;
-  background: var(--green);
-  box-shadow: 0 0 8px var(--green);
-  width: 0; transition: width .05s step-start;
-  image-rendering: pixelated;
-}
-
-/* ── NAV / HUD TOP ── */
+/* ── NAV ── */
 nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
-  background: var(--dark);
-  border-bottom: 4px solid var(--green);
-  height: 48px;
-  display: flex; align-items: stretch;
-  image-rendering: pixelated;
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(250,250,248,.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  height: 52px;
 }
-nav::after {
-  content: '';
-  position: absolute; bottom: -8px; left: 0; right: 0; height: 4px;
-  background: rgba(0,255,65,.1);
-  pointer-events: none;
+.nav-inner {
+  max-width: 760px; margin: 0 auto; padding: 0 24px;
+  height: 100%; display: flex; align-items: center; justify-content: space-between;
 }
-.nav-title {
-  display: flex; align-items: center;
-  padding: 0 20px;
-  border-right: 4px solid var(--green);
-  font-size: 9px; color: var(--amber);
-  letter-spacing: .05em;
-  text-shadow: 0 0 12px rgba(255,183,0,.4);
-  white-space: nowrap; gap: 8px;
+.nav-name {
+  font-size: 14px; font-weight: 600; color: var(--ink); letter-spacing: -.01em;
 }
-.nav-title::before { content: '▶'; color: var(--green); font-size: 8px; }
-.nav-links {
-  display: flex; flex: 1;
-}
+.nav-links { display: flex; gap: 4px; }
 .nav-links a {
-  display: flex; align-items: center; padding: 0 16px;
-  border-right: 2px solid var(--border);
-  font-size: 7px; color: var(--dim);
-  letter-spacing: .08em; transition: all .0s; /* intentionally instant */
-  gap: 6px; text-transform: uppercase;
+  font-size: 13px; color: var(--soft); padding: 4px 10px;
+  border-radius: 6px; transition: all .15s;
 }
-.nav-links a::before { content: ''; font-size: 8px; opacity: 0; }
-.nav-links a:hover, .nav-links a.active {
-  color: var(--green); background: rgba(0,255,65,.07);
-}
-.nav-links a:hover::before, .nav-links a.active::before { content: '▶'; opacity: 1; }
+.nav-links a:hover { color: var(--ink); background: var(--tag-bg); }
+.nav-links a.active { color: var(--ink); }
 
-.nav-hud {
-  display: flex; align-items: center; gap: 12px;
-  padding: 0 16px; border-left: 4px solid var(--green);
-}
-.hud-hp {
-  display: flex; flex-direction: column; gap: 3px;
-}
-.hud-hp-label { font-size: 5px; color: var(--dim); }
-.hud-hp-bar { display: flex; gap: 2px; }
-.hp-block {
-  width: 8px; height: 8px;
-  background: var(--pink);
-  box-shadow: 0 0 6px rgba(255,45,120,.4);
-}
-.hp-block.empty { background: var(--border); box-shadow: none; }
-.hud-lv { font-size: 7px; color: var(--cyan); white-space: nowrap; }
-
-/* ── PAGE LAYOUT ── */
-.page { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-
-/* ── DIALOG BOX (RPG style) ── */
-.dialog-wrap {
-  border: 4px solid var(--green);
-  background: var(--dark);
-  position: relative;
-  padding: 20px 24px;
-  image-rendering: pixelated;
-}
-.dialog-wrap::before {
-  content: '';
-  position: absolute; inset: 4px;
-  border: 2px solid rgba(0,255,65,.15);
-  pointer-events: none;
-}
-/* pixel corners */
-.dialog-wrap::after {
-  content: '';
-  position: absolute;
-  top: -4px; left: -4px; right: -4px; bottom: -4px;
-  border-style: solid; border-width: 0;
-  box-shadow:
-    -4px -4px 0 0 var(--green),
-    4px -4px 0 0 var(--green),
-    -4px 4px 0 0 var(--green),
-    4px 4px 0 0 var(--green);
-  pointer-events: none;
-}
+/* ── MAIN WRAP ── */
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
 
 /* ── HERO ── */
 .hero {
-  padding-top: 48px;
-  min-height: 100vh;
-  display: grid;
-  grid-template-rows: 1fr auto;
+  padding: 72px 0 64px;
+  border-bottom: 1px solid var(--line);
 }
-.hero-main {
-  display: grid;
-  grid-template-columns: 1fr 300px;
-  border-bottom: 4px solid var(--green);
+.hero-top {
+  display: flex; align-items: flex-start;
+  gap: 28px; margin-bottom: 32px;
 }
-.hero-left {
-  padding: 48px 32px 48px 0;
-  border-right: 4px solid var(--green);
-  display: flex; flex-direction: column; gap: 24px;
+.hero-photo {
+  width: 80px; height: 80px; border-radius: 50%; flex-shrink: 0;
+  overflow: hidden; background: var(--line);
+  border: 2px solid var(--line);
 }
+.hero-photo img { width: 100%; height: 100%; object-fit: cover; }
+.hero-intro {}
+.hero-name {
+  font-size: 26px; font-weight: 600; letter-spacing: -.02em;
+  color: var(--ink); margin-bottom: 4px; line-height: 1.2;
+}
+.hero-role {
+  font-size: 15px; color: var(--mid); margin-bottom: 10px;
+}
+.hero-avail {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; color: #22863a;
+  background: #f0faf3; border: 1px solid #c8e6cd;
+  padding: 3px 10px; border-radius: 100px;
+  font-family: 'IBM Plex Mono', monospace; letter-spacing: .02em;
+}
+.hero-avail::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: #22863a; animation: blink 2.5s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
 
-/* TITLE — pixel stacked */
-.hero-title {
-  line-height: 1.4; letter-spacing: .04em;
+.hero-bio {
+  font-size: 15px; line-height: 1.8; color: var(--mid);
+  max-width: 560px; margin-bottom: 28px;
 }
-.ht-line1 {
-  display: block; font-size: clamp(18px, 4vw, 36px);
-  color: var(--amber);
-  text-shadow: 4px 4px 0 rgba(255,183,0,.2), 0 0 40px rgba(255,183,0,.15);
-}
-.ht-line2 {
-  display: block; font-size: clamp(10px, 2.5vw, 20px);
-  color: var(--green);
-  text-shadow: 2px 2px 0 rgba(0,255,65,.2);
-  margin-top: 8px;
-}
-.ht-line3 {
-  display: block; font-size: clamp(7px, 1.5vw, 11px);
-  color: var(--dim); margin-top: 12px;
-  line-height: 2;
-}
+.hero-bio strong { color: var(--ink); font-weight: 500; }
 
-/* cursor blink on title */
-.cursor-blink {
-  display: inline-block; width: 8px; height: 16px;
-  background: var(--green);
-  margin-left: 4px; vertical-align: middle;
-  animation: blink .8s step-end infinite;
+.hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 13px; font-weight: 500;
+  padding: 8px 18px; border-radius: 8px;
+  cursor: pointer; transition: all .15s; border: none;
 }
+.btn-dark {
+  background: var(--ink); color: #fff;
+}
+.btn-dark:hover { background: #333; }
+.btn-outline {
+  background: transparent; color: var(--mid);
+  border: 1px solid var(--line);
+}
+.btn-outline:hover { border-color: #ccc; color: var(--ink); background: var(--white); }
 
-/* RPG menu tags */
-.menu-box {
-  border: 4px solid var(--amber);
-  background: rgba(255,183,0,.04);
-  position: relative;
-}
-.menu-box::after {
-  content: '';
-  position: absolute;
-  top: -4px; left: -4px; right: -4px; bottom: -4px;
-  box-shadow:
-    -4px -4px 0 0 var(--amber),
-    4px -4px 0 0 var(--amber),
-    -4px 4px 0 0 var(--amber),
-    4px 4px 0 0 var(--amber);
-  pointer-events: none;
-}
-.menu-title {
-  background: var(--amber); color: var(--black);
-  padding: 4px 12px; font-size: 7px; letter-spacing: .1em;
-  display: inline-block; margin-bottom: 12px;
-}
-.menu-items { padding: 0 16px 16px; }
-.menu-item {
-  padding: 6px 0; border-bottom: 2px solid var(--border);
-  color: var(--dim); font-size: 7px; transition: color 0s;
-  cursor: default; display: flex; align-items: center; gap: 8px;
-}
-.menu-item::before { content: '  '; font-size: 8px; }
-.menu-item:last-child { border-bottom: none; }
-.menu-item:hover { color: var(--green); }
-.menu-item:hover::before { content: '▶'; color: var(--green); }
+/* ── SECTION ── */
+section { padding: 56px 0; border-bottom: 1px solid var(--line); }
+section:last-of-type { border-bottom: none; }
 
-.hero-desc {
-  font-size: 7px; line-height: 2.2; color: var(--dim); max-width: 420px;
+.sec-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--soft); margin-bottom: 24px;
 }
-
-/* BUTTONS — pixel style */
-.px-btns { display: flex; gap: 0; }
-.px-btn {
-  font-family: 'Press Start 2P', monospace; font-size: 8px;
-  padding: 12px 20px; cursor: pointer; transition: all 0s;
-  display: inline-flex; align-items: center; gap: 8px;
-  border: none; letter-spacing: .06em;
+.sec-title {
+  font-size: 20px; font-weight: 600; letter-spacing: -.02em;
+  color: var(--ink); margin-bottom: 8px;
 }
-.px-btn-primary {
-  background: var(--green); color: var(--black);
-  box-shadow: 4px 4px 0 var(--gdim);
-}
-.px-btn-primary:hover {
-  background: var(--black); color: var(--green);
-  border: 4px solid var(--green);
-  box-shadow: none; margin: -4px 0 0 -4px;
-}
-.px-btn-ghost {
-  background: var(--black); color: var(--dim);
-  border: 4px solid var(--border);
-  box-shadow: 4px 4px 0 rgba(0,0,0,.5);
-}
-.px-btn-ghost:hover {
-  color: var(--amber); border-color: var(--amber);
-  box-shadow: 4px 4px 0 rgba(255,183,0,.2);
-}
-
-/* ── CHARACTER PANEL (right) ── */
-.hero-right {
-  padding: 24px 20px;
-  display: flex; flex-direction: column; gap: 16px;
-}
-.char-portrait {
-  border: 4px solid var(--cyan);
-  background: var(--panel);
-  position: relative; overflow: hidden;
-  aspect-ratio: 1/1;
-  image-rendering: pixelated;
-}
-.char-portrait img {
-  width: 100%; height: 100%; object-fit: cover;
-  filter: saturate(.6) contrast(1.1);
-  image-rendering: pixelated;
-}
-/* pixel dither overlay */
-.char-portrait::after {
-  content: '';
-  position: absolute; inset: 0;
-  background-image:
-    radial-gradient(circle, transparent 1px, rgba(18,18,26,.5) 1px);
-  background-size: 4px 4px;
-  pointer-events: none;
-}
-.char-portrait::before {
-  content: 'PLAYER 1';
-  position: absolute; top: 0; left: 0; right: 0;
-  background: var(--cyan); color: var(--black);
-  font-size: 6px; padding: 4px 8px; text-align: center;
-  z-index: 1; letter-spacing: .1em;
-}
-
-.char-name-box {
-  background: var(--panel); border: 4px solid var(--dim);
-  padding: 8px 12px;
-}
-.cn-name { font-size: 8px; color: var(--amber); margin-bottom: 4px; }
-.cn-class { font-size: 6px; color: var(--dim); }
-
-/* STAT BARS */
-.stats-panel { display: flex; flex-direction: column; gap: 8px; }
-.stat-row { display: flex; align-items: center; gap: 6px; }
-.stat-key { font-size: 6px; color: var(--dim); width: 50px; flex-shrink: 0; }
-.stat-bar {
-  flex: 1; height: 8px; background: var(--border);
-  border: 2px solid var(--border); overflow: hidden; position: relative;
-}
-.stat-fill {
-  height: 100%; width: 0;
-  animation: fillStat 1s steps(20) forwards;
-  animation-delay: var(--d, 0s);
-  image-rendering: pixelated;
-}
-@keyframes fillStat { to { width: var(--w); } }
-.sf-g { background: var(--green); box-shadow: 0 0 6px var(--green); }
-.sf-a { background: var(--amber); box-shadow: 0 0 6px var(--amber); }
-.sf-p { background: var(--pink); box-shadow: 0 0 6px var(--pink); }
-.sf-c { background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
-.stat-num { font-size: 6px; color: var(--dim); width: 20px; text-align: right; }
-
-/* ── TICKER ── */
-.hero-ticker {
-  border-top: 4px solid var(--green);
-  height: 32px; overflow: hidden;
-  display: flex; align-items: center;
-  background: var(--dark);
-}
-.ticker-label {
-  padding: 0 16px; border-right: 4px solid var(--green);
-  font-size: 6px; color: var(--green); white-space: nowrap;
-  height: 100%; display: flex; align-items: center;
-  background: rgba(0,255,65,.05);
-}
-.ticker-inner {
-  display: flex; gap: 0;
-  animation: tick 20s linear infinite; white-space: nowrap;
-}
-.ticker-inner span {
-  font-size: 6px; color: var(--dim);
-  padding: 0 20px; border-right: 2px solid var(--border);
-}
-.ticker-inner span.hi { color: var(--amber); }
-@keyframes tick { from { transform:translateX(0); } to { transform:translateX(-50%); } }
-
-/* ── SECTION HEADERS — RPG CHAPTER ── */
-.sec-wrap { border-bottom: 4px solid var(--green); }
-.sec-head {
-  background: var(--dark); border-bottom: 4px solid var(--green);
-  padding: 16px 0;
-  display: flex; align-items: center; gap: 0;
-}
-.sh-num {
-  padding: 0 20px; border-right: 4px solid var(--green);
-  font-size: 24px; color: var(--amber);
-  text-shadow: 4px 4px 0 rgba(255,183,0,.2);
-  min-width: 88px; text-align: center;
-}
-.sh-text { padding: 0 24px; }
-.sh-sub { font-size: 6px; color: var(--dim); margin-bottom: 6px; letter-spacing: .1em; text-transform: uppercase; }
-.sh-title { font-size: clamp(14px, 2.5vw, 22px); color: var(--green); text-shadow: 2px 2px 0 rgba(0,255,65,.15); }
-.sh-right {
-  margin-left: auto; padding: 0 20px; border-left: 4px solid var(--green);
-  font-size: 6px; color: var(--dim); text-align: center; min-width: 80px;
+.sec-sub {
+  font-size: 14px; color: var(--mid); margin-bottom: 32px; line-height: 1.7;
 }
 
 /* ── ABOUT ── */
-.about-grid {
-  display: grid; grid-template-columns: 3fr 2fr;
-}
-.about-col {
-  padding: 32px 28px;
-  border-right: 4px solid var(--green);
-}
-.about-col:last-child { border-right: none; }
+.about-body { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.about-text { font-size: 14px; line-height: 1.85; color: var(--mid); }
+.about-text p { margin-bottom: 14px; }
+.about-text strong { color: var(--ink); font-weight: 500; }
 
-/* dialog text box */
-.lore-box {
-  border: 4px solid var(--dim); background: var(--dark); padding: 16px 20px; margin-bottom: 20px;
-  position: relative;
+.about-aside {}
+.aside-block { margin-bottom: 28px; }
+.aside-block:last-child { margin-bottom: 0; }
+.aside-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--soft); margin-bottom: 12px;
 }
-.lore-box::before {
-  content: ''; position: absolute; inset: 4px;
-  border: 2px solid rgba(255,255,255,.04); pointer-events: none;
-}
-.lore-speaker {
-  display: inline-block;
-  background: var(--green); color: var(--black);
-  font-size: 6px; padding: 3px 10px; margin-bottom: 10px; letter-spacing: .1em;
-}
-.lore-text { font-size: 7px; color: var(--txt); line-height: 2.2; }
-.lore-text strong { color: var(--amber); }
+.edu-row { margin-bottom: 14px; }
+.edu-row:last-child { margin-bottom: 0; }
+.edu-name { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 2px; }
+.edu-detail { font-size: 12px; color: var(--soft); font-family: 'IBM Plex Mono', monospace; }
 
-/* timeline — rpg quest log */
-.quest-log { display: flex; flex-direction: column; gap: 0; }
-.quest-item {
-  border: 4px solid var(--border); background: var(--dark);
-  padding: 12px 16px; margin-bottom: 8px; position: relative;
-  transition: border-color 0s;
+/* ── SKILLS ── */
+.skill-groups {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  border: 1px solid var(--line); border-radius: var(--r);
+  overflow: hidden;
 }
-.quest-item:hover { border-color: var(--green); }
-.qi-year { font-size: 6px; color: var(--pink); margin-bottom: 6px; }
-.qi-title { font-size: 8px; color: var(--amber); margin-bottom: 4px; }
-.qi-sub { font-size: 6px; color: var(--dim); line-height: 1.8; }
-.quest-item .status {
-  position: absolute; top: 8px; right: 12px;
-  font-size: 5px; color: var(--green); letter-spacing: .06em;
+.skill-group { padding: 20px 22px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.skill-group:nth-child(2n) { border-right: none; }
+.skill-group:nth-child(3), .skill-group:nth-child(4) { border-bottom: none; }
+.sg-title {
+  font-size: 12px; font-weight: 600; color: var(--ink);
+  margin-bottom: 10px; letter-spacing: -.01em;
 }
+.sg-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.sg-item {
+  font-size: 12px; color: var(--mid);
+  background: var(--tag-bg); border-radius: 5px;
+  padding: 3px 9px; line-height: 1.6;
+  transition: background .15s, color .15s; cursor: default;
+}
+.sg-item:hover { background: #e4e4e0; color: var(--ink); }
 
-/* ── SKILLS — SPELLBOOK / ITEM MENU ── */
-.skills-grid {
-  display: grid; grid-template-columns: repeat(4,1fr);
+/* ── PROJECTS ── */
+.projects-list { display: flex; flex-direction: column; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.prj {
+  background: var(--white); padding: 24px 28px;
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 16px; align-items: start;
+  cursor: pointer; transition: background .15s;
 }
-.skill-panel {
-  padding: 20px 16px;
-  border-right: 4px solid var(--green);
+.prj:hover { background: #f6f6f3; }
+.prj-left {}
+.prj-meta {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; color: var(--soft); letter-spacing: .04em;
+  margin-bottom: 6px;
 }
-.skill-panel:last-child { border-right: none; }
-.sp-title {
-  border: 4px solid var(--amber); background: rgba(255,183,0,.05);
-  padding: 6px 10px; font-size: 7px; color: var(--amber); margin-bottom: 14px;
-  text-align: center; letter-spacing: .08em;
+.prj-title {
+  font-size: 16px; font-weight: 600; color: var(--ink);
+  letter-spacing: -.01em; margin-bottom: 6px;
 }
-.sp-items { list-style: none; }
-.sp-items li {
-  font-size: 7px; color: var(--dim);
-  padding: 6px 0; border-bottom: 2px solid var(--border);
-  display: flex; align-items: center; gap: 6px;
-  transition: color 0s; cursor: default;
+.prj-roles { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
+.prj-role {
+  font-size: 11px; color: var(--mid);
+  background: var(--tag-bg); border-radius: 4px;
+  padding: 2px 8px; font-family: 'IBM Plex Mono', monospace;
 }
-.sp-items li::before { content: '□'; color: var(--border); font-size: 8px; }
-.sp-items li:hover { color: var(--green); }
-.sp-items li:hover::before { content: '■'; color: var(--green); }
-
-/* ── PROJECTS — QUEST BOARD ── */
-.quest-board {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+.prj-desc { font-size: 13px; color: var(--mid); line-height: 1.7; }
+.prj-arrow {
+  color: var(--soft); font-size: 18px; margin-top: 4px;
+  transition: transform .15s, color .15s; flex-shrink: 0;
 }
-.qb-card:nth-child(1) { grid-column: span 2; }
-.qb-card {
-  border-right: 4px solid var(--green);
-  border-bottom: 4px solid var(--green);
-  cursor: pointer; position: relative;
-  display: flex; flex-direction: column;
-  transition: background 0s;
-}
-.qb-card:nth-child(2n+2) { border-right: none; }
-.qb-card:hover { background: rgba(0,255,65,.04); }
-
-.qb-img { position: relative; overflow: hidden; background: var(--panel); }
-.qb-img img {
-  width: 100%; aspect-ratio: 16/9; object-fit: cover;
-  filter: saturate(.2) contrast(1.1) brightness(.7);
-  image-rendering: pixelated; transition: filter 0s;
-}
-.qb-card:hover .qb-img img { filter: saturate(.6) contrast(1.1) brightness(.85); }
-/* pixel dither on image */
-.qb-img::after {
-  content: '';
-  position: absolute; inset: 0;
-  background-image:
-    radial-gradient(circle, transparent 1px, rgba(10,10,15,.6) 1px);
-  background-size: 3px 3px;
-  pointer-events: none;
-}
-.qb-badge {
-  position: absolute; top: 0; left: 0;
-  background: var(--panel); border-bottom: 4px solid var(--green); border-right: 4px solid var(--green);
-  font-size: 6px; color: var(--green); padding: 4px 10px; z-index: 1;
-}
-.qb-badge.amber { color: var(--amber); border-color: var(--amber); }
-.qb-badge.pink  { color: var(--pink);  border-color: var(--pink); }
-.qb-badge.cyan  { color: var(--cyan);  border-color: var(--cyan); }
-
-.qb-body {
-  padding: 16px 20px 20px; flex: 1; display: flex; flex-direction: column;
-  border-top: 4px solid var(--green);
-}
-.qb-meta { font-size: 6px; color: var(--dim); margin-bottom: 8px; }
-.qb-title {
-  font-size: clamp(10px, 2vw, 16px); color: var(--amber);
-  margin-bottom: 8px; line-height: 1.3;
-  text-shadow: 2px 2px 0 rgba(255,183,0,.12);
-  transition: color 0s;
-}
-.qb-card:nth-child(1) .qb-title { font-size: clamp(14px, 2.5vw, 22px); }
-.qb-card:hover .qb-title { color: var(--green); }
-.qb-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
-.qb-chip {
-  font-size: 6px; color: var(--dim);
-  border: 2px solid var(--border); padding: 2px 8px;
-}
-.qb-desc { font-size: 7px; color: var(--dim); line-height: 2; flex: 1; margin-bottom: 12px; }
-.qb-open {
-  font-size: 7px; color: var(--dim); display: flex; align-items: center; gap: 6px;
-  transition: color 0s; width: fit-content;
-}
-.qb-card:hover .qb-open { color: var(--green); }
-.qb-card:hover .qb-open::before { content: '▶ '; }
-.qb-open::before { content: '▷ '; }
+.prj:hover .prj-arrow { transform: translateX(3px); color: var(--ink); }
 
 /* ── CONTACT ── */
-.contact-layout {
-  display: grid; grid-template-columns: 1fr 1fr;
-}
-.contact-left {
-  padding: 32px 28px;
-  border-right: 4px solid var(--green);
-  display: flex; flex-direction: column; gap: 20px;
-}
-.contact-title {
-  font-size: clamp(14px, 3vw, 24px); color: var(--amber); line-height: 1.5;
-  text-shadow: 4px 4px 0 rgba(255,183,0,.1);
-}
-.contact-title span { display: block; color: var(--green); }
-.contact-body-txt { font-size: 7px; color: var(--dim); line-height: 2.2; }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+.contact-note { font-size: 14px; line-height: 1.85; color: var(--mid); }
+.contact-note strong { color: var(--ink); font-weight: 500; }
 
-.contact-right { padding: 24px 24px 24px 28px; }
-.info-rows { display: flex; flex-direction: column; gap: 0; margin-bottom: 20px; }
-.ir {
-  display: flex; align-items: flex-start; gap: 12px;
-  padding: 10px 0; border-bottom: 2px solid var(--border);
+.contact-rows { display: flex; flex-direction: column; }
+.c-row {
+  display: flex; align-items: baseline; gap: 12px;
+  padding: 12px 0; border-bottom: 1px solid var(--line);
+  font-size: 13px;
 }
-.ir:first-child { border-top: 2px solid var(--border); }
-.ir-key {
-  font-size: 6px; color: var(--dim); width: 64px; flex-shrink: 0;
-  padding-top: 1px;
+.c-row:first-child { border-top: 1px solid var(--line); }
+.c-key {
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+  letter-spacing: .04em; color: var(--soft); width: 72px; flex-shrink: 0;
 }
-.ir-key::before { content: '▹ '; color: var(--green); }
-.ir-val { font-size: 7px; color: var(--txt); line-height: 2; }
-.ir-val a { color: var(--cyan); text-decoration: none; }
-.ir-val a:hover { color: var(--green); }
+.c-val { color: var(--mid); }
+.c-val a { color: var(--ink); transition: opacity .15s; }
+.c-val a:hover { opacity: .6; }
 
-.cta-big {
-  display: block; width: 100%;
-  background: var(--black); color: var(--green);
-  border: 4px solid var(--green);
-  font-family: 'Press Start 2P', monospace; font-size: 9px;
-  padding: 16px; text-align: center; letter-spacing: .1em;
-  cursor: pointer; position: relative; transition: all 0s;
-  box-shadow: 4px 4px 0 var(--gdim);
+.cta {
+  margin-top: 20px; display: block;
+  background: var(--ink); color: #fff;
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 13px; font-weight: 500;
+  padding: 12px 20px; border-radius: 8px; text-align: center;
+  transition: background .15s;
 }
-.cta-big:hover {
-  background: var(--green); color: var(--black);
-  box-shadow: none; transform: translate(4px,4px);
-}
-.cta-big::before { content: '[ '; }
-.cta-big::after  { content: ' ]'; }
+.cta:hover { background: #333; }
 
 /* ── FOOTER ── */
 footer {
-  background: var(--dark); border-top: 4px solid var(--green);
-  padding: 16px 24px;
+  padding: 32px 0; border-top: 1px solid var(--line);
   display: flex; align-items: center; justify-content: space-between;
 }
-.ft-copy { font-size: 6px; color: var(--dim); }
+.ft-copy { font-size: 12px; color: var(--soft); }
 .ft-links { display: flex; gap: 16px; }
-.ft-links a { font-size: 6px; color: var(--dim); transition: color 0s; }
-.ft-links a:hover { color: var(--green); }
-.ft-links a::before { content: '▹ '; }
+.ft-links a { font-size: 12px; color: var(--soft); transition: color .15s; }
+.ft-links a:hover { color: var(--ink); }
 
 /* ── MODALS ── */
 .modal-overlay {
   display: none; position: fixed; inset: 0; z-index: 1000;
-  background: rgba(0,0,0,.92);
+  background: rgba(0,0,0,.5);
   opacity: 0; transition: opacity .2s;
-  align-items: center; justify-content: center; padding: 16px;
+  align-items: flex-end; justify-content: center;
+  padding: 0;
 }
 .modal-overlay.show { opacity: 1; }
 .mbox {
-  background: var(--dark);
-  border: 4px solid var(--green);
-  width: 100%; max-width: 840px; max-height: 88vh;
-  overflow-y: auto; overflow-x: hidden;
-  box-shadow: 8px 8px 0 var(--gdim);
-  transform: translateY(8px);
-  transition: transform .2s cubic-bezier(.16,1,.3,1);
+  background: var(--white);
+  width: 100%; max-width: 680px;
+  max-height: 88vh; overflow-y: auto;
+  border-radius: 16px 16px 0 0;
+  transform: translateY(20px);
+  transition: transform .3s cubic-bezier(.16,1,.3,1);
+  box-shadow: 0 -4px 40px rgba(0,0,0,.12);
+  margin: 0 auto;
 }
-.mbox::before {
-  content: '';
-  position: absolute; inset: 0; pointer-events: none;
-  border: 2px solid rgba(0,255,65,.1);
+@media(min-width:700px) {
+  .modal-overlay { align-items: center; padding: 24px; }
+  .mbox { border-radius: 16px; max-height: 85vh; }
 }
 .modal-overlay.show .mbox { transform: translateY(0); }
-.mbox::-webkit-scrollbar { width: 4px; }
-.mbox::-webkit-scrollbar-thumb { background: var(--green); }
+.mbox::-webkit-scrollbar { width: 3px; }
+.mbox::-webkit-scrollbar-thumb { background: var(--line); }
+.m-handle {
+  width: 36px; height: 4px; background: var(--line);
+  border-radius: 2px; margin: 14px auto 0;
+  display: block;
+}
+@media(min-width:700px) { .m-handle { display: none; } }
 .m-header {
   position: sticky; top: 0; z-index: 10;
-  background: var(--green); padding: 8px 16px;
+  background: rgba(255,255,255,.9); backdrop-filter: blur(8px);
+  padding: 16px 24px 12px;
+  border-bottom: 1px solid var(--line);
   display: flex; align-items: center; justify-content: space-between;
 }
-.m-tag { font-size: 7px; color: var(--black); letter-spacing: .08em; }
-.m-close {
-  font-family: 'Press Start 2P', monospace; font-size: 7px;
-  background: var(--black); color: var(--green);
-  border: 2px solid var(--black); padding: 4px 10px; cursor: pointer;
-  transition: all 0s;
+.m-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--soft);
 }
-.m-close:hover { background: var(--green); color: var(--black); }
+.m-close {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--tag-bg); border: none; color: var(--mid);
+  cursor: pointer; font-size: 14px; display: flex;
+  align-items: center; justify-content: center;
+  transition: background .15s; line-height: 1;
+}
+.m-close:hover { background: var(--line); color: var(--ink); }
 .m-body { padding: 24px; }
 .m-title {
-  font-size: clamp(14px, 2.5vw, 22px); color: var(--amber);
-  text-shadow: 4px 4px 0 rgba(255,183,0,.15);
-  margin-bottom: 6px; line-height: 1.3;
+  font-size: 22px; font-weight: 600; letter-spacing: -.02em;
+  color: var(--ink); margin-bottom: 4px;
 }
 .m-sub {
-  font-size: 6px; color: var(--green); margin-bottom: 16px;
-  display: block; letter-spacing: .08em;
+  font-size: 13px; color: var(--soft); margin-bottom: 16px;
+  font-family: 'IBM Plex Mono', monospace; display: block;
 }
-.m-chips { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 20px; }
-.m-chip { font-size: 6px; color: var(--dim); border: 2px solid var(--border); padding: 3px 8px; }
+.m-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 24px; }
+.m-chip {
+  font-size: 11px; color: var(--mid); background: var(--tag-bg);
+  border-radius: 5px; padding: 3px 10px;
+  font-family: 'IBM Plex Mono', monospace;
+}
 .m-sec {
-  background: var(--amber); color: var(--black);
-  font-size: 7px; padding: 5px 12px; margin: 20px 0 10px; display: inline-block;
-  letter-spacing: .1em;
+  font-size: 11px; font-weight: 600; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--soft);
+  margin: 24px 0 10px; padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
 }
-.m-body p { font-size: 7px; color: var(--dim); line-height: 2.2; margin-bottom: 10px; }
-.m-body p strong { color: var(--amber); }
+.m-body p { font-size: 13px; line-height: 1.8; color: var(--mid); margin-bottom: 10px; }
+.m-body p strong { color: var(--ink); font-weight: 500; }
 .m-body ul { list-style: none; margin-bottom: 12px; }
 .m-body li {
-  font-size: 7px; color: var(--dim); margin-bottom: 8px;
-  line-height: 2; display: flex; gap: 8px;
+  font-size: 13px; color: var(--mid); line-height: 1.75;
+  margin-bottom: 8px; padding-left: 16px; position: relative;
 }
-.m-body li::before { content: '▹'; color: var(--green); flex-shrink: 0; }
-.m-body li strong { color: var(--txt); }
-
-.rpg-dialog {
-  border: 4px solid var(--dim); background: var(--dark); padding: 0; margin-bottom: 16px;
+.m-body li::before { content: '–'; position: absolute; left: 0; color: var(--soft); }
+.m-body li strong { color: var(--ink); font-weight: 500; }
+.dialog-block {
+  background: var(--tag-bg); border-radius: var(--r);
+  padding: 16px 20px; margin-bottom: 16px;
 }
-.rd-head {
-  background: var(--dim); color: var(--black);
-  font-size: 6px; padding: 4px 12px; letter-spacing: .1em;
+.db-label {
+  font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--soft);
+  margin-bottom: 10px;
 }
-.rd-line {
-  padding: 8px 16px; border-bottom: 2px solid var(--border);
-  font-size: 7px; color: var(--dim); line-height: 2;
+.db-line {
+  font-size: 13px; color: var(--mid); line-height: 1.75; margin-bottom: 4px;
 }
-.rd-line:last-child { border-bottom: none; }
-.rd-line strong { color: var(--cyan); }
-
-.ig2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: 16px; }
-.ig3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 4px; margin-bottom: 16px; }
-.ibox { border: 4px solid var(--border); overflow: hidden; background: var(--black); }
-.ibox img { width: 100%; height: 140px; object-fit: contain; background: #060609; cursor: zoom-in; filter: saturate(.4); image-rendering: pixelated; transition: filter 0s; }
-.ibox img:hover { filter: saturate(1); }
-.ilbl { padding: 4px 8px; font-size: 6px; color: var(--dim); letter-spacing: .06em; border-top: 2px solid var(--border); }
-.vid { border: 4px solid var(--dim); overflow: hidden; margin-bottom: 16px; }
+.db-line strong { color: var(--ink); font-weight: 500; }
+.ig2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+.ig3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 16px; }
+.ibox { background: var(--tag-bg); border-radius: 6px; overflow: hidden; }
+.ibox img {
+  width: 100%; height: 140px; object-fit: contain;
+  background: var(--tag-bg); cursor: zoom-in;
+  transition: opacity .15s;
+}
+.ibox img:hover { opacity: .8; }
+.ilbl {
+  padding: 6px 10px; font-size: 11px; color: var(--soft);
+  font-family: 'IBM Plex Mono', monospace; letter-spacing: .04em;
+}
+.vid { border-radius: var(--r); overflow: hidden; margin-bottom: 16px; background: #000; }
 .vid video { width: 100%; display: block; }
 
 /* ── LIGHTBOX ── */
 .lbx {
   display: none; position: fixed; inset: 0; z-index: 2000;
-  background: rgba(0,0,0,.97);
-  align-items: center; justify-content: center;
+  background: rgba(0,0,0,.85); align-items: center; justify-content: center;
   opacity: 0; transition: opacity .2s; cursor: zoom-out;
+  padding: 24px;
 }
 .lbx.show { opacity: 1; }
-.lbx img { max-width: 90%; max-height: 90vh; border: 4px solid var(--green); image-rendering: pixelated; }
+.lbx img { max-width: 100%; max-height: 90vh; border-radius: var(--r); cursor: default; }
 .lbx-x {
-  position: absolute; top: 16px; right: 16px;
-  font-family: 'Press Start 2P', monospace; font-size: 8px;
-  background: var(--black); color: var(--green);
-  border: 4px solid var(--green); padding: 6px 14px; cursor: pointer;
+  position: absolute; top: 20px; right: 20px;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(255,255,255,.15); color: #fff;
+  border: none; cursor: pointer; font-size: 18px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s; line-height: 1;
 }
-.lbx-x:hover { background: var(--green); color: var(--black); }
+.lbx-x:hover { background: rgba(255,255,255,.25); }
 
 /* ── REVEAL ── */
-.rev { opacity: 0; transform: translateY(16px); transition: opacity .5s, transform .5s; }
+.rev { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
 .rev.on { opacity: 1; transform: none; }
-.d1 { transition-delay: .05s; } .d2 { transition-delay: .1s; } .d3 { transition-delay: .15s; }
+.d1 { transition-delay: .07s; } .d2 { transition-delay: .14s; }
 
 /* ── RESPONSIVE ── */
-@media(max-width: 900px) {
-  .hero-main { grid-template-columns: 1fr; }
-  .hero-right { border-top: 4px solid var(--green); border-left: none; }
-  .about-grid, .contact-layout { grid-template-columns: 1fr; }
-  .about-col { border-right: none; border-bottom: 4px solid var(--green); }
-  .contact-left { border-right: none; border-bottom: 4px solid var(--green); }
-  .skills-grid { grid-template-columns: 1fr 1fr; }
-  .skill-panel:nth-child(2n) { border-right: none; }
-  .quest-board { grid-template-columns: 1fr; }
-  .qb-card:nth-child(1) { grid-column: 1; }
-  .qb-card { border-right: none; }
+@media(max-width: 640px) {
+  .hero { padding: 48px 0 40px; }
+  .hero-top { flex-direction: column; gap: 20px; }
+  .about-body { grid-template-columns: 1fr; gap: 28px; }
+  .skill-groups { grid-template-columns: 1fr; }
+  .skill-group { border-right: none; }
+  .skill-group:nth-child(3) { border-bottom: 1px solid var(--line); }
+  .skill-group:nth-child(4) { border-bottom: none; }
+  .contact-grid { grid-template-columns: 1fr; gap: 28px; }
   nav .nav-links { display: none; }
-}
-@media(max-width: 600px) {
-  .skills-grid { grid-template-columns: 1fr; }
-  .skill-panel { border-right: none; border-bottom: 4px solid var(--green); }
   .ig2, .ig3 { grid-template-columns: 1fr; }
-  .m-body { padding: 16px; }
-  .m-title { font-size: 12px; }
+  .m-body { padding: 20px; }
+  footer { flex-direction: column; gap: 12px; text-align: center; }
 }
 </style>
 </head>
 <body>
 
-<!-- PIXEL CURSOR -->
-<div id="cur">
-  <svg viewBox="0 0 12 20" xmlns="http://www.w3.org/2000/svg">
-    <polygon points="0,0 0,16 4,12 6,20 8,19 6,11 11,11" fill="#00ff41"/>
-  </svg>
-</div>
-
-<!-- PRESS START SCREEN -->
-<div id="intro">
-  <div class="intro-logo">
-    PEEMAPOL.EXE
-    <span class="sub">GAME DEVELOPER PORTFOLIO v1.0</span>
-  </div>
-
-  <!-- pixel character sprite (SVG) -->
-  <svg class="intro-sprite" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated">
-    <rect x="5" y="0" width="6" height="6" fill="#ffb700"/>
-    <rect x="4" y="1" width="1" height="4" fill="#ffb700"/>
-    <rect x="11" y="1" width="1" height="4" fill="#ffb700"/>
-    <rect x="6" y="2" width="1" height="1" fill="#0a0a0f"/>
-    <rect x="9" y="2" width="1" height="1" fill="#0a0a0f"/>
-    <rect x="6" y="4" width="4" height="1" fill="#0a0a0f"/>
-    <rect x="5" y="6" width="6" height="5" fill="#00ff41"/>
-    <rect x="3" y="7" width="2" height="3" fill="#00ff41"/>
-    <rect x="11" y="7" width="2" height="3" fill="#00ff41"/>
-    <rect x="5" y="11" width="2" height="5" fill="#9b59ff"/>
-    <rect x="9" y="11" width="2" height="5" fill="#9b59ff"/>
-    <rect x="3" y="14" width="3" height="2" fill="#9b59ff"/>
-    <rect x="10" y="14" width="3" height="2" fill="#9b59ff"/>
-  </svg>
-
-  <div class="press-start" id="pressStart">▶ PRESS START ◀</div>
-  <div class="intro-copy">
-    © 2026 PEEMAPOL PHUANGCHAROEN<br>
-    SAMUT PRAKAN — THAILAND
-  </div>
-  <div class="px-bar">
-    <span class="px-bar-label">LOADING</span>
-    <div class="px-bar-track"><div class="px-bar-fill" id="loadBar"></div></div>
-    <span class="px-bar-label" id="loadPct">0%</span>
-  </div>
-</div>
-
-<!-- NAV / HUD -->
 <nav>
-  <div class="nav-title">PEEMAPOL.EXE</div>
-  <div class="nav-links">
-    <a href="#about">ABOUT</a>
-    <a href="#skills">SKILLS</a>
-    <a href="#projects">PROJECTS</a>
-    <a href="#contact">CONTACT</a>
-  </div>
-  <div class="nav-hud">
-    <div class="hud-hp">
-      <div class="hud-hp-label">HP</div>
-      <div class="hud-hp-bar">
-        <div class="hp-block"></div><div class="hp-block"></div><div class="hp-block"></div>
-        <div class="hp-block"></div><div class="hp-block"></div>
-      </div>
+  <div class="nav-inner">
+    <div class="nav-name">Peemapol P.</div>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
     </div>
-    <div class="hud-lv">LV.03</div>
   </div>
 </nav>
 
-<!-- ══ HERO ══ -->
-<div class="page">
+<div class="wrap">
+
+<!-- HERO -->
 <section id="home">
   <div class="hero">
-    <div class="hero-main">
-      <div class="hero-left">
-        <div class="hero-title">
-          <span class="ht-line1">PEEMAPOL</span>
-          <span class="ht-line2">PHUANGCHAROEN<span class="cursor-blink"></span></span>
-          <span class="ht-line3">GAME DESIGNER · SOUND DESIGNER · UNITY DEV</span>
-        </div>
-
-        <div class="menu-box">
-          <div class="menu-title">▶ SKILL SET</div>
-          <div class="menu-items">
-            <div class="menu-item">Gameplay &amp; System Design</div>
-            <div class="menu-item">Sound Design (Audacity)</div>
-            <div class="menu-item">Narrative &amp; Dialog</div>
-            <div class="menu-item">Unity / C# (Intermediate)</div>
-            <div class="menu-item">Level Design</div>
-          </div>
-        </div>
-
-        <p class="hero-desc">
-          นักศึกษา Interactive &amp; Game Design — Sripatum University<br>
-          สนใจการสร้างประสบการณ์ผ่าน Gameplay และ Audio<br>
-          กำลังมองหาโอกาสฝึกงานใน Game Industry ครับ
-        </p>
-
-        <div class="px-btns">
-          <a href="#projects" class="px-btn px-btn-primary">▶ VIEW PROJECTS</a>
-          <a href="resume.pdf" download class="px-btn px-btn-ghost">⊞ RESUME PDF</a>
-        </div>
+    <div class="hero-top">
+      <div class="hero-photo">
+        <img src="profile.png" alt="Peemapol Phuangcharoen">
       </div>
-
-      <div class="hero-right">
-        <div class="char-portrait">
-          <img src="profile.png" alt="Peemapol">
-        </div>
-        <div class="char-name-box">
-          <div class="cn-name">PEEMAPOL P.</div>
-          <div class="cn-class">CLASS: GAME DEVELOPER</div>
-        </div>
-        <div class="stats-panel">
-          <div class="stat-row"><span class="stat-key">DESIGN</span><div class="stat-bar"><div class="stat-fill sf-g" style="--w:88%;--d:.6s"></div></div><span class="stat-num">88</span></div>
-          <div class="stat-row"><span class="stat-key">AUDIO</span><div class="stat-bar"><div class="stat-fill sf-p" style="--w:82%;--d:.8s"></div></div><span class="stat-num">82</span></div>
-          <div class="stat-row"><span class="stat-key">UNITY</span><div class="stat-bar"><div class="stat-fill sf-a" style="--w:70%;--d:1s"></div></div><span class="stat-num">70</span></div>
-          <div class="stat-row"><span class="stat-key">NARRAT</span><div class="stat-bar"><div class="stat-fill sf-c" style="--w:85%;--d:1.2s"></div></div><span class="stat-num">85</span></div>
-          <div class="stat-row"><span class="stat-key">3D ART</span><div class="stat-bar"><div class="stat-fill sf-g" style="--w:65%;--d:1.4s"></div></div><span class="stat-num">65</span></div>
-        </div>
+      <div class="hero-intro">
+        <h1 class="hero-name">Peemapol Phuangcharoen</h1>
+        <p class="hero-role">Game Designer &amp; Sound Designer</p>
+        <span class="hero-avail">Available for internship</span>
       </div>
     </div>
+    <p class="hero-bio">
+      นักศึกษา Interactive &amp; Game Design ที่ Sripatum University สนใจการสร้าง<strong>ประสบการณ์ผ่าน Gameplay</strong> และ<strong>เสียง</strong> มีประสบการณ์ทำงานทั้ง Solo และทีม พร้อมเรียนรู้จากสภาพแวดล้อมจริงครับ
+    </p>
+    <div class="hero-actions">
+      <a href="#projects" class="btn btn-dark">ดูผลงาน</a>
+      <a href="resume.pdf" download class="btn btn-outline">ดาวน์โหลด Resume</a>
+    </div>
+  </div>
+</section>
 
-    <div class="hero-ticker">
-      <div class="ticker-label">★ NEWS</div>
-      <div class="ticker-inner">
-        <span class="hi">OPEN TO INTERNSHIP 2026</span>
-        <span>GAME DESIGNER</span><span>SOUND DESIGNER</span><span>NARRATIVE DESIGNER</span>
-        <span class="hi">SAMUT PRAKAN — THAILAND</span>
-        <span>UNITY / C#</span><span>AUDACITY</span><span>MAYA</span><span>LEVEL DESIGN</span>
-        <span class="hi">OPEN TO INTERNSHIP 2026</span>
-        <span>GAME DESIGNER</span><span>SOUND DESIGNER</span><span>NARRATIVE DESIGNER</span>
-        <span class="hi">SAMUT PRAKAN — THAILAND</span>
-        <span>UNITY / C#</span><span>AUDACITY</span><span>MAYA</span><span>LEVEL DESIGN</span>
+<!-- ABOUT -->
+<section id="about">
+  <p class="sec-label">About</p>
+  <div class="about-body">
+    <div class="about-text rev">
+      <p>ผมเป็นคนที่สนใจ <strong>Game Design</strong> อย่างจริงจัง ไม่ว่าจะเป็นการออกแบบ Gameplay ที่รู้สึกดีเมื่อเล่น การสร้าง System ที่เชื่อมต่อกันได้ดี หรือการเขียน Narrative ที่ผู้เล่นรู้สึกได้</p>
+      <p>ด้าน <strong>Sound Design</strong> ผมชอบการที่เสียงหนึ่งเสียงสามารถเปลี่ยน feel ของเกมได้ทั้งหมด ใช้ Audacity ในการตัดต่อและออกแบบ SFX มาตลอด</p>
+      <p>ตอนนี้กำลัง<strong>มองหาโอกาสฝึกงาน</strong> อยากเข้าไปเรียนรู้จากทีมจริงๆ และมีส่วนร่วมในการสร้างเกมที่คนอื่นจะได้เล่นครับ</p>
+    </div>
+    <div class="about-aside rev d1">
+      <div class="aside-block">
+        <div class="aside-title">Education</div>
+        <div class="edu-row">
+          <div class="edu-name">Sripatum University</div>
+          <div class="edu-detail">Interactive &amp; Game Design · 2023–ปัจจุบัน</div>
+        </div>
+        <div class="edu-row">
+          <div class="edu-name">Thaiglobal College</div>
+          <div class="edu-detail">Computer Business · 2019–2022</div>
+        </div>
+      </div>
+      <div class="aside-block">
+        <div class="aside-title">Location</div>
+        <div class="edu-detail" style="color:var(--mid);font-size:13px">Samut Prakan, Thailand</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══ ABOUT ══ -->
-<section id="about" class="sec-wrap">
-  <div class="sec-head rev">
-    <div class="sh-num">01</div>
-    <div class="sh-text">
-      <div class="sh-sub">WHO I AM</div>
-      <div class="sh-title">ABOUT</div>
-    </div>
-    <div class="sh-right">BIO &amp;<br>EDU</div>
-  </div>
-  <div class="about-grid">
-    <div class="about-col rev d1">
-      <div class="lore-box">
-        <div class="lore-speaker">PLAYER LOG</div>
-        <div class="lore-text">
-          ผมเป็นนักศึกษา Interactive &amp; Game Design ที่ Sripatum University สนใจด้าน <strong>Game Design</strong> ทั้ง Gameplay, System, Level Design และ <strong>Sound Design</strong> ด้วย Audacity<br><br>
-          มีความเข้าใจพื้นฐาน C# ใน Unity และสามารถใช้ <strong>AI Tools</strong> ช่วยงาน Development ได้ กำลังมองหาโอกาสฝึกงานในอุตสาหกรรม Game ครับ
-        </div>
-      </div>
-      <div class="lore-box" style="border-color:var(--amber)">
-        <div class="lore-speaker" style="background:var(--amber)">CONTACT</div>
-        <div class="lore-text" style="line-height:2.4">
-          <strong>📞</strong> 095-505-8088<br>
-          <strong>✉</strong> lnwpureza2545@gmail.com<br>
-          <strong>⌂</strong> Samut Prakan, Thailand<br>
-          <strong>⊞</strong> github.com/lnwpureza2545
-        </div>
+<!-- SKILLS -->
+<section id="skills">
+  <p class="sec-label">Skills</p>
+  <div class="skill-groups rev">
+    <div class="skill-group">
+      <div class="sg-title">Game Design</div>
+      <div class="sg-list">
+        <span class="sg-item">Gameplay Design</span>
+        <span class="sg-item">Level Design</span>
+        <span class="sg-item">System Design</span>
+        <span class="sg-item">Narrative</span>
       </div>
     </div>
-    <div class="about-col rev d2">
-      <div style="font-size:7px;color:var(--green);margin-bottom:12px;letter-spacing:.1em">▶ QUEST LOG — EDUCATION</div>
-      <div class="quest-log">
-        <div class="quest-item">
-          <div class="qi-year">2023 — PRESENT</div>
-          <div class="qi-title">SRIPATUM UNIVERSITY</div>
-          <div class="qi-sub">Interactive &amp; Game Design<br>Faculty of Digital Media Technology</div>
-          <div class="status">IN PROGRESS</div>
-        </div>
-        <div class="quest-item">
-          <div class="qi-year">2019 — 2022</div>
-          <div class="qi-title">THAIGLOBAL COLLEGE</div>
-          <div class="qi-sub">Computer Business</div>
-          <div class="status" style="color:var(--amber)">COMPLETED</div>
-        </div>
+    <div class="skill-group">
+      <div class="sg-title">Audio</div>
+      <div class="sg-list">
+        <span class="sg-item">Sound Design</span>
+        <span class="sg-item">Audacity</span>
+        <span class="sg-item">SFX</span>
+        <span class="sg-item">Audio Implementation</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="sg-title">Technical</div>
+      <div class="sg-list">
+        <span class="sg-item">Unity</span>
+        <span class="sg-item">C#</span>
+        <span class="sg-item">Unreal (basic)</span>
+        <span class="sg-item">After Effects</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="sg-title">3D / Art</div>
+      <div class="sg-list">
+        <span class="sg-item">Maya</span>
+        <span class="sg-item">Substance Painter</span>
+        <span class="sg-item">PBR Texturing</span>
+        <span class="sg-item">Illustrator</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══ SKILLS ══ -->
-<section id="skills" class="sec-wrap">
-  <div class="sec-head rev">
-    <div class="sh-num">02</div>
-    <div class="sh-text">
-      <div class="sh-sub">SPELLBOOK</div>
-      <div class="sh-title">SKILLS</div>
-    </div>
-    <div class="sh-right">4<br>CLASSES</div>
-  </div>
-  <div class="skills-grid rev d1">
-    <div class="skill-panel">
-      <div class="sp-title">CORE DESIGN</div>
-      <ul class="sp-items">
-        <li>Gameplay Design</li>
-        <li>Level Design</li>
-        <li>Game System Design</li>
-        <li>Story / Narrative</li>
-        <li>Audio Implementation</li>
-      </ul>
-    </div>
-    <div class="skill-panel">
-      <div class="sp-title">TECHNICAL</div>
-      <ul class="sp-items">
-        <li>Unity — Intermediate</li>
-        <li>C# Scripting</li>
-        <li>Unreal — Basic</li>
-        <li>Audacity — Advanced</li>
-        <li>AI-assisted workflow</li>
-      </ul>
-    </div>
-    <div class="skill-panel">
-      <div class="sp-title">3D / ART</div>
-      <ul class="sp-items">
-        <li>Maya</li>
-        <li>Substance Painter</li>
-        <li>PBR Texturing</li>
-        <li>UV Unwrapping</li>
-        <li>After Effects</li>
-      </ul>
-    </div>
-    <div class="skill-panel">
-      <div class="sp-title">SOFT SKILLS</div>
-      <ul class="sp-items">
-        <li>Team Collaboration</li>
-        <li>Problem Solving</li>
-        <li>Fast Iteration</li>
-        <li>Deadline Management</li>
-        <li>Self-directed learning</li>
-      </ul>
-    </div>
-  </div>
-</section>
+<!-- PROJECTS -->
+<section id="projects">
+  <p class="sec-label">Projects</p>
+  <div class="projects-list rev">
 
-<!-- ══ PROJECTS ══ -->
-<section id="projects" class="sec-wrap">
-  <div class="sec-head rev">
-    <div class="sh-num">03</div>
-    <div class="sh-text">
-      <div class="sh-sub">QUEST BOARD</div>
-      <div class="sh-title">PROJECTS</div>
-    </div>
-    <div class="sh-right">5<br>QUESTS</div>
-  </div>
-  <div class="quest-board rev d1">
-
-    <div class="qb-card" onclick="openModal('mr')">
-      <div class="qb-img">
-        <img src="project-ramen.jpg" alt="Ramen Rider">
-        <div class="qb-badge amber">★ FEATURED</div>
-      </div>
-      <div class="qb-body">
-        <div class="qb-meta">TIME MANAGEMENT · UNITY/C# · TEAM x5</div>
-        <div class="qb-title">RAMEN RIDER</div>
-        <div class="qb-chips">
-          <span class="qb-chip">STORY</span><span class="qb-chip">DIALOG SYS</span>
-          <span class="qb-chip">SOUND</span><span class="qb-chip">PROGRAMMER</span>
+    <div class="prj" onclick="openModal('mr')">
+      <div class="prj-left">
+        <div class="prj-meta">Time Management · Unity / C# · Team of 5</div>
+        <div class="prj-title">Ramen Rider</div>
+        <div class="prj-roles">
+          <span class="prj-role">Story</span>
+          <span class="prj-role">Dialog System</span>
+          <span class="prj-role">Sound Design</span>
+          <span class="prj-role">Programmer</span>
         </div>
-        <div class="qb-desc">รับบทลูกชายร้านราเมงสายซิ่ง พัฒนาระบบ Dialog System ทั้งหมดเอง และออกแบบ SFX ด้วย Audacity</div>
-        <div class="qb-open">OPEN CASE STUDY</div>
+        <p class="prj-desc">เกม Time Management รับบทลูกชายร้านราเมงสายซิ่ง พัฒนาระบบ Dialog และออกแบบ SFX ทั้งหมดเอง</p>
       </div>
+      <div class="prj-arrow">→</div>
     </div>
 
-    <div class="qb-card" onclick="openModal('ma')">
-      <div class="qb-img">
-        <img src="project1.jpg" alt="Abandoned Rails">
-        <div class="qb-badge">SOLO</div>
+    <div class="prj" onclick="openModal('ma')">
+      <div class="prj-left">
+        <div class="prj-meta">Horror · First-Person · Unity · Solo</div>
+        <div class="prj-title">Abandoned Rails</div>
+        <div class="prj-roles">
+          <span class="prj-role">Game Designer</span>
+          <span class="prj-role">Programmer</span>
+        </div>
+        <p class="prj-desc">Horror exploration solo project สำรวจทางรถไฟร้าง เน้นบรรยากาศและ Environmental Storytelling ไม่มีระบบต่อสู้</p>
       </div>
-      <div class="qb-body">
-        <div class="qb-meta">HORROR · FIRST-PERSON · UNITY</div>
-        <div class="qb-title">ABANDONED RAILS</div>
-        <div class="qb-chips"><span class="qb-chip">GAME DESIGNER</span><span class="qb-chip">PROGRAMMER</span></div>
-        <div class="qb-desc">Horror exploration ทางรถไฟร้าง ไม่มีระบบต่อสู้ เน้น Environmental Storytelling</div>
-        <div class="qb-open">OPEN CASE STUDY</div>
-      </div>
+      <div class="prj-arrow">→</div>
     </div>
 
-    <div class="qb-card" onclick="openModal('mk')">
-      <div class="qb-img">
-        <img src="project2.jpg" alt="Unknown Knight">
-        <div class="qb-badge cyan">CO-OP</div>
+    <div class="prj" onclick="openModal('mk')">
+      <div class="prj-left">
+        <div class="prj-meta">Action RPG · 3D · Co-op</div>
+        <div class="prj-title">Unknown Knight</div>
+        <div class="prj-roles">
+          <span class="prj-role">Sub-Developer</span>
+          <span class="prj-role">Level Design</span>
+          <span class="prj-role">Narrative</span>
+        </div>
+        <p class="prj-desc">3D Action RPG Co-op จัดฉากดันเจี้ยน เขียนเนื้อเรื่อง และพัฒนา Checkpoint System</p>
       </div>
-      <div class="qb-body">
-        <div class="qb-meta">ACTION RPG · 3D · CO-OP</div>
-        <div class="qb-title">UNKNOWN KNIGHT</div>
-        <div class="qb-chips"><span class="qb-chip">LEVEL DESIGN</span><span class="qb-chip">NARRATIVE</span></div>
-        <div class="qb-desc">3D Action RPG Co-op จัดฉากดันเจี้ยน เขียน lore และพัฒนา Checkpoint System</div>
-        <div class="qb-open">OPEN CASE STUDY</div>
-      </div>
+      <div class="prj-arrow">→</div>
     </div>
 
-    <div class="qb-card" onclick="openModal('m3')">
-      <div class="qb-img">
-        <img src="project3.jpg" alt="3D Asset">
-        <div class="qb-badge pink">ART</div>
+    <div class="prj" onclick="openModal('m3')">
+      <div class="prj-left">
+        <div class="prj-meta">3D Art · Maya · Substance · Unreal</div>
+        <div class="prj-title">3D Asset Workflow</div>
+        <div class="prj-roles">
+          <span class="prj-role">3D Artist</span>
+          <span class="prj-role">Modeling</span>
+          <span class="prj-role">PBR Texture</span>
+        </div>
+        <p class="prj-desc">Full pipeline ตั้งแต่ High-Poly ใน Maya, PBR Bake ใน Substance Painter จนถึง Engine integration</p>
       </div>
-      <div class="qb-body">
-        <div class="qb-meta">3D ART · MAYA · SUBSTANCE · UNREAL</div>
-        <div class="qb-title">3D ASSET WORKFLOW</div>
-        <div class="qb-chips"><span class="qb-chip">3D ARTIST</span><span class="qb-chip">PBR</span></div>
-        <div class="qb-desc">Full pipeline: High-Poly → Low-Poly → UV → PBR Bake → Engine</div>
-        <div class="qb-open">OPEN CASE STUDY</div>
-      </div>
+      <div class="prj-arrow">→</div>
     </div>
 
-    <div class="qb-card" onclick="openModal('mb')">
-      <div class="qb-img">
-        <img src="project-ball.jpg" alt="Ball Platformer">
-        <div class="qb-badge">YEAR 1</div>
+    <div class="prj" onclick="openModal('mb')">
+      <div class="prj-left">
+        <div class="prj-meta">2D Platformer · Unity 2D · C# · Year 1</div>
+        <div class="prj-title">2D Ball Platformer</div>
+        <div class="prj-roles">
+          <span class="prj-role">Developer</span>
+        </div>
+        <p class="prj-desc">เกมแรก — Casual 2D Platformer บังคับลูกบอล 3 ด่าน พร้อมระบบ score, health และ respawn</p>
       </div>
-      <div class="qb-body">
-        <div class="qb-meta">2D PLATFORMER · UNITY 2D · C#</div>
-        <div class="qb-title">2D BALL PLATFORMER</div>
-        <div class="qb-chips"><span class="qb-chip">DEVELOPER</span><span class="qb-chip">GAME DESIGN</span></div>
-        <div class="qb-desc">Casual 2D platformer 3 ด่าน พร้อม score, health และ respawn system</div>
-        <div class="qb-open">OPEN CASE STUDY</div>
-      </div>
+      <div class="prj-arrow">→</div>
     </div>
 
   </div>
 </section>
 
-<!-- ══ CONTACT ══ -->
-<section id="contact" class="sec-wrap">
-  <div class="sec-head rev">
-    <div class="sh-num">04</div>
-    <div class="sh-text">
-      <div class="sh-sub">GUILD BOARD</div>
-      <div class="sh-title">CONTACT</div>
+<!-- CONTACT -->
+<section id="contact">
+  <p class="sec-label">Contact</p>
+  <div class="contact-grid">
+    <div class="contact-note rev">
+      <p>สนใจฝึกงานในตำแหน่ง <strong>Game Designer</strong>, <strong>Sound Designer</strong> หรือ <strong>Narrative Designer</strong> ครับ</p>
+      <br>
+      <p>ติดต่อได้ตลอดครับ ไม่ว่าจะอยากคุย อยากดูผลงานเพิ่มเติม หรืออยากให้ไปสัมภาษณ์</p>
     </div>
-    <div class="sh-right">OPEN<br>INTERN</div>
-  </div>
-  <div class="contact-layout">
-    <div class="contact-left rev d1">
-      <div class="contact-title">
-        LOOKING FOR<br>
-        <span>A PARTY.</span>
+    <div class="rev d1">
+      <div class="contact-rows">
+        <div class="c-row"><span class="c-key">โทรศัพท์</span><span class="c-val">095-505-8088</span></div>
+        <div class="c-row"><span class="c-key">อีเมล</span><span class="c-val"><a href="mailto:lnwpureza2545@gmail.com">lnwpureza2545@gmail.com</a></span></div>
+        <div class="c-row"><span class="c-key">GitHub</span><span class="c-val"><a href="https://github.com/lnwpureza2545" target="_blank">github.com/lnwpureza2545</a></span></div>
+        <div class="c-row"><span class="c-key">ที่อยู่</span><span class="c-val">สมุทรปราการ, ไทย</span></div>
       </div>
-      <p class="contact-body-txt">
-        สนใจฝึกงานในตำแหน่ง Game Designer,<br>
-        Sound Designer หรือ Narrative Designer<br>
-        พร้อมร่วมทีมและเรียนรู้เต็มที่ครับ
-      </p>
-    </div>
-    <div class="rev d2" style="padding:24px">
-      <div class="info-rows">
-        <div class="ir"><span class="ir-key">PHONE</span><span class="ir-val">095-505-8088</span></div>
-        <div class="ir"><span class="ir-key">EMAIL</span><span class="ir-val"><a href="mailto:lnwpureza2545@gmail.com">lnwpureza2545@gmail.com</a></span></div>
-        <div class="ir"><span class="ir-key">LOCATION</span><span class="ir-val">Samut Prakan, Thailand</span></div>
-        <div class="ir"><span class="ir-key">GITHUB</span><span class="ir-val"><a href="https://github.com/lnwpureza2545" target="_blank">github.com/lnwpureza2545</a></span></div>
-      </div>
-      <a href="mailto:lnwpureza2545@gmail.com" class="cta-big">SEND MESSAGE</a>
+      <a href="mailto:lnwpureza2545@gmail.com" class="cta">ส่งอีเมลหาผม →</a>
     </div>
   </div>
 </section>
-</div>
 
+</div><!-- /wrap -->
+
+<div class="wrap">
 <footer>
-  <div class="ft-copy">© 2026 PEEMAPOL PHUANGCHAROEN — ALL RIGHTS RESERVED</div>
+  <span class="ft-copy">© 2026 Peemapol Phuangcharoen</span>
   <div class="ft-links">
-    <a href="mailto:lnwpureza2545@gmail.com">EMAIL</a>
-    <a href="https://github.com/lnwpureza2545" target="_blank">GITHUB</a>
-    <a href="resume.pdf" download>RESUME</a>
+    <a href="mailto:lnwpureza2545@gmail.com">Email</a>
+    <a href="https://github.com/lnwpureza2545" target="_blank">GitHub</a>
+    <a href="resume.pdf" download>Resume</a>
   </div>
 </footer>
+</div>
 
 <!-- LIGHTBOX -->
 <div id="lbx" class="lbx">
-  <div class="lbx-x" onclick="closeLbx()">[ CLOSE ]</div>
+  <button class="lbx-x" onclick="closeLbx()">✕</button>
   <img id="lbxImg" src="" alt="">
 </div>
 
 <!-- MODALS -->
 <div id="mr" class="modal-overlay">
   <div class="mbox">
-    <div class="m-header"><span class="m-tag">▶ CASE STUDY 01 — RAMEN RIDER</span><button class="m-close" onclick="closeModal('mr')">[ X ]</button></div>
+    <span class="m-handle"></span>
+    <div class="m-header">
+      <span class="m-tag">Project 01</span>
+      <button class="m-close" onclick="closeModal('mr')">✕</button>
+    </div>
     <div class="m-body">
-      <div class="m-title">RAMEN RIDER</div>
-      <span class="m-sub">SOUND · STORY · DIALOG SYSTEM · PROGRAMMER — TEAM x5</span>
-      <div class="m-chips"><span class="m-chip">TIME MGMT</span><span class="m-chip">UNITY/C#</span><span class="m-chip">AUDACITY</span></div>
-      <div class="m-sec">SCREENSHOTS</div>
+      <h2 class="m-title">Ramen Rider</h2>
+      <span class="m-sub">Sound · Story · Dialog System · Programmer — Team of 5</span>
+      <div class="m-chips"><span class="m-chip">Time Management</span><span class="m-chip">Unity / C#</span><span class="m-chip">Audacity</span></div>
+      <div class="m-sec">Screenshots</div>
       <div class="ig3">
-        <div class="ibox"><img src="ramen-progress-1.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">WIP 01</div></div>
-        <div class="ibox"><img src="ramen-progress-2.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">WIP 02</div></div>
-        <div class="ibox"><img src="ramen-progress-3.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">WIP 03</div></div>
+        <div class="ibox"><img src="ramen-progress-1.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">WIP 1</div></div>
+        <div class="ibox"><img src="ramen-progress-2.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">WIP 2</div></div>
+        <div class="ibox"><img src="ramen-progress-3.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">WIP 3</div></div>
       </div>
-      <div class="m-sec">MY CONTRIBUTIONS</div>
+      <div class="m-sec">สิ่งที่ทำในโปรเจกต์นี้</div>
       <ul>
-        <li><strong>Narrative &amp; Dialog Design</strong> — เขียนโครงเรื่องและบทสนทนาสำหรับตัวเอกสายซิ่ง</li>
+        <li><strong>Narrative &amp; Dialog Design</strong> — เขียนโครงเรื่องและบทสนทนาทั้งหมด</li>
         <li><strong>Dialog System (C#)</strong> — พัฒนาระบบ event-based dialog trigger เอง</li>
-        <li><strong>SFX (Audacity)</strong> — Distortion + Pitch Shift สร้างเสียงสไตล์ Comic Action</li>
+        <li><strong>SFX (Audacity)</strong> — ใช้ Distortion + Pitch Shift สร้างเสียงสไตล์ Comic</li>
       </ul>
-      <div class="m-sec">SAMPLE DIALOG</div>
-      <div class="rpg-dialog">
-        <div class="rd-head">SCENE: ARRIVING AT THE SHOP</div>
-        <div class="rd-line"><strong>FATHER:</strong> เมืองเปลี่ยนไปเยอะใช่ไหมล่ะ</div>
-        <div class="rd-line"><strong>REN:</strong> เปลี่ยนมาก ถนนเละ โค้งเยอะ รถติด… เหมาะกับเด็กแว้นสุดๆ</div>
-        <div class="rd-line"><strong>FATHER:</strong> นี่ไม่ใช่สนามแข่งนะ!</div>
-        <div class="rd-line"><strong>REN:</strong> สำหรับผม มันคือด่านแรกของเกมครับพ่อ</div>
+      <div class="m-sec">ตัวอย่าง Dialog</div>
+      <div class="dialog-block">
+        <div class="db-label">Scene: Arriving at the Shop</div>
+        <div class="db-line"><strong>Father:</strong> เมืองเปลี่ยนไปเยอะใช่ไหมล่ะ</div>
+        <div class="db-line"><strong>Ren:</strong> เปลี่ยนมาก ถนนเละ โค้งเยอะ รถติด… เหมาะกับเด็กแว้นสุดๆ</div>
+        <div class="db-line"><strong>Father:</strong> นี่ไม่ใช่สนามแข่งนะ!</div>
+        <div class="db-line"><strong>Ren:</strong> สำหรับผม มันคือด่านแรกของเกมครับพ่อ</div>
       </div>
     </div>
   </div>
@@ -1209,19 +669,20 @@ footer {
 
 <div id="ma" class="modal-overlay">
   <div class="mbox">
-    <div class="m-header"><span class="m-tag">▶ CASE STUDY 02 — ABANDONED RAILS</span><button class="m-close" onclick="closeModal('ma')">[ X ]</button></div>
+    <span class="m-handle"></span>
+    <div class="m-header"><span class="m-tag">Project 02</span><button class="m-close" onclick="closeModal('ma')">✕</button></div>
     <div class="m-body">
-      <div class="m-title">ABANDONED RAILS</div>
-      <span class="m-sub">SOLO — GAME DESIGNER &amp; PROGRAMMER · UNITY (C#)</span>
-      <div class="m-chips"><span class="m-chip">FIRST-PERSON</span><span class="m-chip">HORROR</span><span class="m-chip">SOLO</span></div>
+      <h2 class="m-title">Abandoned Rails</h2>
+      <span class="m-sub">Solo — Game Designer &amp; Programmer · Unity (C#)</span>
+      <div class="m-chips"><span class="m-chip">First-Person</span><span class="m-chip">Horror</span><span class="m-chip">Solo</span></div>
       <div class="vid"><video controls autoplay loop muted playsinline ondblclick="toggleFS(this)"><source src="abandoned-rails-video.mp4" type="video/mp4"></video></div>
-      <div class="m-sec">OVERVIEW</div>
-      <p>ผู้เล่นรับบทนักสำรวจที่มายังทางรถไฟร้างเพื่อค้นหาความจริง ไม่มีระบบต่อสู้ — ความน่ากลัวทั้งหมดเกิดจากบรรยากาศ เสียง และ Environmental Storytelling</p>
-      <div class="m-sec">DESIGN DECISIONS</div>
+      <div class="m-sec">ภาพรวม</div>
+      <p>ผู้เล่นรับบทนักสำรวจที่มายังทางรถไฟร้าง ไม่มีระบบต่อสู้ — ความน่ากลัวเกิดจากบรรยากาศ เสียง และ Environmental Storytelling ล้วนๆ</p>
+      <div class="m-sec">Design Decisions</div>
       <ul>
-        <li>ตัดสินใจไม่ใส่ศัตรู — ให้ผู้เล่นกลัวสิ่งที่มองไม่เห็น</li>
+        <li>ไม่ใส่ศัตรู — ให้ผู้เล่นกลัวสิ่งที่มองไม่เห็น</li>
         <li>Environmental Storytelling ผ่านกระดาษโน้ตและสภาพแวดล้อม</li>
-        <li>ผีที่ปรากฏได้แต่ไม่ทำร้าย — ใช้การมองเห็นสร้าง tension</li>
+        <li>ผีที่ปรากฏได้แต่ไม่ทำร้ายโดยตรง สร้าง psychological tension</li>
       </ul>
     </div>
   </div>
@@ -1229,18 +690,19 @@ footer {
 
 <div id="mk" class="modal-overlay">
   <div class="mbox">
-    <div class="m-header"><span class="m-tag">▶ CASE STUDY 03 — UNKNOWN KNIGHT</span><button class="m-close" onclick="closeModal('mk')">[ X ]</button></div>
+    <span class="m-handle"></span>
+    <div class="m-header"><span class="m-tag">Project 03</span><button class="m-close" onclick="closeModal('mk')">✕</button></div>
     <div class="m-body">
-      <div class="m-title">UNKNOWN KNIGHT</div>
-      <span class="m-sub">SUB-DEV · LEVEL DESIGNER · NARRATIVE · CO-OP</span>
-      <div class="m-chips"><span class="m-chip">ACTION RPG</span><span class="m-chip">3D</span><span class="m-chip">CO-OP</span></div>
+      <h2 class="m-title">Unknown Knight</h2>
+      <span class="m-sub">Sub-Developer · Level Designer · Narrative · Co-op</span>
+      <div class="m-chips"><span class="m-chip">Action RPG</span><span class="m-chip">3D</span><span class="m-chip">Co-op</span></div>
       <div class="vid"><video controls autoplay loop muted playsinline ondblclick="toggleFS(this)"><source src="unknown-knight-video.mp4" type="video/mp4"></video></div>
-      <div class="m-sec">STORY</div>
-      <p>ตื่นขึ้นมาในดันเจี้ยนพร้อมอัศวินปริศนา ไม่รู้อดีต ไม่รู้จุดหมาย มีแค่ดาบ ต้องต่อสู้เพื่อหาทางออก</p>
-      <div class="m-sec">CONTRIBUTIONS</div>
+      <div class="m-sec">เรื่องย่อ</div>
+      <p>ตื่นขึ้นมาในดันเจี้ยนพร้อมอัศวินปริศนา ไม่รู้อดีต ไม่รู้จุดหมาย ต้องต่อสู้ฝ่ามอนสเตอร์เพื่อหาทางออก</p>
+      <div class="m-sec">สิ่งที่ทำ</div>
       <ul>
-        <li><strong>Level Design</strong> — จัดวาง 3D Asset สร้างฉากดันเจี้ยน Co-op</li>
-        <li><strong>Narrative Design</strong> — โครงเรื่อง, character backstory, world lore</li>
+        <li><strong>Level Design</strong> — จัดวาง 3D Asset สร้างฉากดันเจี้ยนสำหรับ Co-op</li>
+        <li><strong>Narrative Design</strong> — เขียนโครงเรื่อง, character backstory, world lore</li>
         <li><strong>Checkpoint System (C#)</strong> — save point สำหรับ 2 players</li>
       </ul>
     </div>
@@ -1249,19 +711,20 @@ footer {
 
 <div id="m3" class="modal-overlay">
   <div class="mbox">
-    <div class="m-header"><span class="m-tag">▶ CASE STUDY 04 — 3D ASSET</span><button class="m-close" onclick="closeModal('m3')">[ X ]</button></div>
+    <span class="m-handle"></span>
+    <div class="m-header"><span class="m-tag">Project 04</span><button class="m-close" onclick="closeModal('m3')">✕</button></div>
     <div class="m-body">
-      <div class="m-title">3D ASSET WORKFLOW</div>
-      <span class="m-sub">3D ARTIST · MAYA · SUBSTANCE · UNREAL · UNITY</span>
-      <div class="m-chips"><span class="m-chip">3D</span><span class="m-chip">PBR</span><span class="m-chip">MAYA</span><span class="m-chip">SUBSTANCE</span></div>
+      <h2 class="m-title">3D Asset Workflow</h2>
+      <span class="m-sub">3D Artist · Maya · Substance Painter · Unreal · Unity</span>
+      <div class="m-chips"><span class="m-chip">3D Modeling</span><span class="m-chip">PBR</span><span class="m-chip">Maya</span><span class="m-chip">Substance</span></div>
       <div class="ig2">
-        <div class="ibox"><img src="3d-reference.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">REFERENCE</div></div>
-        <div class="ibox"><img src="3d-realwork.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">FINAL</div></div>
+        <div class="ibox"><img src="3d-reference.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">Reference</div></div>
+        <div class="ibox"><img src="3d-realwork.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">Final</div></div>
       </div>
-      <div class="m-sec">PIPELINE</div>
+      <div class="m-sec">Pipeline</div>
       <ul>
         <li><strong>Maya</strong> — High-Poly → Low-Poly retopo → UV Unwrap</li>
-        <li><strong>Substance</strong> — Normal/AO/Roughness bake → PBR material</li>
+        <li><strong>Substance Painter</strong> — Normal/AO/Roughness bake → PBR material</li>
         <li><strong>Engine</strong> — Import, material setup, lighting</li>
       </ul>
     </div>
@@ -1270,18 +733,19 @@ footer {
 
 <div id="mb" class="modal-overlay">
   <div class="mbox">
-    <div class="m-header"><span class="m-tag">▶ CASE STUDY 05 — 2D BALL PLATFORMER</span><button class="m-close" onclick="closeModal('mb')">[ X ]</button></div>
+    <span class="m-handle"></span>
+    <div class="m-header"><span class="m-tag">Project 05</span><button class="m-close" onclick="closeModal('mb')">✕</button></div>
     <div class="m-body">
-      <div class="m-title">2D BALL PLATFORMER</div>
-      <span class="m-sub">DEVELOPER — YEAR 1 · UNITY 2D · C#</span>
-      <div class="m-chips"><span class="m-chip">2D</span><span class="m-chip">PLATFORMER</span><span class="m-chip">C# BASICS</span></div>
+      <h2 class="m-title">2D Ball Platformer</h2>
+      <span class="m-sub">Developer — Year 1 · Unity 2D · C#</span>
+      <div class="m-chips"><span class="m-chip">2D Platformer</span><span class="m-chip">Casual</span><span class="m-chip">C# Basics</span></div>
       <div class="vid"><video controls autoplay loop muted playsinline ondblclick="toggleFS(this)"><source src="ball-game-video.mp4" type="video/mp4"></video></div>
-      <div class="m-sec">OVERVIEW</div>
-      <p>First complete game — Unity 2D Platformer 3 ด่าน เป็น project แรกที่ได้ build ครบวงจร</p>
-      <div class="m-sec">FEATURES</div>
+      <div class="m-sec">ภาพรวม</div>
+      <p>เกมแรกที่ทำสำเร็จใน Year 1 — บังคับลูกบอลผ่าน 3 ด่าน ความยากเพิ่มขึ้นเรื่อยๆ</p>
+      <div class="m-sec">Features ที่สร้าง</div>
       <ul>
-        <li><strong>Physics movement</strong> — rolling &amp; jumping บน platforms</li>
-        <li><strong>Score system</strong> — gem collection + counter UI</li>
+        <li><strong>Physics movement</strong> — rolling &amp; jumping</li>
+        <li><strong>Score system</strong> — เก็บ gem + counter UI</li>
         <li><strong>Health &amp; respawn</strong> — heart system + checkpoint</li>
         <li><strong>3-level progression</strong> — scene transition + difficulty scaling</li>
       </ul>
@@ -1290,45 +754,14 @@ footer {
 </div>
 
 <script>
-/* ── CURSOR ── */
-const cur = document.getElementById('cur');
-document.addEventListener('mousemove', e => {
-  cur.style.left = e.clientX + 'px';
-  cur.style.top  = e.clientY + 'px';
-});
-
-/* ── INTRO / PRESS START ── */
-let loaded = false;
-const fill = document.getElementById('loadBar');
-const pct  = document.getElementById('loadPct');
-let p = 0;
-const loadInt = setInterval(() => {
-  p += Math.random() * 8 + 2;
-  if (p >= 100) { p = 100; clearInterval(loadInt); }
-  fill.style.width = p + '%';
-  pct.textContent  = Math.floor(p) + '%';
-}, 80);
-
-const dismiss = () => {
-  if (loaded) return; loaded = true;
-  document.getElementById('intro').classList.add('out');
-  setTimeout(() => document.getElementById('intro').style.display = 'none', 600);
-};
-document.addEventListener('keydown', dismiss);
-document.addEventListener('click',   dismiss);
-document.getElementById('pressStart').addEventListener('click', dismiss);
-setTimeout(dismiss, 6000); // auto-skip after 6s
-
-/* ── SCROLL REVEAL ── */
 const ro = new IntersectionObserver(es => es.forEach(e => {
   if (e.isIntersecting) e.target.classList.add('on');
-}), { threshold: .05 });
+}), { threshold:.05 });
 document.querySelectorAll('.rev').forEach(el => ro.observe(el));
 
-/* ── ACTIVE NAV ── */
 const ids = ['home','about','skills','projects','contact'];
 window.addEventListener('scroll', () => {
-  const y = scrollY + 80;
+  const y = scrollY + 70;
   ids.forEach(id => {
     const s = document.getElementById(id); if (!s) return;
     const a = document.querySelector(`.nav-links a[href="#${id}"]`);
@@ -1336,7 +769,6 @@ window.addEventListener('scroll', () => {
   });
 }, { passive:true });
 
-/* ── MODALS ── */
 const openModal = id => {
   const m = document.getElementById(id);
   m.style.display = 'flex';
@@ -1360,7 +792,6 @@ document.addEventListener('keydown', e => {
   }
 });
 
-/* ── LIGHTBOX ── */
 const openLbx = src => {
   const lb = document.getElementById('lbx');
   document.getElementById('lbxImg').src = src;
@@ -1376,7 +807,6 @@ document.getElementById('lbx').addEventListener('click', e => {
   if (e.target !== document.getElementById('lbxImg')) closeLbx();
 });
 
-/* ── FULLSCREEN ── */
 const toggleFS = v => {
   if (!document.fullscreenElement) (v.requestFullscreen || v.webkitRequestFullscreen).call(v);
   else document.exitFullscreen?.();
