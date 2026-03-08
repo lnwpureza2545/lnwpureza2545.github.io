@@ -253,7 +253,7 @@ nav{
 .pf-corner.tl{top:-8px;left:50%;transform:translateX(-50%)}
 .pf-corner.br{bottom:-8px;right:0}
 
-/* ── STAT CARD (UPDATED RANKS TO BASIC) ── */
+/* ── STAT CARD ── */
 .stat-card{width:300px;background:var(--layer);border:1px solid var(--border);position:relative;overflow:hidden;}
 .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--blue))}
 .stat-card-head{padding:.9rem 1.2rem;font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:var(--text-dim);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;}
@@ -613,7 +613,9 @@ footer{background:var(--black);border-top:1px solid var(--border);text-align:cen
     <div class="sk-grid">
       <div class="sk-cell"><div class="sk-cat">CORE EXPERTISE</div><div class="tags"><span class="tag">Gameplay Design</span><span class="tag">Level Design</span><span class="tag">Story / Narrative</span><span class="tag">Audio Implementation</span></div></div>
       <div class="sk-cell"><div class="sk-cat">SOFT SKILLS</div><div class="tags"><span class="tag">Problem Solving</span><span class="tag">Team Collaboration</span><span class="tag">Deadline Management</span><span class="tag">Fast Iteration</span></div></div>
-      <div class="sk-cell"><div class="sk-cat">TECHNICAL</div><div class="tags"><span class="tag">Unity (Intermediate)</span><span class="tag">Unreal Engine (Basic)</span><span class="tag">C# Scripting</span><span class="tag">Audacity (Advanced)</span></div></div>
+      
+      <div class="sk-cell"><div class="sk-cat">TECHNICAL</div><div class="tags"><span class="tag">Unity (Intermediate)</span><span class="tag">Unreal Engine (Basic)</span><span class="tag">C# Scripting</span><span class="tag">Audacity (Basic)</span></div></div>
+      
       <div class="sk-cell"><div class="sk-cat">TOOLS</div><div class="tags"><span class="tag">After Effects</span><span class="tag">Illustrator</span><span class="tag">Maya</span><span class="tag">Substance Painter</span></div></div>
     </div>
   </div>
@@ -738,6 +740,9 @@ footer{background:var(--black);border-top:1px solid var(--border);text-align:cen
     <div class="m-content">
       <h2 class="m-hl">Ramen Rider</h2><span class="m-sub">Sound · Story · Dialog Sys · Programmer | Team of 5</span>
       <div class="m-tags"><span>Time Management</span><span>Action Casual</span><span>Unity / C#</span></div>
+      
+      <div class="vid"><span class="vid-hint">DBL-CLICK: FULLSCREEN</span><video controls autoplay loop muted playsinline ondblclick="toggleFS(this)"><source src="ramen-rider-video.mp4" type="video/mp4"></video></div>
+
       <div class="msec">PROGRESS SCREENSHOTS</div>
       <div class="ig3">
         <div class="ibox"><img src="ramen-progress-1.jpg" alt="" onclick="openLbx(this.src)"><div class="ilbl">In Progress</div></div>
