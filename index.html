@@ -3,427 +3,450 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Peemapol Phuangcharoen — 2D Game Designer</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg:        #0e0e12;
-  --bg2:       #16161d;
-  --bg3:       #1e1e28;
-  --surface:   #1a1a24;
-  --ink:       #f0eeea;
-  --ink2:      #a09ea8;
-  --ink3:      #5a5868;
-  --neon:      #c8ff57;
-  --neon-dim:  rgba(200,255,87,0.12);
-  --neon-mid:  rgba(200,255,87,0.35);
-  --accent:    #ff6b6b;
-  --blue:      #5b8cff;
-  --purple:    #b07fff;
-  --line:      rgba(255,255,255,0.07);
-  --line2:     rgba(255,255,255,0.13);
-  --pixel: 2px;
-}
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior: smooth; }
-body {
-  background: var(--bg);
-  color: var(--ink);
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 16px;
-  line-height: 1.7;
-  overflow-x: hidden;
-}
-::-webkit-scrollbar { width: 3px; }
-::-webkit-scrollbar-track { background: var(--bg2); }
-::-webkit-scrollbar-thumb { background: var(--neon); border-radius: 0; }
-a { text-decoration: none; color: inherit; }
-img { display: block; max-width: 100%; }
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Exo+2:wght@300;400;600;700&display=swap');
 
-/* pixel scanline overlay */
-body::before {
-  content: '';
-  position: fixed; inset: 0; z-index: 9999;
-  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
-  pointer-events: none;
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+
+:root{
+  --red:#FF2020;
+  --red-dim:rgba(255,32,32,0.1);
+  --red-mid:rgba(255,32,32,0.28);
+  --red-glow:rgba(255,32,32,0.5);
+  --dark:#8B0000;
+  --bg:#050508;
+  --bg2:#0a0a10;
+  --surface:#0e0e16;
+  --surface2:#13131c;
+  --ink:#F0EDE8;
+  --ink2:#8A8898;
+  --ink3:#3E3D50;
+  --line:rgba(255,32,32,0.07);
+  --line2:rgba(255,32,32,0.16);
 }
 
-/* NAV */
-nav {
-  position: sticky; top: 0; z-index: 200;
-  background: rgba(14,14,18,0.92);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--line);
-  padding: 0 max(1.5rem, 4vw);
-}
-.nav-inner {
-  max-width: 1140px; margin: 0 auto;
-  display: flex; align-items: center; justify-content: space-between;
-  height: 56px;
-}
-.nav-logo {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.35rem; letter-spacing: 0.12em; color: var(--ink);
-}
-.nav-logo em { color: var(--neon); font-style: normal; }
-.nav-links { display: flex; gap: 2rem; }
-.nav-links a {
-  font-family: 'Space Mono', monospace;
-  font-size: 0.68rem; font-weight: 400; letter-spacing: 0.1em;
-  color: var(--ink3); transition: color 0.18s; text-transform: uppercase;
-}
-.nav-links a:hover { color: var(--neon); }
-.nav-avail {
-  display: flex; align-items: center; gap: 0.45rem;
-  font-family: 'Space Mono', monospace; font-size: 0.6rem;
-  color: var(--neon); letter-spacing: 0.1em;
-}
-.nav-dot {
-  width: 6px; height: 6px; border-radius: 0; background: var(--neon);
-  box-shadow: 0 0 8px var(--neon);
-  animation: blink 1.2s step-end infinite;
-}
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-
-/* PAGE WRAP */
-.page { max-width: 1140px; margin: 0 auto; padding: 0 max(1.5rem, 4vw); }
-
-/* HERO */
-.hero {
-  display: grid;
-  grid-template-columns: 380px 1fr;
-  min-height: calc(100vh - 56px);
-  align-items: stretch;
-  border-bottom: 1px solid var(--line);
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'Exo 2',sans-serif;
+  font-size:15px;
+  line-height:1.7;
+  overflow-x:hidden;
+  min-width:320px;
 }
 
-/* LEFT */
-.hero-left {
-  padding: 3.5rem 2.75rem 3.5rem 0;
-  display: flex; flex-direction: column; justify-content: center;
-  border-right: 1px solid var(--line);
-  position: sticky; top: 56px;
-  height: calc(100vh - 56px);
-  overflow: hidden;
-}
-.hero-label {
-  font-family: 'Space Mono', monospace; font-size: 0.58rem;
-  letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--neon); margin-bottom: 1.4rem;
-  display: flex; align-items: center; gap: 0.65rem;
-}
-.hero-label::before { content:'> '; color: var(--neon); }
-.hero-avatar {
-  width: 130px; height: 130px;
-  overflow: hidden; margin-bottom: 1.4rem;
-  border: 2px solid var(--neon);
-  box-shadow: 0 0 0 4px var(--neon-dim), 0 0 20px var(--neon-dim);
-  image-rendering: pixelated;
-  flex-shrink: 0;
-}
-.hero-avatar img { width:100%; height:100%; object-fit:cover; }
-.hero-name {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(2.4rem, 4vw, 3.4rem); line-height: 0.95;
-  letter-spacing: 0.04em; color: var(--ink); margin-bottom: 0.35rem;
-}
-.hero-role {
-  font-family: 'Space Mono', monospace; font-weight: 400;
-  font-size: 0.72rem; color: var(--neon); margin-bottom: 1.5rem;
-  letter-spacing: 0.12em; text-transform: uppercase;
-  display: flex; align-items: center; gap: 0.5rem;
-}
-.hero-role::before { content:'['; color: var(--ink3); }
-.hero-role::after { content:']'; color: var(--ink3); }
-.hero-bio {
-  font-size: 0.86rem; color: var(--ink2); line-height: 1.85;
-  margin-bottom: 1.6rem;
-  padding: 0.85rem 1rem;
-  border: 1px solid var(--line2);
-  border-left: 2px solid var(--neon);
-  background: var(--neon-dim);
+/* STAR FIELD */
+body::before{
+  content:'';
+  position:fixed;inset:0;z-index:0;
+  background:
+    radial-gradient(1px 1px at 8% 12%,rgba(255,255,255,0.7) 0,transparent 100%),
+    radial-gradient(1px 1px at 22% 38%,rgba(255,255,255,0.5) 0,transparent 100%),
+    radial-gradient(1.5px 1.5px at 38% 7%,rgba(255,255,255,0.6) 0,transparent 100%),
+    radial-gradient(1px 1px at 52% 28%,rgba(255,255,255,0.4) 0,transparent 100%),
+    radial-gradient(1px 1px at 66% 55%,rgba(255,255,255,0.5) 0,transparent 100%),
+    radial-gradient(1px 1px at 78% 18%,rgba(255,255,255,0.4) 0,transparent 100%),
+    radial-gradient(1px 1px at 88% 42%,rgba(255,80,80,0.3) 0,transparent 100%),
+    radial-gradient(1px 1px at 14% 68%,rgba(255,255,255,0.5) 0,transparent 100%),
+    radial-gradient(1px 1px at 33% 83%,rgba(255,255,255,0.3) 0,transparent 100%),
+    radial-gradient(1px 1px at 58% 73%,rgba(255,80,80,0.25) 0,transparent 100%),
+    radial-gradient(1px 1px at 83% 88%,rgba(255,255,255,0.4) 0,transparent 100%),
+    radial-gradient(1.5px 1.5px at 4% 48%,rgba(255,80,80,0.35) 0,transparent 100%),
+    radial-gradient(1px 1px at 44% 52%,rgba(255,255,255,0.5) 0,transparent 100%),
+    radial-gradient(1px 1px at 72% 33%,rgba(255,255,255,0.3) 0,transparent 100%),
+    radial-gradient(1px 1px at 91% 67%,rgba(255,80,80,0.3) 0,transparent 100%),
+    radial-gradient(1px 1px at 17% 90%,rgba(255,255,255,0.4) 0,transparent 100%),
+    radial-gradient(1px 1px at 60% 10%,rgba(255,255,255,0.5) 0,transparent 100%),
+    radial-gradient(1px 1px at 49% 93%,rgba(255,255,255,0.3) 0,transparent 100%);
+  pointer-events:none;
 }
 
-/* STAT TABLE */
-.stat-table { width: 100%; border-collapse: collapse; margin-bottom: 1.6rem; }
-.stat-table tr { border-bottom: 1px solid var(--line); }
-.stat-table tr:first-child { border-top: 1px solid var(--line); }
-.stat-table td { padding: 0.5rem 0; }
-.stat-k {
-  font-family: 'Space Mono', monospace; font-size: 0.6rem;
-  letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3);
-}
-.stat-bar-wrap {
-  display: flex; align-items: center; gap: 0.6rem; padding-right: 0.5rem;
-}
-.stat-bar {
-  flex: 1; height: 4px; background: var(--bg3);
-  border: 1px solid var(--line2); position: relative; overflow: hidden;
-}
-.stat-bar-fill {
-  position: absolute; left: 0; top: 0; bottom: 0;
-  transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
-}
-.fill-A  { background: var(--neon); box-shadow: 0 0 6px var(--neon); width: 92%; }
-.fill-B  { background: var(--blue); box-shadow: 0 0 6px var(--blue); width: 75%; }
-.fill-Cp { background: var(--purple); box-shadow: 0 0 6px var(--purple); width: 62%; }
-.fill-D  { background: var(--ink3); width: 35%; }
-.stat-g {
-  font-family: 'Space Mono', monospace; font-weight: 700;
-  font-size: 0.75rem; letter-spacing: 0.04em; width: 28px; text-align: right;
-  flex-shrink: 0;
-}
-.g-A  { color: var(--neon); }
-.g-B  { color: var(--blue); }
-.g-Cp { color: var(--purple); }
-.g-D  { color: var(--ink3); }
-
-.hero-chips { display:flex; flex-wrap:wrap; gap:0.38rem; margin-bottom:1.6rem; }
-.chip {
-  font-family: 'Space Mono', monospace; font-size: 0.58rem;
-  letter-spacing: 0.06em; color: var(--neon);
-  background: var(--neon-dim); border: 1px solid var(--neon-mid);
-  padding: 0.2rem 0.65rem;
-}
-.hero-btns { display:flex; gap:0.7rem; flex-wrap: wrap; }
-.btn {
-  display: inline-flex; align-items: center; gap: 0.45rem;
-  font-family: 'Space Mono', monospace; font-weight: 700;
-  font-size: 0.72rem; letter-spacing: 0.06em;
-  padding: 0.65rem 1.35rem;
-  cursor: pointer; transition: all 0.18s; border: none;
-  text-transform: uppercase;
-}
-.btn-primary { background: var(--neon); color: #0e0e12; }
-.btn-primary:hover { background: #d9ff6e; transform:translateY(-1px); box-shadow:0 0 20px var(--neon-mid); }
-.btn-outline { background: transparent; color: var(--ink); border: 1px solid var(--line2); }
-.btn-outline:hover { border-color: var(--neon); color: var(--neon); transform:translateY(-1px); }
-
-/* RIGHT */
-.hero-right {
-  padding: 2.5rem 0 2.5rem 2.75rem;
-  overflow-y: auto;
-  max-height: calc(100vh - 56px);
-  display: flex; flex-direction: column;
-}
-.hero-right::-webkit-scrollbar { width: 3px; }
-.hero-right::-webkit-scrollbar-thumb { background: var(--neon); }
-.showcase-hd {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 1.25rem;
-  padding-bottom: 0.7rem; border-bottom: 1px solid var(--line);
-  flex-shrink: 0;
-}
-.showcase-hd-lbl {
-  font-family: 'Space Mono', monospace; font-size: 0.6rem;
-  letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink3);
-}
-.showcase-hd-ct {
-  font-family: 'Space Mono', monospace; font-size: 0.6rem;
-  color: var(--neon); letter-spacing: 0.08em;
+/* SCANLINE */
+body::after{
+  content:'';
+  position:fixed;inset:0;z-index:9999;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.02) 3px,rgba(0,0,0,0.02) 6px);
+  pointer-events:none;
 }
 
-/* project card */
-.sc-card {
-  background: var(--surface); border: 1px solid var(--line);
-  overflow: hidden; cursor: pointer;
-  transition: border-color 0.22s, box-shadow 0.22s;
-  margin-bottom: 0.8rem; flex-shrink: 0;
-}
-.sc-card:last-child { margin-bottom: 0; }
-.sc-card:hover { border-color: var(--neon); box-shadow: 0 0 20px var(--neon-dim); }
-.sc-thumb { width:100%; height:180px; overflow:hidden; position:relative; background:#0a0a10; }
-.sc-card:first-child .sc-thumb { height:230px; }
-.sc-thumb img {
-  width:100%; height:100%; object-fit:cover;
-  filter:saturate(0.5) brightness(0.75);
-  transition:filter 0.4s, transform 0.5s;
-}
-.sc-card:hover .sc-thumb img { filter:saturate(0.85) brightness(0.88); transform:scale(1.04); }
-.sc-badge {
-  position:absolute; top:0.7rem; left:0.7rem;
-  font-family:'Space Mono',monospace; font-size:0.55rem; letter-spacing:0.1em;
-  color:var(--neon); background:rgba(14,14,18,0.9);
-  padding:0.15rem 0.6rem; border:1px solid var(--neon-mid);
-}
-.sc-type-badge {
-  position: absolute; top: 0.7rem; right: 0.7rem;
-  font-family: 'Space Mono', monospace; font-size: 0.52rem;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  padding: 0.15rem 0.55rem; border: 1px solid;
-}
-.type-2d { color: var(--neon); border-color: var(--neon-mid); background: rgba(200,255,87,0.1); }
-.type-3d { color: var(--purple); border-color: rgba(176,127,255,0.35); background: rgba(176,127,255,0.1); }
-.type-solo { color: var(--blue); border-color: rgba(91,140,255,0.35); background: rgba(91,140,255,0.1); }
-.type-team { color: var(--accent); border-color: rgba(255,107,107,0.35); background: rgba(255,107,107,0.1); }
-.sc-ov { position:absolute; inset:0; background:linear-gradient(to top,rgba(14,14,18,0.6) 0%,transparent 55%); }
-.sc-body { padding:1rem 1.2rem 1.1rem; }
-.sc-genre { font-family:'Space Mono',monospace; font-size:0.56rem; letter-spacing:0.08em; color:var(--ink3); margin-bottom:0.25rem; text-transform: uppercase; }
-.sc-name { font-family:'Bebas Neue',sans-serif; font-size:1.35rem; letter-spacing:0.05em; color:var(--ink); margin-bottom:0.18rem; line-height: 1; }
-.sc-role { font-size:0.75rem; color:var(--ink3); margin-bottom:0.55rem; }
-.sc-desc { font-size:0.82rem; color:var(--ink2); line-height:1.7; margin-bottom:0.7rem; }
-.sc-tags { display:flex; flex-wrap:wrap; gap:0.3rem; }
-.sc-tag { font-family:'Space Mono',monospace; font-size:0.55rem; letter-spacing:0.06em; color:var(--neon); background:var(--neon-dim); border:1px solid var(--neon-mid); padding:0.12rem 0.5rem; }
+a{text-decoration:none;color:inherit;}
+img{display:block;max-width:100%;}
 
-/* SECTIONS */
-section { padding: 4.5rem 0; border-bottom: 1px solid var(--line); }
-.sec-hd { margin-bottom:2.5rem; display:flex; align-items:center; gap:1rem; }
-.sec-num { font-family:'Space Mono',monospace; font-size:0.58rem; letter-spacing:0.14em; color:var(--neon); flex-shrink:0; }
-.sec-ttl { font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:0.06em; color:var(--ink); }
-.sec-ln { flex:1; height:1px; background: linear-gradient(to right, var(--line2), transparent); }
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-track{background:var(--bg2);}
+::-webkit-scrollbar-thumb{background:var(--red);}
 
-/* ABOUT */
-.about-grid { display:grid; grid-template-columns:1.3fr 1fr; gap:3.5rem; }
-.about-text p { color:var(--ink2); font-size:0.9rem; line-height:1.88; margin-bottom:0.88rem; }
-.about-text p strong { color:var(--ink); }
-.edu-list { list-style:none; }
-.edu-item { padding:1rem 0; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:start; gap:1rem; }
-.edu-item:first-child { border-top:1px solid var(--line); }
-.edu-name { font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:0.88rem; color:var(--ink); margin-bottom:0.16rem; }
-.edu-dept { font-size:0.76rem; color:var(--ink2); }
-.edu-right { text-align:right; flex-shrink:0; }
-.edu-year { font-family:'Space Mono',monospace; font-size:0.62rem; color:var(--ink3); margin-bottom:0.2rem; }
-.edu-gpa { font-family:'Space Mono',monospace; font-size:0.68rem; font-weight:700; color:var(--neon); background:var(--neon-dim); border:1px solid var(--neon-mid); padding:0.1rem 0.48rem; display:inline-block; }
+/* ── NAV ── */
+nav{
+  position:sticky;top:0;z-index:300;
+  background:rgba(5,5,8,0.96);
+  border-bottom:1px solid var(--line);
+  padding:0 max(1rem,3vw);
+  backdrop-filter:blur(20px);
+}
+.nav-inner{
+  max-width:1200px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  height:56px;
+}
+.nav-logo{
+  font-family:'Orbitron',monospace;
+  font-size:0.95rem;font-weight:900;letter-spacing:0.2em;
+  color:var(--ink);
+}
+.nav-logo em{color:var(--red);font-style:normal;}
+.nav-links{display:flex;gap:2rem;}
+.nav-links a{
+  font-family:'Share Tech Mono',monospace;font-size:0.6rem;
+  letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--ink3);transition:color 0.2s;
+}
+.nav-links a:hover{color:var(--red);}
+.nav-status{
+  display:flex;align-items:center;gap:0.5rem;
+  font-family:'Share Tech Mono',monospace;font-size:0.58rem;
+  letter-spacing:0.12em;color:var(--red);
+}
+.nav-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--red);
+  box-shadow:0 0 8px var(--red-glow);
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
 
-/* SKILLS */
-.skills-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--line); border:1px solid var(--line); overflow:hidden; }
-.skill-block { background:var(--surface); padding:1.55rem; }
-.skill-cat {
-  font-family:'Space Mono',monospace; font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase;
-  color:var(--neon); margin-bottom:0.95rem; padding-bottom:0.52rem;
+/* ── HERO ── */
+.page-wrap{max-width:1200px;margin:0 auto;padding:0 max(1rem,3vw);position:relative;z-index:1;}
+.hero{
+  display:grid;
+  grid-template-columns:360px 1fr;
+  min-height:calc(100vh - 56px);
+  align-items:start;
   border-bottom:1px solid var(--line);
 }
-.skill-tags { display:flex; flex-wrap:wrap; gap:0.38rem; }
-.skill-tag {
-  font-size:0.78rem; color:var(--ink2); background:var(--bg3);
-  border:1px solid var(--line); padding:0.26rem 0.72rem;
-  transition:all 0.18s; cursor: default;
-}
-.skill-tag:hover { border-color:var(--neon); color:var(--neon); background:var(--neon-dim); }
 
-/* PROJECT LIST */
-.prj-list { display:flex; flex-direction:column; gap:1px; background:var(--line); border:1px solid var(--line); overflow:hidden; }
-.prj {
-  background:var(--surface); padding:1.7rem 1.9rem;
-  display:grid; grid-template-columns:auto 1fr auto; gap:1.7rem;
-  align-items:start; cursor:pointer; transition:background 0.18s; position:relative;
+/* ── LEFT PANEL ── */
+.panel-left{
+  padding:2.5rem 2.5rem 2.5rem 0;
+  border-right:1px solid var(--line);
+  position:sticky;top:56px;
+  height:calc(100vh - 56px);
+  overflow-y:auto;
+  display:flex;flex-direction:column;gap:1.2rem;
 }
-.prj::before {
-  content:''; position:absolute; left:0; top:0; bottom:0; width:2px;
-  background:var(--neon); box-shadow: 0 0 8px var(--neon);
-  transform:scaleY(0); transform-origin:bottom;
-  transition:transform 0.24s cubic-bezier(.16,1,.3,1);
-}
-.prj:hover { background: rgba(200,255,87,0.04); }
-.prj:hover::before { transform:scaleY(1); }
-.prj-idx { font-family:'Space Mono',monospace; font-size:0.6rem; color:var(--ink3); letter-spacing:0.06em; padding-top:0.2rem; width:36px; }
-.prj-name { font-family:'Bebas Neue',sans-serif; font-size:1.2rem; letter-spacing:0.05em; color:var(--ink); margin-bottom:0.18rem; }
-.prj-genre { font-size:0.72rem; color:var(--ink3); margin-bottom:0.38rem; }
-.prj-role { font-size:0.76rem; color:var(--ink2); margin-bottom:0.48rem; }
-.prj-tags { display:flex; flex-wrap:wrap; gap:0.3rem; margin-bottom:0.52rem; }
-.prj-tag { font-family:'Space Mono',monospace; font-size:0.57rem; letter-spacing:0.06em; color:var(--neon); background:var(--neon-dim); border:1px solid var(--neon-mid); padding:0.12rem 0.5rem; }
-.prj-desc { font-size:0.82rem; color:var(--ink2); line-height:1.72; }
-.prj-arrow { font-size:0.9rem; color:var(--ink3); padding-top:0.2rem; transition:color 0.18s, transform 0.18s; font-family:'Space Mono',monospace; }
-.prj:hover .prj-arrow { color:var(--neon); transform:translateX(4px); }
+.panel-left::-webkit-scrollbar{width:2px;}
+.panel-left::-webkit-scrollbar-thumb{background:var(--red);}
 
-/* CONTACT */
-.contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:start; }
-.contact-desc {
-  font-size:0.9rem; color:var(--ink2); line-height:1.85;
-  padding: 0.85rem 1rem; border: 1px solid var(--line2);
-  border-left: 2px solid var(--neon); background: var(--neon-dim);
-  margin-bottom:2rem;
+/* Avatar */
+.avatar-frame{
+  width:120px;height:120px;
+  border:2px solid var(--red);
+  position:relative;flex-shrink:0;
+  box-shadow:0 0 0 4px var(--red-dim),0 0 24px var(--red-dim);
 }
-.contact-table { border:1px solid var(--line); overflow:hidden; }
-.ct { display:flex; padding:0.82rem 1.15rem; border-bottom:1px solid var(--line); gap:1.5rem; }
-.ct:last-child { border-bottom:none; }
-.ct-k { font-family:'Space Mono',monospace; font-size:0.58rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink3); width:74px; flex-shrink:0; padding-top:0.06rem; }
-.ct-v { font-size:0.85rem; color:var(--ink); }
-.ct-v a { color:var(--neon); transition:color 0.18s; }
-.ct-v a:hover { color:#d9ff6e; }
-.cta {
-  display:block; margin-top:1.2rem; padding:0.9rem;
-  background:var(--neon); color:#0e0e12 !important;
-  text-align:center;
-  font-family:'Bebas Neue',sans-serif; font-size:1.1rem; letter-spacing:0.12em;
-  transition:all 0.2s;
+.avatar-frame::before{
+  content:'';position:absolute;inset:-6px;
+  border:1px solid rgba(255,32,32,0.2);
+  animation:spin 10s linear infinite;
 }
-.cta:hover { background:#d9ff6e; transform:translateY(-2px); box-shadow:0 0 24px var(--neon-mid); }
+@keyframes spin{to{transform:rotate(360deg);}}
+.avatar-frame img{width:100%;height:100%;object-fit:cover;}
 
-footer {
-  padding:2rem max(1.5rem,4vw); text-align:center;
-  font-family:'Space Mono',monospace; font-size:0.58rem; letter-spacing:0.1em;
-  color:var(--ink3); background:var(--bg);
-  border-top: 1px solid var(--line);
+.rank-label{
+  font-family:'Share Tech Mono',monospace;font-size:0.56rem;
+  letter-spacing:0.2em;text-transform:uppercase;color:var(--red);
+  display:flex;align-items:center;gap:0.5rem;
+}
+.rank-label::before{content:'//';color:var(--ink3);}
+
+.hero-name{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(1.5rem,2.8vw,2.2rem);line-height:1;
+  font-weight:900;letter-spacing:0.05em;color:var(--ink);
+}
+.hero-name em{color:var(--red);font-style:normal;display:block;}
+
+.role-tag{
+  font-family:'Share Tech Mono',monospace;font-size:0.65rem;
+  letter-spacing:0.18em;color:var(--ink2);text-transform:uppercase;
+  border:1px solid var(--line2);
+  background:var(--red-dim);
+  padding:0.28rem 0.8rem;display:inline-block;
+}
+.role-tag em{color:var(--red);font-style:normal;}
+
+.bio-box{
+  font-size:0.82rem;color:var(--ink2);line-height:1.85;
+  padding:0.9rem 1rem;
+  border:1px solid var(--line2);
+  border-left:3px solid var(--red);
+  background:var(--red-dim);
 }
 
-/* MODALS */
-.modal-overlay { display:none; position:fixed; inset:0; z-index:500; background:rgba(0,0,0,0.85); backdrop-filter:blur(12px); align-items:center; justify-content:center; padding:1.5rem; opacity:0; transition:opacity 0.28s; }
-.modal-overlay.show { opacity:1; }
-.modal-box { background:var(--bg2); width:100%; max-width:860px; max-height:88vh; overflow-y:auto; border:1px solid var(--line2); box-shadow:0 0 60px rgba(200,255,87,0.08); transform:translateY(14px); transition:all 0.32s cubic-bezier(.16,1,.3,1); }
-.modal-overlay.show .modal-box { transform:translateY(0); }
-.modal-box::-webkit-scrollbar { width:3px; }
-.modal-box::-webkit-scrollbar-thumb { background:var(--neon); }
-.m-bar { position:sticky; top:0; z-index:10; background:var(--bg); border-bottom:1px solid var(--line2); padding:0.78rem 1.5rem; display:flex; align-items:center; justify-content:space-between; }
-.m-id { font-family:'Space Mono',monospace; font-size:0.6rem; letter-spacing:0.1em; color:var(--neon); }
-.m-close { width:26px; height:26px; background:var(--bg3); border:1px solid var(--line2); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:0.7rem; color:var(--ink2); font-family:'Space Mono',monospace; transition:all 0.18s; }
-.m-close:hover { background:rgba(255,107,107,0.15); color:var(--accent); border-color:var(--accent); }
-.m-content { padding:2.5rem; }
-.m-title { font-family:'Bebas Neue',sans-serif; font-size:2.2rem; letter-spacing:0.04em; color:var(--ink); margin-bottom:0.25rem; line-height:1; }
-.m-sub { font-family:'Space Mono',monospace; font-size:0.65rem; color:var(--ink3); margin-bottom:1.15rem; letter-spacing:0.08em; }
-.m-chips { display:flex; flex-wrap:wrap; gap:0.38rem; margin-bottom:1.9rem; }
-.m-chip { font-family:'Space Mono',monospace; font-size:0.58rem; letter-spacing:0.06em; color:var(--neon); background:var(--neon-dim); border:1px solid var(--neon-mid); padding:0.16rem 0.62rem; }
-.msec {
-  font-family:'Space Mono',monospace; font-weight:700; font-size:0.62rem; letter-spacing:0.14em; text-transform:uppercase;
-  color:var(--neon); margin:1.9rem 0 0.8rem; padding-bottom:0.42rem;
+/* Power bars */
+.power-bars{border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.pb-row{
+  display:flex;align-items:center;gap:0.75rem;
+  padding:0.48rem 0;
   border-bottom:1px solid var(--line);
 }
-.m-content p { font-size:0.88rem; color:var(--ink2); line-height:1.85; margin-bottom:0.82rem; }
-.m-content p strong { color:var(--ink); }
-.m-content ul { padding-left:1.15rem; margin-bottom:0.95rem; }
-.m-content li { font-size:0.88rem; color:var(--ink2); line-height:1.8; margin-bottom:0.48rem; }
-.m-content li strong { color:var(--ink); }
-.vid { overflow:hidden; margin-bottom:1.5rem; background:#000; border:1px solid var(--line2); }
-.vid video { width:100%; display:block; max-height:420px; }
-.ig2 { display:grid; grid-template-columns:1fr 1fr; gap:0.65rem; margin-bottom:1.5rem; }
-.ig3 { display:grid; grid-template-columns:repeat(3,1fr); gap:0.65rem; margin-bottom:1.5rem; }
-.ibox { overflow:hidden; border:1px solid var(--line2); }
-.ibox img { width:100%; height:165px; object-fit:cover; cursor:zoom-in; transition:opacity 0.2s; filter: saturate(0.7); }
-.ibox img:hover { opacity:0.8; filter: saturate(1); }
-.ilbl { padding:0.38rem 0.65rem; text-align:center; font-family:'Space Mono',monospace; font-size:0.55rem; letter-spacing:0.06em; color:var(--ink3); background:var(--bg3); }
-.dialog-box { background:var(--bg3); border:1px solid var(--line2); padding:1.35rem; font-family:'Space Mono',monospace; font-size:0.76rem; line-height:1.8; margin-bottom:1.4rem; border-left:2px solid var(--neon); }
-.dialog-box .dl { color:var(--ink2); margin-bottom:0.38rem; }
-.dialog-box .dl strong { color:var(--neon); }
+.pb-row:last-child{border-bottom:none;}
+.pb-label{
+  font-family:'Share Tech Mono',monospace;font-size:0.57rem;
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--ink3);width:70px;flex-shrink:0;
+}
+.pb-track{
+  flex:1;height:3px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.07);
+  position:relative;overflow:hidden;
+}
+.pb-fill{
+  position:absolute;left:0;top:0;bottom:0;
+  transition:width 1.5s cubic-bezier(0.16,1,0.3,1);
+}
+.pb-fill.r{background:var(--red);box-shadow:0 0 5px rgba(255,32,32,0.6);width:92%;}
+.pb-fill.rm{background:var(--red);width:76%;opacity:0.75;}
+.pb-fill.rm2{background:var(--red);width:75%;opacity:0.75;}
+.pb-fill.rd{background:#6B2020;width:62%;}
+.pb-fill.rdd{background:var(--ink3);width:32%;}
+.pb-grade{
+  font-family:'Share Tech Mono',monospace;font-weight:700;
+  font-size:0.7rem;width:24px;text-align:right;flex-shrink:0;
+  color:var(--red);
+}
+.pb-grade.dim{color:var(--ink3);}
 
-/* LIGHTBOX */
-.lbx { display:none; position:fixed; inset:0; z-index:2000; background:rgba(0,0,0,0.96); align-items:center; justify-content:center; opacity:0; transition:opacity 0.24s; cursor:zoom-out; }
-.lbx.show { opacity:1; }
-.lbx img { max-width:90%; max-height:90vh; }
-.lbx-x { position:absolute; top:1.5rem; right:2rem; font-size:1.1rem; color:rgba(255,255,255,0.3); cursor:pointer; transition:color 0.18s; font-family:'Space Mono',monospace; }
-.lbx-x:hover { color:var(--neon); }
+/* Chips */
+.chips{display:flex;flex-wrap:wrap;gap:0.32rem;}
+.chip{
+  font-family:'Share Tech Mono',monospace;font-size:0.55rem;
+  letter-spacing:0.08em;color:var(--red);
+  background:var(--red-dim);border:1px solid var(--red-mid);
+  padding:0.16rem 0.58rem;
+}
+
+/* Buttons */
+.btns{display:flex;gap:0.65rem;flex-wrap:wrap;}
+.btn{
+  display:inline-flex;align-items:center;gap:0.4rem;
+  font-family:'Orbitron',monospace;font-weight:700;
+  font-size:0.62rem;letter-spacing:0.1em;
+  padding:0.62rem 1.2rem;
+  cursor:pointer;transition:all 0.2s;border:none;
+  text-transform:uppercase;
+}
+.btn-primary{background:var(--red);color:#050508;}
+.btn-primary:hover{background:#ff5050;transform:translateY(-2px);box-shadow:0 0 20px var(--red-dim);}
+.btn-outline{background:transparent;color:var(--ink);border:1px solid var(--line2);}
+.btn-outline:hover{border-color:var(--red);color:var(--red);transform:translateY(-2px);}
+
+/* ── RIGHT PANEL ── */
+.panel-right{
+  padding:2.5rem 0 2.5rem 2.5rem;
+  overflow-y:auto;max-height:calc(100vh - 56px);
+  display:flex;flex-direction:column;
+}
+.panel-right::-webkit-scrollbar{width:2px;}
+.panel-right::-webkit-scrollbar-thumb{background:var(--red);}
+
+.showcase-hd{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:1.2rem;padding-bottom:0.65rem;
+  border-bottom:1px solid var(--line);flex-shrink:0;
+}
+.sh-label{font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink3);}
+.sh-count{font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--red);letter-spacing:0.08em;}
+
+/* Project cards */
+.sc-card{
+  background:var(--surface);border:1px solid var(--line);
+  margin-bottom:0.7rem;flex-shrink:0;
+  cursor:pointer;overflow:hidden;
+  transition:border-color 0.22s,box-shadow 0.22s;
+  position:relative;
+}
+.sc-card::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--red);box-shadow:0 0 10px var(--red);
+  transform:scaleY(0);transform-origin:bottom;
+  transition:transform 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+.sc-card:hover{border-color:var(--red);box-shadow:0 0 24px var(--red-dim);}
+.sc-card:hover::before{transform:scaleY(1);}
+.sc-card:last-child{margin-bottom:0;}
+
+.sc-thumb{width:100%;height:170px;overflow:hidden;position:relative;background:#020205;}
+.sc-card:first-child .sc-thumb{height:210px;}
+.sc-thumb img{
+  width:100%;height:100%;object-fit:cover;
+  filter:saturate(0.2) brightness(0.5) sepia(0.5) hue-rotate(320deg);
+  transition:filter 0.4s,transform 0.5s;
+}
+.sc-card:hover .sc-thumb img{filter:saturate(0.4) brightness(0.65) sepia(0.3) hue-rotate(320deg);transform:scale(1.04);}
+.sc-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(5,5,8,0.8) 0%,transparent 55%);}
+
+.sc-badge{
+  position:absolute;top:0.65rem;left:0.65rem;
+  font-family:'Share Tech Mono',monospace;font-size:0.52rem;letter-spacing:0.12em;
+  color:var(--red);background:rgba(5,5,8,0.92);
+  padding:0.1rem 0.58rem;border:1px solid var(--red-mid);
+}
+.sc-type{
+  position:absolute;top:0.65rem;right:0.65rem;
+  font-family:'Share Tech Mono',monospace;font-size:0.5rem;
+  letter-spacing:0.1em;text-transform:uppercase;
+  padding:0.1rem 0.52rem;border:1px solid;
+}
+.t-2d{color:var(--red);border-color:var(--red-mid);background:var(--red-dim);}
+.t-3d{color:#B47FFF;border-color:rgba(180,127,255,0.35);background:rgba(180,127,255,0.1);}
+.t-solo{color:#888;border-color:rgba(136,136,136,0.3);background:rgba(136,136,136,0.08);}
+.t-team{color:#cc6060;border-color:rgba(204,96,96,0.3);background:rgba(204,96,96,0.08);}
+
+.sc-body{padding:0.9rem 1.1rem 1rem;}
+.sc-cat{font-family:'Share Tech Mono',monospace;font-size:0.53rem;letter-spacing:0.1em;color:var(--ink3);margin-bottom:0.22rem;text-transform:uppercase;}
+.sc-name{font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:700;letter-spacing:0.06em;color:var(--ink);margin-bottom:0.15rem;line-height:1;}
+.sc-role{font-size:0.7rem;color:var(--ink3);margin-bottom:0.5rem;}
+.sc-desc{font-size:0.8rem;color:var(--ink2);line-height:1.7;margin-bottom:0.62rem;}
+.sc-tags{display:flex;flex-wrap:wrap;gap:0.28rem;}
+.sc-tag{font-family:'Share Tech Mono',monospace;font-size:0.52rem;letter-spacing:0.06em;color:var(--red);background:var(--red-dim);border:1px solid var(--red-mid);padding:0.1rem 0.48rem;}
+
+/* ── SECTIONS ── */
+section{padding:4rem 0;border-bottom:1px solid var(--line);}
+.sec-hd{display:flex;align-items:center;gap:1rem;margin-bottom:2.2rem;}
+.sec-num{font-family:'Share Tech Mono',monospace;font-size:0.56rem;letter-spacing:0.2em;color:var(--red);flex-shrink:0;}
+.sec-title{font-family:'Orbitron',monospace;font-size:1.4rem;font-weight:700;letter-spacing:0.1em;color:var(--ink);}
+.sec-line{flex:1;height:1px;background:linear-gradient(to right,var(--red-mid),transparent);}
+
+/* ── ABOUT ── */
+.about-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:3.5rem;}
+.about-text p{color:var(--ink2);font-size:0.87rem;line-height:1.9;margin-bottom:0.85rem;}
+.about-text p strong{color:var(--ink);}
+
+.edu-panel{background:var(--surface);border:1px solid var(--line);overflow:hidden;}
+.edu-hd{background:var(--red);padding:0.48rem 1.1rem;font-family:'Orbitron',monospace;font-size:0.56rem;font-weight:700;letter-spacing:0.2em;color:#050508;text-transform:uppercase;}
+.edu-row{display:flex;justify-content:space-between;align-items:start;padding:0.9rem 1.1rem;border-bottom:1px solid var(--line);gap:1rem;}
+.edu-row:last-child{border-bottom:none;}
+.edu-name{font-weight:600;font-size:0.84rem;color:var(--ink);margin-bottom:0.1rem;}
+.edu-dept{font-size:0.72rem;color:var(--ink2);}
+.edu-right{text-align:right;flex-shrink:0;}
+.edu-year{font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--ink3);margin-bottom:0.18rem;}
+.edu-gpa{font-family:'Share Tech Mono',monospace;font-size:0.64rem;font-weight:700;color:var(--red);background:var(--red-dim);border:1px solid var(--red-mid);padding:0.07rem 0.42rem;display:inline-block;}
+
+/* ── SKILLS ── */
+.skills-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);overflow:hidden;}
+.skill-block{background:var(--surface);padding:1.35rem;}
+.skill-cat{font-family:'Share Tech Mono',monospace;font-size:0.57rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--red);margin-bottom:0.88rem;padding-bottom:0.48rem;border-bottom:1px solid var(--line);}
+.skill-tags{display:flex;flex-wrap:wrap;gap:0.33rem;}
+.skill-tag{font-size:0.76rem;color:var(--ink2);background:var(--surface2);border:1px solid var(--line);padding:0.24rem 0.65rem;transition:all 0.18s;cursor:default;}
+.skill-tag:hover{border-color:var(--red);color:var(--red);background:var(--red-dim);}
+
+/* ── PROJECT LIST ── */
+.prj-list{display:flex;flex-direction:column;gap:1px;background:var(--line);border:1px solid var(--line);overflow:hidden;}
+.prj-row{
+  background:var(--surface);padding:1.5rem 1.75rem;
+  display:grid;grid-template-columns:auto 1fr auto;gap:1.5rem;
+  align-items:start;cursor:pointer;transition:background 0.18s;position:relative;
+}
+.prj-row::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:var(--red);box-shadow:0 0 8px var(--red);
+  transform:scaleY(0);transform-origin:bottom;
+  transition:transform 0.25s cubic-bezier(0.16,1,0.3,1);
+}
+.prj-row:hover{background:rgba(255,32,32,0.03);}
+.prj-row:hover::before{transform:scaleY(1);}
+.prj-idx{font-family:'Share Tech Mono',monospace;font-size:0.57rem;color:var(--ink3);letter-spacing:0.1em;padding-top:0.2rem;width:32px;}
+.prj-name{font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:700;letter-spacing:0.06em;color:var(--ink);margin-bottom:0.14rem;}
+.prj-cat{font-size:0.68rem;color:var(--ink3);margin-bottom:0.32rem;}
+.prj-role{font-size:0.72rem;color:var(--ink2);margin-bottom:0.42rem;}
+.prj-tags{display:flex;flex-wrap:wrap;gap:0.26rem;margin-bottom:0.45rem;}
+.prj-tag{font-family:'Share Tech Mono',monospace;font-size:0.52rem;letter-spacing:0.06em;color:var(--red);background:var(--red-dim);border:1px solid var(--red-mid);padding:0.1rem 0.46rem;}
+.prj-desc{font-size:0.8rem;color:var(--ink2);line-height:1.7;}
+.prj-arrow{font-size:0.85rem;color:var(--ink3);padding-top:0.2rem;transition:color 0.18s,transform 0.18s;font-family:'Share Tech Mono',monospace;}
+.prj-row:hover .prj-arrow{color:var(--red);transform:translateX(4px);}
+
+/* ── CONTACT ── */
+.contact-section{background:var(--bg2);padding:4rem max(1rem,4vw);border-top:1px solid var(--line);}
+.contact-inner{max-width:1200px;margin:0 auto;}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;}
+.contact-intro{font-size:0.87rem;color:var(--ink2);line-height:1.85;padding:0.9rem 1rem;border:1px solid var(--line2);border-left:3px solid var(--red);background:var(--red-dim);margin-bottom:1.75rem;}
+.contact-table{border:1px solid var(--line);overflow:hidden;}
+.ct-row{display:flex;padding:0.8rem 1.1rem;border-bottom:1px solid var(--line);gap:1.4rem;}
+.ct-row:last-child{border-bottom:none;}
+.ct-k{font-family:'Share Tech Mono',monospace;font-size:0.56rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);width:70px;flex-shrink:0;padding-top:0.05rem;}
+.ct-v{font-size:0.82rem;color:var(--ink);}
+.ct-v a{color:var(--red);transition:color 0.18s;}
+.ct-v a:hover{color:#ff6060;}
+.cta-btn{display:block;margin-top:1.1rem;padding:0.88rem;background:var(--red);color:#050508 !important;text-align:center;font-family:'Orbitron',monospace;font-size:0.85rem;font-weight:700;letter-spacing:0.15em;transition:all 0.22s;}
+.cta-btn:hover{background:#ff4040;transform:translateY(-2px);box-shadow:0 0 24px rgba(255,32,32,0.2);}
+
+/* ── MODALS ── */
+.modal-overlay{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,5,0.93);backdrop-filter:blur(14px);align-items:center;justify-content:center;padding:1.5rem;opacity:0;transition:opacity 0.3s;}
+.modal-overlay.show{opacity:1;}
+.modal-box{background:var(--surface2);width:100%;max-width:880px;max-height:88vh;overflow-y:auto;border:1px solid var(--red-mid);box-shadow:0 0 60px rgba(255,32,32,0.07);transform:translateY(16px);transition:all 0.35s cubic-bezier(0.16,1,0.3,1);}
+.modal-overlay.show .modal-box{transform:translateY(0);}
+.modal-box::-webkit-scrollbar{width:2px;}
+.modal-box::-webkit-scrollbar-thumb{background:var(--red);}
+.m-bar{position:sticky;top:0;z-index:10;background:rgba(5,5,8,0.98);border-bottom:1px solid var(--line2);padding:0.72rem 1.5rem;display:flex;align-items:center;justify-content:space-between;}
+.m-id{font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.12em;color:var(--red);}
+.m-close{width:26px;height:26px;background:var(--surface);border:1px solid var(--line2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.68rem;color:var(--ink2);font-family:'Share Tech Mono',monospace;transition:all 0.18s;}
+.m-close:hover{background:rgba(255,32,32,0.12);color:var(--red);border-color:var(--red);}
+.m-content{padding:2.25rem;}
+.m-title{font-family:'Orbitron',monospace;font-size:1.85rem;font-weight:900;letter-spacing:0.05em;color:var(--ink);margin-bottom:0.2rem;line-height:1;}
+.m-sub{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--ink3);margin-bottom:1.1rem;letter-spacing:0.1em;}
+.m-chips{display:flex;flex-wrap:wrap;gap:0.32rem;margin-bottom:1.7rem;}
+.m-chip{font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:0.08em;color:var(--red);background:var(--red-dim);border:1px solid var(--red-mid);padding:0.13rem 0.6rem;}
+.msec{font-family:'Share Tech Mono',monospace;font-weight:700;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--red);margin:1.7rem 0 0.72rem;padding-bottom:0.38rem;border-bottom:1px solid var(--line);}
+.m-content p{font-size:0.85rem;color:var(--ink2);line-height:1.85;margin-bottom:0.78rem;}
+.m-content p strong{color:var(--ink);}
+.m-content ul{padding-left:1.1rem;margin-bottom:0.9rem;}
+.m-content li{font-size:0.85rem;color:var(--ink2);line-height:1.8;margin-bottom:0.42rem;}
+.m-content li strong{color:var(--ink);}
+.vid{overflow:hidden;margin-bottom:1.4rem;background:#000;border:1px solid var(--line2);}
+.vid video{width:100%;display:block;max-height:420px;}
+.ig2{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-bottom:1.4rem;}
+.ig3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;margin-bottom:1.4rem;}
+.ibox{overflow:hidden;border:1px solid var(--line2);}
+.ibox img{width:100%;height:160px;object-fit:cover;cursor:zoom-in;transition:opacity 0.2s,filter 0.3s;filter:saturate(0.3) sepia(0.4) hue-rotate(320deg);}
+.ibox img:hover{opacity:0.85;filter:saturate(0.7) sepia(0.2);}
+.ilbl{padding:0.33rem 0.6rem;text-align:center;font-family:'Share Tech Mono',monospace;font-size:0.52rem;letter-spacing:0.08em;color:var(--ink3);background:var(--surface);}
+.dialog-box{background:var(--surface);border:1px solid var(--line2);padding:1.25rem;margin-bottom:1.3rem;border-left:3px solid var(--red);font-family:'Share Tech Mono',monospace;font-size:0.72rem;line-height:1.8;}
+.dialog-box .dl{color:var(--ink2);margin-bottom:0.33rem;}
+.dialog-box .dl strong{color:var(--red);}
+
+/* ── LIGHTBOX ── */
+.lbx{display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,0.97);align-items:center;justify-content:center;opacity:0;transition:opacity 0.25s;cursor:zoom-out;}
+.lbx.show{opacity:1;}
+.lbx img{max-width:90%;max-height:90vh;}
+.lbx-x{position:absolute;top:1.5rem;right:2rem;font-size:1rem;color:rgba(255,255,255,0.3);cursor:pointer;transition:color 0.18s;font-family:'Share Tech Mono',monospace;}
+.lbx-x:hover{color:var(--red);}
+
+footer{position:relative;z-index:1;padding:1.75rem max(1rem,3vw);text-align:center;font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:0.15em;color:var(--ink3);background:var(--bg);border-top:1px solid var(--line);}
+footer em{color:var(--red);font-style:normal;}
 
 /* REVEAL */
-.rev { opacity:0; transform:translateY(18px); transition:opacity 0.6s ease, transform 0.6s ease; }
-.rev.on { opacity:1; transform:translateY(0); }
-.d1{transition-delay:0.1s} .d2{transition-delay:0.18s}
+.rev{opacity:0;transform:translateY(18px);transition:opacity 0.65s ease,transform 0.65s ease;}
+.rev.on{opacity:1;transform:translateY(0);}
+.d1{transition-delay:0.1s;}.d2{transition-delay:0.2s;}
 
-/* RESPONSIVE */
-@media(max-width:980px){
-  .hero { grid-template-columns:1fr; min-height:auto; }
-  .hero-left { position:static; height:auto; border-right:none; border-bottom:1px solid var(--line); padding:3rem 0; }
-  .hero-right { padding:2.25rem 0; max-height:none; overflow:visible; }
-  .about-grid { grid-template-columns:1fr; gap:2rem; }
-  .skills-grid { grid-template-columns:1fr; }
-  .contact-grid { grid-template-columns:1fr; gap:2rem; }
-  nav .nav-links { display:none; }
+@media(max-width:960px){
+  .hero{grid-template-columns:1fr;min-height:auto;}
+  .panel-left{position:static;height:auto;border-right:none;border-bottom:1px solid var(--line);padding:2.5rem 0;}
+  .panel-right{padding:2rem 0;max-height:none;overflow:visible;}
+  .about-grid{grid-template-columns:1fr;gap:2rem;}
+  .skills-grid{grid-template-columns:1fr;}
+  .contact-grid{grid-template-columns:1fr;gap:2rem;}
+  nav .nav-links{display:none;}
 }
 @media(max-width:560px){
-  .ig2,.ig3 { grid-template-columns:1fr; }
-  .m-content { padding:1.5rem; }
-  .m-title { font-size:1.7rem; }
-  .prj { grid-template-columns:1fr; gap:0.38rem; }
-  .prj-idx { display:none; }
+  .ig2,.ig3{grid-template-columns:1fr;}
+  .m-content{padding:1.25rem;}
+  .m-title{font-size:1.4rem;}
+  .prj-row{grid-template-columns:1fr;gap:0.35rem;}
+  .prj-idx{display:none;}
 }
 </style>
 </head>
@@ -438,68 +461,53 @@ footer {
       <a href="#projects">Projects</a>
       <a href="#contact">Contact</a>
     </div>
-    <div class="nav-avail"><div class="nav-dot"></div>AVAILABLE</div>
+    <div class="nav-status"><div class="nav-dot"></div>AVAILABLE</div>
   </div>
 </nav>
 
-<div class="page">
+<div class="page-wrap">
 <header class="hero">
 
-  <!-- LEFT -->
-  <div class="hero-left rev">
-    <div class="hero-label">Portfolio · 2026 · Samut Prakan</div>
-    <div class="hero-avatar"><img src="profile.png" alt="Peemapol"></div>
-    <div class="hero-name">Peemapol<br>Phuang<br>charoen</div>
-    <div class="hero-role">2D Game Designer</div>
-    <p class="hero-bio">ผมหลงใหลในการสร้างประสบการณ์ที่ผู้เล่นรู้สึกได้จริง ตั้งแต่ออกแบบระบบเกม เขียนโค้ด C# ใน Unity จนถึงปั้นเสียงด้วย Audacity กำลังมองหาโอกาสฝึกงานเพื่อก้าวเข้าสู่สาย Game Developer เต็มตัว</p>
+  <div class="panel-left rev">
+    <div class="rank-label">Portfolio · 2026 · Samut Prakan</div>
+    <div class="avatar-frame"><img src="profile.png" alt="Peemapol"></div>
+    <div class="hero-name">Peemapol<br><em>Phuangcharoen</em></div>
+    <div class="role-tag">2D Game Designer</div>
+    <p class="bio-box">ผมหลงใหลในการสร้างประสบการณ์ที่ผู้เล่นรู้สึกได้จริง ตั้งแต่ออกแบบระบบเกม เขียนโค้ด C# ใน Unity จนถึงปั้นเสียงด้วย Audacity กำลังมองหาโอกาสฝึกงานเพื่อก้าวเข้าสู่สาย Game Developer เต็มตัว</p>
 
-    <table class="stat-table">
-      <tr>
-        <td class="stat-k">Design</td>
-        <td><div class="stat-bar-wrap"><div class="stat-bar"><div class="stat-bar-fill fill-A"></div></div><span class="stat-g g-A">A</span></div></td>
-      </tr>
-      <tr>
-        <td class="stat-k">Audio</td>
-        <td><div class="stat-bar-wrap"><div class="stat-bar"><div class="stat-bar-fill fill-B"></div></div><span class="stat-g g-B">B</span></div></td>
-      </tr>
-      <tr>
-        <td class="stat-k">Narrative</td>
-        <td><div class="stat-bar-wrap"><div class="stat-bar"><div class="stat-bar-fill fill-B"></div></div><span class="stat-g g-B">B</span></div></td>
-      </tr>
-      <tr>
-        <td class="stat-k">Unity / C#</td>
-        <td><div class="stat-bar-wrap"><div class="stat-bar"><div class="stat-bar-fill fill-Cp"></div></div><span class="stat-g g-Cp">C+</span></div></td>
-      </tr>
-      <tr>
-        <td class="stat-k">3D Art</td>
-        <td><div class="stat-bar-wrap"><div class="stat-bar"><div class="stat-bar-fill fill-D"></div></div><span class="stat-g g-D">D</span></div></td>
-      </tr>
-    </table>
+    <div class="power-bars">
+      <div class="pb-row"><span class="pb-label">Design</span><div class="pb-track"><div class="pb-fill r"></div></div><span class="pb-grade">A</span></div>
+      <div class="pb-row"><span class="pb-label">Audio</span><div class="pb-track"><div class="pb-fill rm"></div></div><span class="pb-grade">B</span></div>
+      <div class="pb-row"><span class="pb-label">Narrative</span><div class="pb-track"><div class="pb-fill rm2"></div></div><span class="pb-grade">B</span></div>
+      <div class="pb-row"><span class="pb-label">Unity / C#</span><div class="pb-track"><div class="pb-fill rd"></div></div><span class="pb-grade">C+</span></div>
+      <div class="pb-row"><span class="pb-label">3D Art</span><div class="pb-track"><div class="pb-fill rdd"></div></div><span class="pb-grade dim">D</span></div>
+    </div>
 
-    <div class="hero-chips">
+    <div class="chips">
       <span class="chip">Unity</span>
       <span class="chip">Sound Design</span>
       <span class="chip">Level Design</span>
       <span class="chip">Narrative</span>
       <span class="chip">2D</span>
+      <span class="chip">C#</span>
     </div>
-    <div class="hero-btns">
+
+    <div class="btns">
       <a href="#projects" class="btn btn-primary">View Projects →</a>
       <a href="resume.pdf" download class="btn btn-outline">↓ Resume</a>
     </div>
   </div>
 
-  <!-- RIGHT -->
-  <div class="hero-right rev d1">
+  <div class="panel-right rev d1">
     <div class="showcase-hd">
-      <span class="showcase-hd-lbl">// Selected Work</span>
-      <span class="showcase-hd-ct">5 Projects</span>
+      <span class="sh-label">// Selected Work</span>
+      <span class="sh-count">5 Projects</span>
     </div>
 
     <div class="sc-card" onclick="openModal('mr')">
-      <div class="sc-thumb"><img src="project-ramen.jpg" alt="Ramen Rider"><div class="sc-ov"></div><span class="sc-badge">PRJ_001</span><span class="sc-type-badge type-2d">2D</span></div>
+      <div class="sc-thumb"><img src="project-ramen.jpg" alt="Ramen Rider"><div class="sc-overlay"></div><span class="sc-badge">PRJ_001</span><span class="sc-type t-team">Team</span></div>
       <div class="sc-body">
-        <div class="sc-genre">Time Management · Action Casual · Unity/C#</div>
+        <div class="sc-cat">Time Management · Action Casual · Unity/C#</div>
         <div class="sc-name">Ramen Rider</div>
         <div class="sc-role">Story · Dialog System · Sound · Programmer — Team of 5</div>
         <div class="sc-desc">เกม Time Management รับบทลูกชายร้านราเมงสายซิ่ง พัฒนาระบบ Dialog เองและออกแบบ SFX ด้วย Audacity</div>
@@ -508,9 +516,9 @@ footer {
     </div>
 
     <div class="sc-card" onclick="openModal('ma')">
-      <div class="sc-thumb"><img src="project1.jpg" alt="Abandoned Rails"><div class="sc-ov"></div><span class="sc-badge">PRJ_002</span><span class="sc-type-badge type-solo">Solo</span></div>
+      <div class="sc-thumb"><img src="project1.jpg" alt="Abandoned Rails"><div class="sc-overlay"></div><span class="sc-badge">PRJ_002</span><span class="sc-type t-solo">Solo</span></div>
       <div class="sc-body">
-        <div class="sc-genre">Horror · First-Person · Exploration</div>
+        <div class="sc-cat">Horror · First-Person · Exploration</div>
         <div class="sc-name">Abandoned Rails</div>
         <div class="sc-role">Game Designer · Programmer — Solo</div>
         <div class="sc-desc">เกม Horror สำรวจทางรถไฟร้าง เน้นสร้างความกดดันผ่านบรรยากาศและ Environmental Storytelling</div>
@@ -519,9 +527,9 @@ footer {
     </div>
 
     <div class="sc-card" onclick="openModal('mk')">
-      <div class="sc-thumb"><img src="project2.jpg" alt="Unknown Knight"><div class="sc-ov"></div><span class="sc-badge">PRJ_003</span><span class="sc-type-badge type-3d">3D Co-op</span></div>
+      <div class="sc-thumb"><img src="project2.jpg" alt="Unknown Knight"><div class="sc-overlay"></div><span class="sc-badge">PRJ_003</span><span class="sc-type t-3d">3D Co-op</span></div>
       <div class="sc-body">
-        <div class="sc-genre">Action RPG · 3D · Co-op</div>
+        <div class="sc-cat">Action RPG · 3D · Co-op</div>
         <div class="sc-name">Unknown Knight</div>
         <div class="sc-role">Sub-Developer · Level Designer · Narrative</div>
         <div class="sc-desc">3D Action RPG Co-op จัดฉากดันเจี้ยน เขียนเนื้อเรื่อง และพัฒนาระบบ Checkpoint</div>
@@ -530,20 +538,20 @@ footer {
     </div>
 
     <div class="sc-card" onclick="openModal('m3')">
-      <div class="sc-thumb"><img src="project3.jpg" alt="3D Workflow"><div class="sc-ov"></div><span class="sc-badge">PRJ_004</span><span class="sc-type-badge type-3d">3D Art</span></div>
+      <div class="sc-thumb"><img src="project3.jpg" alt="3D Workflow"><div class="sc-overlay"></div><span class="sc-badge">PRJ_004</span><span class="sc-type t-3d">3D Art</span></div>
       <div class="sc-body">
-        <div class="sc-genre">3D Art · PBR · Maya · Substance · Unreal</div>
+        <div class="sc-cat">3D Art · PBR · Maya · Substance · Unreal</div>
         <div class="sc-name">3D Asset Workflow</div>
-        <div class="sc-role">3D Artist · Modeling &amp; Texturing</div>
+        <div class="sc-role">3D Artist · Modeling & Texturing</div>
         <div class="sc-desc">กระบวนการสร้าง Asset ตั้งแต่ Maya, PBR ใน Substance จนถึงการจัดแสงใน Unreal/Unity</div>
         <div class="sc-tags"><span class="sc-tag">Maya</span><span class="sc-tag">Substance</span><span class="sc-tag">PBR</span></div>
       </div>
     </div>
 
     <div class="sc-card" onclick="openModal('mb')">
-      <div class="sc-thumb"><img src="project-ball.jpg" alt="Ball Platformer"><div class="sc-ov"></div><span class="sc-badge">PRJ_005</span><span class="sc-type-badge type-2d">2D</span></div>
+      <div class="sc-thumb"><img src="project-ball.jpg" alt="Ball Platformer"><div class="sc-overlay"></div><span class="sc-badge">PRJ_005</span><span class="sc-type t-2d">2D</span></div>
       <div class="sc-body">
-        <div class="sc-genre">2D Platformer · Casual · Unity 2D</div>
+        <div class="sc-cat">2D Platformer · Casual · Unity 2D</div>
         <div class="sc-name">2D Ball Platformer</div>
         <div class="sc-role">Developer — Year 1 Project</div>
         <div class="sc-desc">Unity 2D Platformer แนว Casual บังคับลูกบอลฝ่า 3 ด่าน มีระบบเลือดและการเก็บคะแนน</div>
@@ -553,74 +561,81 @@ footer {
   </div>
 
 </header>
+</div>
 
 <!-- ABOUT -->
 <section id="about">
-  <div class="sec-hd rev"><span class="sec-num">01</span><h2 class="sec-ttl">Profile</h2><div class="sec-ln"></div></div>
-  <div class="about-grid rev d1">
-    <div class="about-text">
-      <p>ผมเป็นนักศึกษาที่สนใจด้าน <strong>Game Design</strong> มีประสบการณ์ออกแบบ Gameplay, Game System และสามารถเขียน Story / Narrative ได้ รวมถึงทำ Sound Design โดยใช้ Audacity ในการตัดต่อและออกแบบเสียงสำหรับเกม</p>
-      <p>มีความเข้าใจพื้นฐาน <strong>C# ใน Unity</strong> และสามารถประยุกต์ใช้ AI Tools เพื่อช่วยในงาน Development และแก้ปัญหาได้อย่างรวดเร็ว กำลังมองหาโอกาสฝึกงานเพื่อพัฒนาทักษะจากสภาพแวดล้อมการทำงานจริง</p>
-    </div>
-    <div>
-      <ul class="edu-list">
-        <li class="edu-item">
-          <div><div class="edu-name">Sripatum University</div><div class="edu-dept">Interactive &amp; Game Design</div></div>
-          <div class="edu-right"><div class="edu-year">2023 – ปัจจุบัน</div><div class="edu-gpa">GPA 3.30</div></div>
-        </li>
-        <li class="edu-item">
-          <div><div class="edu-name">Thaiglobal College</div><div class="edu-dept">Computer Business</div></div>
-          <div class="edu-right"><div class="edu-year">2019 – 2022</div></div>
-        </li>
-      </ul>
+  <div class="page-wrap">
+    <div class="sec-hd rev"><span class="sec-num">01</span><h2 class="sec-title">Profile</h2><div class="sec-line"></div></div>
+    <div class="about-grid rev d1">
+      <div class="about-text">
+        <p>ผมเป็นนักศึกษาที่สนใจด้าน <strong>Game Design</strong> มีประสบการณ์ออกแบบ Gameplay, Game System และสามารถเขียน Story / Narrative ได้ รวมถึงทำ Sound Design โดยใช้ Audacity ในการตัดต่อและออกแบบเสียงสำหรับเกม</p>
+        <p>มีความเข้าใจพื้นฐาน <strong>C# ใน Unity</strong> และสามารถประยุกต์ใช้ AI Tools เพื่อช่วยในงาน Development และแก้ปัญหาได้อย่างรวดเร็ว กำลังมองหาโอกาสฝึกงานเพื่อพัฒนาทักษะจากสภาพแวดล้อมการทำงานจริง</p>
+      </div>
+      <div>
+        <div class="edu-panel">
+          <div class="edu-hd">[ Education ]</div>
+          <div class="edu-row">
+            <div><div class="edu-name">Sripatum University</div><div class="edu-dept">Interactive & Game Design</div></div>
+            <div class="edu-right"><div class="edu-year">2023 – ปัจจุบัน</div><div class="edu-gpa">GPA 3.30</div></div>
+          </div>
+          <div class="edu-row">
+            <div><div class="edu-name">Thaiglobal College</div><div class="edu-dept">Computer Business</div></div>
+            <div class="edu-right"><div class="edu-year">2019 – 2022</div></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- SKILLS -->
 <section id="skills">
-  <div class="sec-hd rev"><span class="sec-num">02</span><h2 class="sec-ttl">Skills</h2><div class="sec-ln"></div></div>
-  <div class="skills-grid rev d1">
-    <div class="skill-block"><div class="skill-cat">Core Expertise</div><div class="skill-tags"><span class="skill-tag">Gameplay Design</span><span class="skill-tag">Level Design</span><span class="skill-tag">Story / Narrative</span><span class="skill-tag">Audio Implementation</span></div></div>
-    <div class="skill-block"><div class="skill-cat">Technical</div><div class="skill-tags"><span class="skill-tag">Unity (Intermediate)</span><span class="skill-tag">Unreal Engine (Basic)</span><span class="skill-tag">C# Scripting</span><span class="skill-tag">Audacity</span></div></div>
-    <div class="skill-block"><div class="skill-cat">Tools</div><div class="skill-tags"><span class="skill-tag">After Effects</span><span class="skill-tag">Illustrator</span><span class="skill-tag">Maya</span><span class="skill-tag">Substance Painter</span></div></div>
-    <div class="skill-block"><div class="skill-cat">Soft Skills</div><div class="skill-tags"><span class="skill-tag">Problem Solving</span><span class="skill-tag">Team Collaboration</span><span class="skill-tag">Deadline Management</span><span class="skill-tag">Fast Iteration</span></div></div>
+  <div class="page-wrap">
+    <div class="sec-hd rev"><span class="sec-num">02</span><h2 class="sec-title">Skills</h2><div class="sec-line"></div></div>
+    <div class="skills-grid rev d1">
+      <div class="skill-block"><div class="skill-cat">Core Expertise</div><div class="skill-tags"><span class="skill-tag">Gameplay Design</span><span class="skill-tag">Level Design</span><span class="skill-tag">Story / Narrative</span><span class="skill-tag">Audio Implementation</span></div></div>
+      <div class="skill-block"><div class="skill-cat">Technical</div><div class="skill-tags"><span class="skill-tag">Unity (Intermediate)</span><span class="skill-tag">Unreal Engine (Basic)</span><span class="skill-tag">C# Scripting</span><span class="skill-tag">Audacity</span></div></div>
+      <div class="skill-block"><div class="skill-cat">Tools</div><div class="skill-tags"><span class="skill-tag">After Effects</span><span class="skill-tag">Illustrator</span><span class="skill-tag">Maya</span><span class="skill-tag">Substance Painter</span></div></div>
+      <div class="skill-block"><div class="skill-cat">Soft Skills</div><div class="skill-tags"><span class="skill-tag">Problem Solving</span><span class="skill-tag">Team Collaboration</span><span class="skill-tag">Deadline Management</span><span class="skill-tag">Fast Iteration</span></div></div>
+    </div>
   </div>
 </section>
 
 <!-- PROJECTS -->
 <section id="projects">
-  <div class="sec-hd rev"><span class="sec-num">03</span><h2 class="sec-ttl">Projects</h2><div class="sec-ln"></div></div>
-  <div class="prj-list rev d1">
-    <div class="prj" onclick="openModal('mr')"><div class="prj-idx">001</div><div><div class="prj-name">Ramen Rider</div><div class="prj-genre">Time Management · Action Casual · Unity/C#</div><div class="prj-role">Story · Dialog System · Sound · Programmer — Team of 5</div><div class="prj-tags"><span class="prj-tag">Unity</span><span class="prj-tag">C#</span><span class="prj-tag">Audacity</span><span class="prj-tag">Narrative</span><span class="prj-tag">2D</span></div><div class="prj-desc">เกม Time Management รับบทลูกชายร้านราเมงสายซิ่ง พัฒนาระบบ Dialog เองและออกแบบ SFX ด้วย Audacity</div></div><div class="prj-arrow">→</div></div>
-    <div class="prj" onclick="openModal('ma')"><div class="prj-idx">002</div><div><div class="prj-name">Abandoned Rails</div><div class="prj-genre">Horror · First-Person · Exploration</div><div class="prj-role">Game Designer · Programmer — Solo</div><div class="prj-tags"><span class="prj-tag">Unity</span><span class="prj-tag">Solo</span><span class="prj-tag">Horror</span></div><div class="prj-desc">เกม Horror สำรวจทางรถไฟร้าง เน้นสร้างความกดดันผ่านบรรยากาศและ Environmental Storytelling</div></div><div class="prj-arrow">→</div></div>
-    <div class="prj" onclick="openModal('mk')"><div class="prj-idx">003</div><div><div class="prj-name">Unknown Knight</div><div class="prj-genre">Action RPG · 3D · Co-op</div><div class="prj-role">Sub-Developer · Level Designer · Narrative</div><div class="prj-tags"><span class="prj-tag">Unity</span><span class="prj-tag">3D</span><span class="prj-tag">Co-op</span></div><div class="prj-desc">3D Action RPG Co-op จัดฉากดันเจี้ยน เขียนเนื้อเรื่อง และพัฒนาระบบ Checkpoint</div></div><div class="prj-arrow">→</div></div>
-    <div class="prj" onclick="openModal('m3')"><div class="prj-idx">004</div><div><div class="prj-name">3D Asset Workflow</div><div class="prj-genre">3D Art · PBR · Maya · Substance · Unreal</div><div class="prj-role">3D Artist · Modeling &amp; Texturing</div><div class="prj-tags"><span class="prj-tag">Maya</span><span class="prj-tag">Substance</span><span class="prj-tag">PBR</span></div><div class="prj-desc">กระบวนการสร้าง Asset ตั้งแต่ Maya, PBR ใน Substance จนถึงการจัดแสงใน Unreal/Unity</div></div><div class="prj-arrow">→</div></div>
-    <div class="prj" onclick="openModal('mb')"><div class="prj-idx">005</div><div><div class="prj-name">2D Ball Platformer</div><div class="prj-genre">2D Platformer · Casual · Unity 2D</div><div class="prj-role">Developer — Year 1 Project</div><div class="prj-tags"><span class="prj-tag">Unity 2D</span><span class="prj-tag">C#</span><span class="prj-tag">Platformer</span><span class="prj-tag">2D</span></div><div class="prj-desc">Unity 2D Platformer แนว Casual บังคับลูกบอลฝ่า 3 ด่าน มีระบบเลือดและการเก็บคะแนน</div></div><div class="prj-arrow">→</div></div>
-  </div>
-</section>
-</div>
-
-<!-- CONTACT -->
-<section id="contact" style="border-bottom:none; background:var(--bg2);">
-  <div class="page">
-    <div class="sec-hd rev"><span class="sec-num">04</span><h2 class="sec-ttl">Contact</h2><div class="sec-ln"></div></div>
-    <div class="contact-grid rev d1">
-      <div><p class="contact-desc">ผมมีความตั้งใจอย่างยิ่งที่จะได้เข้าไปเรียนรู้และพัฒนาทักษะจากการทำงานจริงร่วมกับทีมงานมืออาชีพ ขอขอบพระคุณที่สละเวลาพิจารณาเอกสารของผม หากต้องการข้อมูลหรือสอบถามเพิ่มเติม สามารถติดต่อผมได้ตลอดเวลาครับ</p></div>
-      <div>
-        <div class="contact-table">
-          <div class="ct"><span class="ct-k">Phone</span><span class="ct-v">095-505-8088</span></div>
-          <div class="ct"><span class="ct-k">Email</span><span class="ct-v"><a href="mailto:lnwpureza2545@gmail.com">lnwpureza2545@gmail.com</a></span></div>
-          <div class="ct"><span class="ct-k">Location</span><span class="ct-v">Samut Prakan, Thailand</span></div>
-          <div class="ct"><span class="ct-k">GitHub</span><span class="ct-v"><a href="https://github.com/lnwpureza2545" target="_blank">github.com/lnwpureza2545</a></span></div>
-        </div>
-        <a href="mailto:lnwpureza2545@gmail.com" class="cta">Send Message →</a>
-      </div>
+  <div class="page-wrap">
+    <div class="sec-hd rev"><span class="sec-num">03</span><h2 class="sec-title">Projects</h2><div class="sec-line"></div></div>
+    <div class="prj-list rev d1">
+      <div class="prj-row" onclick="openModal('mr')"><div class="prj-idx">001</div><div><div class="prj-name">Ramen Rider</div><div class="prj-cat">Time Management · Action Casual · Unity/C#</div><div class="prj-role">Story · Dialog System · Sound · Programmer — Team of 5</div><div class="prj-tags"><span class="prj-tag">Unity</span><span class="prj-tag">C#</span><span class="prj-tag">Audacity</span><span class="prj-tag">Narrative</span><span class="prj-tag">2D</span></div><div class="prj-desc">เกม Time Management รับบทลูกชายร้านราเมงสายซิ่ง พัฒนาระบบ Dialog เองและออกแบบ SFX ด้วย Audacity</div></div><div class="prj-arrow">→</div></div>
+      <div class="prj-row" onclick="openModal('ma')"><div class="prj-idx">002</div><div><div class="prj-name">Abandoned Rails</div><div class="prj-cat">Horror · First-Person · Exploration</div><div class="prj-role">Game Designer · Programmer — Solo</div><div class="prj-tags"><span class="prj-tag">Unity</span><span class="prj-tag">Solo</span><span class="prj-tag">Horror</span></div><div class="prj-desc">เกม Horror สำรวจทางรถไฟร้าง เน้นสร้างความกดดันผ่านบรรยากาศและ Environmental Storytelling</div></div><div class="prj-arrow">→</div></div>
+      <div class="prj-row" onclick="openModal('mk')"><div class="prj-idx">003</div><div><div class="prj-name">Unknown Knight</div><div class="prj-cat">Action RPG · 3D · Co-op</div><div class="prj-role">Sub-Developer · Level Designer · Narrative</div><div class="prj-tags"><span class="prj-tag">Unity</span><span class="prj-tag">3D</span><span class="prj-tag">Co-op</span></div><div class="prj-desc">3D Action RPG Co-op จัดฉากดันเจี้ยน เขียนเนื้อเรื่อง และพัฒนาระบบ Checkpoint</div></div><div class="prj-arrow">→</div></div>
+      <div class="prj-row" onclick="openModal('m3')"><div class="prj-idx">004</div><div><div class="prj-name">3D Asset Workflow</div><div class="prj-cat">3D Art · PBR · Maya · Substance · Unreal</div><div class="prj-role">3D Artist · Modeling & Texturing</div><div class="prj-tags"><span class="prj-tag">Maya</span><span class="prj-tag">Substance</span><span class="prj-tag">PBR</span></div><div class="prj-desc">กระบวนการสร้าง Asset ตั้งแต่ Maya, PBR ใน Substance จนถึงการจัดแสงใน Unreal/Unity</div></div><div class="prj-arrow">→</div></div>
+      <div class="prj-row" onclick="openModal('mb')"><div class="prj-idx">005</div><div><div class="prj-name">2D Ball Platformer</div><div class="prj-cat">2D Platformer · Casual · Unity 2D</div><div class="prj-role">Developer — Year 1 Project</div><div class="prj-tags"><span class="prj-tag">Unity 2D</span><span class="prj-tag">C#</span><span class="prj-tag">Platformer</span><span class="prj-tag">2D</span></div><div class="prj-desc">Unity 2D Platformer แนว Casual บังคับลูกบอลฝ่า 3 ด่าน มีระบบเลือดและการเก็บคะแนน</div></div><div class="prj-arrow">→</div></div>
     </div>
   </div>
 </section>
 
-<footer>© 2026 Peemapol Phuangcharoen — 2D Game Designer &nbsp;·&nbsp; Samut Prakan, Thailand</footer>
+<!-- CONTACT -->
+<div id="contact" class="contact-section">
+  <div class="contact-inner">
+    <div class="sec-hd rev"><span class="sec-num">04</span><h2 class="sec-title">Contact</h2><div class="sec-line"></div></div>
+    <div class="contact-grid rev d1">
+      <div><p class="contact-intro">ผมมีความตั้งใจอย่างยิ่งที่จะได้เข้าไปเรียนรู้และพัฒนาทักษะจากการทำงานจริงร่วมกับทีมงานมืออาชีพ ขอขอบพระคุณที่สละเวลาพิจารณาเอกสารของผม หากต้องการข้อมูลหรือสอบถามเพิ่มเติม สามารถติดต่อผมได้ตลอดเวลาครับ</p></div>
+      <div>
+        <div class="contact-table">
+          <div class="ct-row"><span class="ct-k">Phone</span><span class="ct-v">095-505-8088</span></div>
+          <div class="ct-row"><span class="ct-k">Email</span><span class="ct-v"><a href="mailto:lnwpureza2545@gmail.com">lnwpureza2545@gmail.com</a></span></div>
+          <div class="ct-row"><span class="ct-k">Location</span><span class="ct-v">Samut Prakan, Thailand</span></div>
+          <div class="ct-row"><span class="ct-k">GitHub</span><span class="ct-v"><a href="https://github.com/lnwpureza2545" target="_blank">github.com/lnwpureza2545</a></span></div>
+        </div>
+        <a href="mailto:lnwpureza2545@gmail.com" class="cta-btn">Send Message →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>© 2026 Peemapol Phuangcharoen — <em>2D Game Designer</em> · Samut Prakan, Thailand</footer>
 
 <!-- LIGHTBOX -->
 <div id="lbx" class="lbx" onclick="closeLbx()">
@@ -628,7 +643,7 @@ footer {
   <img id="lbxImg" src="" alt="">
 </div>
 
-<!-- MODALS -->
+<!-- MODAL: RAMEN RIDER -->
 <div id="mr" class="modal-overlay"><div class="modal-box">
   <div class="m-bar"><span class="m-id">> PRJ_001 — Ramen Rider</span><button class="m-close" onclick="closeModal('mr')">✕</button></div>
   <div class="m-content">
@@ -659,6 +674,7 @@ footer {
   </div>
 </div></div>
 
+<!-- MODAL: ABANDONED RAILS -->
 <div id="ma" class="modal-overlay"><div class="modal-box">
   <div class="m-bar"><span class="m-id">> PRJ_002 — Abandoned Rails</span><button class="m-close" onclick="closeModal('ma')">✕</button></div>
   <div class="m-content">
@@ -677,6 +693,7 @@ footer {
   </div>
 </div></div>
 
+<!-- MODAL: UNKNOWN KNIGHT -->
 <div id="mk" class="modal-overlay"><div class="modal-box">
   <div class="m-bar"><span class="m-id">> PRJ_003 — Unknown Knight</span><button class="m-close" onclick="closeModal('mk')">✕</button></div>
   <div class="m-content">
@@ -694,6 +711,7 @@ footer {
   </div>
 </div></div>
 
+<!-- MODAL: 3D WORKFLOW -->
 <div id="m3" class="modal-overlay"><div class="modal-box">
   <div class="m-bar"><span class="m-id">> PRJ_004 — 3D Asset Workflow</span><button class="m-close" onclick="closeModal('m3')">✕</button></div>
   <div class="m-content">
@@ -713,6 +731,7 @@ footer {
   </div>
 </div></div>
 
+<!-- MODAL: BALL PLATFORMER -->
 <div id="mb" class="modal-overlay"><div class="modal-box">
   <div class="m-bar"><span class="m-id">> PRJ_005 — 2D Ball Platformer</span><button class="m-close" onclick="closeModal('mb')">✕</button></div>
   <div class="m-content">
@@ -732,46 +751,14 @@ footer {
 </div></div>
 
 <script>
-const ro = new IntersectionObserver(es => es.forEach(e => {
-  if (e.isIntersecting) e.target.classList.add('on');
-}), { threshold: 0.05 });
-document.querySelectorAll('.rev').forEach(el => ro.observe(el));
-
-function openModal(id) {
-  const m = document.getElementById(id);
-  m.style.display = 'flex';
-  setTimeout(() => m.classList.add('show'), 10);
-  document.body.style.overflow = 'hidden';
-}
-function closeModal(id) {
-  const m = document.getElementById(id);
-  m.classList.remove('show');
-  const v = m.querySelector('video');
-  if (v) v.pause();
-  setTimeout(() => { m.style.display = 'none'; }, 320);
-  document.body.style.overflow = '';
-}
-window.addEventListener('click', e => {
-  if (e.target.classList.contains('modal-overlay')) closeModal(e.target.id);
-});
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    document.querySelectorAll('.modal-overlay.show').forEach(m => closeModal(m.id));
-    closeLbx();
-  }
-});
-function openLbx(src) {
-  const lb = document.getElementById('lbx');
-  document.getElementById('lbxImg').src = src;
-  lb.style.display = 'flex';
-  setTimeout(() => lb.classList.add('show'), 10);
-}
-function closeLbx() {
-  const lb = document.getElementById('lbx');
-  lb.classList.remove('show');
-  setTimeout(() => lb.style.display = 'none', 260);
-}
-document.getElementById('lbx').addEventListener('click', closeLbx);
+const ro=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');}),{threshold:0.05});
+document.querySelectorAll('.rev').forEach(el=>ro.observe(el));
+function openModal(id){const m=document.getElementById(id);m.style.display='flex';setTimeout(()=>m.classList.add('show'),10);document.body.style.overflow='hidden';}
+function closeModal(id){const m=document.getElementById(id);m.classList.remove('show');const v=m.querySelector('video');if(v)v.pause();setTimeout(()=>{m.style.display='none';},340);document.body.style.overflow='';}
+window.addEventListener('click',e=>{if(e.target.classList.contains('modal-overlay'))closeModal(e.target.id);});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.querySelectorAll('.modal-overlay.show').forEach(m=>closeModal(m.id));closeLbx();}});
+function openLbx(src){const lb=document.getElementById('lbx');document.getElementById('lbxImg').src=src;lb.style.display='flex';setTimeout(()=>lb.classList.add('show'),10);}
+function closeLbx(){const lb=document.getElementById('lbx');lb.classList.remove('show');setTimeout(()=>lb.style.display='none',260);}
 </script>
 </body>
 </html>
