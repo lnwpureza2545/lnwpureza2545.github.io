@@ -1,79 +1,499 @@
-<!doctype html>
+Exit code: 0
+Wall time: 0.4 seconds
+Total output lines: 833
+Output:
+<!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Peemapol Phuangcharoen — Game Designer Portfolio">
-  <meta name="theme-color" content="#ff664d">
-  <title>Peemapol — Game Designer</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Fjalla+One&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root{--ink:#10131a;--paper:#f3efe7;--paper2:#e9e5db;--signal:#ff664d;--blue:#5f70ff;--lime:#dbff53;--dim:#69707e;--line:rgba(16,19,26,.16);--rounded:24px;--sans:'DM Sans','Noto Sans Thai',sans-serif;--thai:'Noto Sans Thai',sans-serif;--display:'Fjalla One',sans-serif;--mono:'DM Mono',monospace}
-    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--thai);line-height:1.65;overflow-x:hidden}a{text-decoration:none;color:inherit}button{font:inherit}img{display:block;max-width:100%}::selection{color:var(--paper);background:var(--blue)}
-    .wrap{width:min(1220px,calc(100% - 3rem));margin:auto}.eyebrow{font:500 .65rem var(--mono);letter-spacing:.1em;text-transform:uppercase}.eyebrow span{color:var(--signal)}.pill{display:inline-flex;align-items:center;gap:.4rem;border:1px solid currentColor;border-radius:100px;padding:.28rem .6rem;font:500 .57rem var(--mono);letter-spacing:.08em;text-transform:uppercase}.button{display:inline-flex;align-items:center;justify-content:center;gap:.8rem;border:1px solid var(--ink);border-radius:100px;padding:.72rem 1.05rem;min-height:47px;font:500 .67rem var(--mono);letter-spacing:.06em;text-transform:uppercase;transition:.25s;cursor:pointer}.button:hover{transform:translateY(-3px);box-shadow:4px 5px 0 var(--ink)}.button.dark{background:var(--ink);border-color:var(--ink);color:var(--paper)}.button.signal{background:var(--signal);border-color:var(--signal);color:var(--ink)}
-    /* Navigation */
-    .topbar{position:absolute;z-index:20;left:0;right:0;color:var(--paper)}.nav{height:80px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(243,239,231,.25)}.brand{font:500 .75rem/1 var(--mono);letter-spacing:.08em;text-transform:uppercase}.brand b{font:400 1.35rem/1 var(--display);letter-spacing:.02em;display:block;margin-bottom:.3rem}.nav-links{display:flex;gap:1.6rem;align-items:center}.nav-links a{font:500 .62rem var(--mono);letter-spacing:.08em;text-transform:uppercase;opacity:.78;transition:opacity .2s}.nav-links a:hover{opacity:1}.nav-state{color:var(--lime);font:500 .58rem var(--mono);letter-spacing:.08em}.menu{display:none;border:0;background:transparent;color:var(--paper);font-size:1.2rem}
-    /* Hero */
-    .hero{min-height:800px;position:relative;overflow:hidden;background:var(--ink);color:var(--paper)}.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 76% 35%,rgba(255,102,77,.68),transparent 17%),radial-gradient(circle at 22% 100%,rgba(95,112,255,.32),transparent 28%),linear-gradient(120deg,transparent 55%,rgba(255,255,255,.05));pointer-events:none}.hero-grid{position:relative;min-height:800px;display:grid;grid-template-columns:1fr 520px;align-items:end;gap:3rem;padding:150px 0 64px}.hero-copy{padding-bottom:1.1rem;position:relative;z-index:2}.hero-copy .eyebrow{color:#beb8ad}.hero h1{font:400 clamp(4.8rem,10.5vw,9.6rem)/.82 var(--display);letter-spacing:-.025em;text-transform:uppercase;margin:1.1rem 0 1.25rem}.hero h1 i{color:var(--signal);font-style:normal;display:inline-block;transform:translateX(.11em)}.hero-desc{max-width:495px;margin:0;color:#c7c4bb;font-size:.96rem;line-height:1.95}.hero-actions{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:2rem}.hero-stats{display:flex;gap:2.1rem;margin-top:4rem}.hero-stat b{font:400 2rem/.9 var(--display);color:var(--lime);display:block}.hero-stat span{display:block;margin-top:.4rem;color:#aaa69f;font:500 .55rem var(--mono);letter-spacing:.08em;text-transform:uppercase}.collage{height:600px;position:relative;align-self:center}.frame{position:absolute;overflow:hidden;box-shadow:16px 16px 0 rgba(0,0,0,.18)}.frame img{width:100%;height:100%;object-fit:cover}.frame::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(95,112,255,.22),transparent 44%,rgba(0,0,0,.45));mix-blend-mode:color}.portrait{height:465px;width:345px;right:34px;top:28px;border-radius:173px 173px 0 0;background:#27303a;transform:rotate(4deg)}.portrait img{filter:grayscale(1) contrast(1.05)}.portrait .frame-label{bottom:1rem;left:1rem;position:absolute;z-index:2;color:#fff;font:500 .55rem var(--mono);letter-spacing:.09em}.snapshot{width:225px;height:160px;left:10px;bottom:20px;background:#293340;transform:rotate(-7deg);border:8px solid var(--paper)}.snapshot img{filter:saturate(.78) contrast(1.05)}.sticky{width:190px;right:0;bottom:0;background:var(--lime);color:var(--ink);padding:1rem;box-shadow:none;transform:rotate(-6deg)}.sticky .eyebrow{font-size:.5rem}.sticky b{font:400 1.55rem/.88 var(--display);display:block;text-transform:uppercase;margin:.5rem 0}.sticky p{font-size:.65rem;line-height:1.5;margin:0}.hero-scroll{position:absolute;bottom:1.7rem;left:50%;z-index:2;transform:translateX(-50%);font:500 .54rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#aaa69f}
-    /* Overview rail */
-    .marquee{overflow:hidden;background:var(--signal);color:var(--ink);padding:.58rem 0;white-space:nowrap}.marquee-inner{display:inline-block;font:400 1.35rem/.9 var(--display);letter-spacing:.03em;text-transform:uppercase;animation:move 24s linear infinite}.marquee b{font-weight:400;color:var(--paper);margin:0 1.1rem}@keyframes move{to{transform:translateX(-50%)}}
-    section{padding:110px 0}.section-intro{display:grid;grid-template-columns:190px 1fr;gap:2.5rem;border-top:1px solid var(--line);padding-top:1.1rem}.section-intro h2{max-width:740px;margin:0;font:400 clamp(3.6rem,7vw,6.8rem)/.83 var(--display);letter-spacing:-.03em;text-transform:uppercase}.section-intro h2 em{color:var(--blue);font-style:normal}.section-intro .section-copy{max-width:460px;color:var(--dim);font-size:.9rem;margin:1.35rem 0 0}.section-intro .eyebrow{color:var(--dim)}
-    /* About */
-    .about-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:4rem;margin-top:5.4rem;align-items:start}.about-lead{font:500 clamp(1.3rem,2vw,1.7rem)/1.7 var(--sans);margin:0}.about-lead b{background:var(--lime);font-weight:600;padding:0 .18em}.about-detail{color:var(--dim);font-size:.88rem;margin:1.5rem 0 0;max-width:570px}.facts{border-top:1px solid var(--line)}.fact{display:grid;grid-template-columns:1fr 1.1fr;padding:1rem 0;border-bottom:1px solid var(--line);gap:1rem}.fact span{font:500 .59rem var(--mono);color:var(--dim);letter-spacing:.07em;text-transform:uppercase}.fact b{font-size:.8rem;text-align:right;font-weight:500}.fact b.highlight{color:var(--signal)}
-    /* Skill cards */
-    .skills-layout{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:5rem}.skill{min-height:292px;border-radius:var(--rounded);padding:1.35rem;display:flex;flex-direction:column;position:relative;overflow:hidden}.skill:nth-child(1){background:var(--blue);color:#fff}.skill:nth-child(2){background:var(--lime)}.skill:nth-child(3){background:var(--ink);color:var(--paper)}.skill:nth-child(4){background:#d7d2c7}.skill .num{font:500 .56rem var(--mono);letter-spacing:.09em;opacity:.75}.skill h3{font:400 2.15rem/.86 var(--display);letter-spacing:.01em;text-transform:uppercase;margin:auto 0 1rem}.skill ul{list-style:none;padding:0;margin:0;display:grid;gap:.3rem}.skill li{font-size:.7rem;opacity:.8}.skill li::before{content:'↗';margin-right:.45rem}.skill .symbol{position:absolute;right:-.05em;top:-.38em;font:400 7.7rem/.8 var(--display);opacity:.12}
-    /* Projects */
-    #work{background:var(--ink);color:var(--paper)}#work .section-intro{border-color:rgba(243,239,231,.2)}#work .section-intro .eyebrow,#work .section-intro .section-copy{color:#a9a79f}#work .section-intro h2 em{color:var(--lime)}.filters{display:flex;gap:.4rem;flex-wrap:wrap;margin:2.5rem 0 1.4rem}.filter{border:1px solid rgba(243,239,231,.25);border-radius:100px;background:transparent;color:var(--paper);padding:.42rem .73rem;cursor:pointer;font:500 .55rem var(--mono);letter-spacing:.08em;text-transform:uppercase;transition:.2s}.filter.active,.filter:hover{background:var(--paper);color:var(--ink)}.featured-project{min-height:560px;display:grid;grid-template-columns:1.05fr .95fr;overflow:hidden;border-radius:var(--rounded);background:#293427;margin-bottom:1.1rem}.feature-art{position:relative;overflow:hidden;background:linear-gradient(145deg,#477264,#141b18)}.feature-art::before{content:'';position:absolute;inset:0;background:linear-gradient(130deg,rgba(0,0,0,.05) 40%,rgba(0,0,0,.78)),radial-gradient(circle at 35% 30%,rgba(219,255,83,.85),transparent 3.5%),radial-gradient(circle at 54% 44%,rgba(255,102,77,.66),transparent 4%),radial-gradient(circle at 75% 32%,rgba(95,112,255,.55),transparent 3%);filter:blur(.2px)}.feature-art::after{content:'SONGKRAN';position:absolute;left:-.04em;bottom:-.08em;font:400 clamp(5.5rem,12vw,10rem)/.68 var(--display);letter-spacing:-.04em;color:rgba(243,239,231,.92);mix-blend-mode:screen}.feature-art .feature-type{position:absolute;top:1.4rem;left:1.4rem;border:1px solid rgba(243,239,231,.65);color:#fff;padding:.25rem .5rem;font:500 .55rem var(--mono);letter-spacing:.08em}.feature-content{padding:2.6rem;display:flex;flex-direction:column;align-items:start}.feature-content h3{margin:.9rem 0 .55rem;font:400 clamp(2.8rem,5vw,4.5rem)/.78 var(--display);letter-spacing:-.025em;text-transform:uppercase}.role{font:500 .58rem var(--mono);letter-spacing:.07em;color:var(--lime)}.feature-content p{color:#bebcb4;font-size:.87rem;line-height:1.9;max-width:430px}.tags{display:flex;flex-wrap:wrap;gap:.35rem}.tag{padding:.22rem .46rem;border:1px solid rgba(243,239,231,.25);font:500 .5rem var(--mono);letter-spacing:.05em}.case{border:0;padding:0;background:transparent;color:var(--lime);cursor:pointer;font:500 .65rem var(--mono);letter-spacing:.08em;text-transform:uppercase;margin-top:auto}.case:hover{text-decoration:underline;text-underline-offset:5px}.project-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem}.project{min-height:420px;background:#181c24;border-radius:var(--rounded);padding:0 1.2rem 1.2rem;display:flex;flex-direction:column;overflow:hidden;transition:transform .25s}.project:hover{transform:translateY(-6px)}.project-image{height:175px;margin:0 -1.2rem 1.2rem;overflow:hidden;position:relative}.project-image img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.08);transition:filter .35s,transform .5s}.project:hover .project-image img{filter:grayscale(.15) contrast(1.02);transform:scale(1.05)}.project-image::after{content:'';inset:0;position:absolute;background:linear-gradient(to top,rgba(8,10,14,.7),transparent 60%)}.project .project-num{color:#9da4ad;font:500 .53rem var(--mono);letter-spacing:.08em}.project h3{margin:.72rem 0 .35rem;font:400 1.9rem/.85 var(--display);letter-spacing:.01em;text-transform:uppercase}.project p{margin:.85rem 0;color:#a9a9a6;font-size:.74rem;line-height:1.82}.project .case{font-size:.55rem}.project.hidden{display:none}
-    /* Contact */
-    .contact{background:var(--paper2);overflow:hidden}.contact-panel{margin-top:4.5rem;position:relative;border-radius:var(--rounded);overflow:hidden;background:var(--blue);color:white;padding:3.6rem;display:grid;grid-template-columns:1.1fr .9fr;gap:3rem}.contact-panel::before{content:'✦';position:absolute;right:-.14em;bottom:-.35em;font:400 26rem/.6 var(--display);color:rgba(255,255,255,.12)}.contact-panel h3{position:relative;font:400 clamp(3.8rem,7vw,6.5rem)/.78 var(--display);letter-spacing:-.04em;text-transform:uppercase;margin:.7rem 0 1rem}.contact-panel h3 b{color:var(--lime);font-weight:400}.contact-panel p{max-width:475px;position:relative;font-size:.87rem;line-height:1.9;color:rgba(255,255,255,.82)}.contact-links{position:relative;align-self:end}.contact-link{padding:1rem 0;border-bottom:1px solid rgba(255,255,255,.31);display:flex;justify-content:space-between;gap:1rem;font-size:.83rem}.contact-link span{font:500 .54rem var(--mono);letter-spacing:.08em;opacity:.75;text-transform:uppercase}.contact-link:hover{color:var(--lime)}footer{padding:1.5rem 0 2.5rem;font:500 .54rem var(--mono);letter-spacing:.07em;color:var(--dim);display:flex;justify-content:space-between}
-    /* Dialog */
-    dialog{width:min(850px,calc(100% - 2rem));border:0;border-radius:var(--rounded);padding:0;background:var(--paper);color:var(--ink);box-shadow:0 30px 100px rgba(0,0,0,.4)}dialog::backdrop{background:rgba(10,12,18,.74);backdrop-filter:blur(5px)}.dialog-bar{display:flex;justify-content:space-between;align-items:center;padding:1rem 1.2rem;background:var(--ink);color:var(--paper);font:500 .57rem var(--mono);letter-spacing:.08em}.dialog-close{border:0;background:none;color:var(--paper);cursor:pointer;font:500 .57rem var(--mono)}.dialog-body{padding:2.3rem}.dialog-body h2{margin:.75rem 0 .5rem;font:400 clamp(2.8rem,6vw,4.5rem)/.8 var(--display);text-transform:uppercase}.dialog-body>p{color:var(--dim);font-size:.9rem;line-height:1.9}.case-media{margin:1.5rem 0;background:var(--ink);border-radius:14px;overflow:hidden}.case-media video,.case-media img{width:100%;display:block;max-height:390px;object-fit:contain}.case-media figcaption{padding:.55rem .75rem;color:#a9a9a6;font:500 .53rem var(--mono);letter-spacing:.08em;text-transform:uppercase}.dialog-info{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);margin-top:1.6rem}.dialog-info>div{padding:1.1rem;background:var(--paper)}.dialog-info h4{margin:0 0 .45rem;font:400 1.3rem var(--display);text-transform:uppercase}.dialog-info p{margin:0;font-size:.76rem;line-height:1.78;color:var(--dim)}
-    .reveal{opacity:0;transform:translateY(20px);transition:.65s}.reveal.in{opacity:1;transform:none}
-    @media(max-width:900px){.hero-grid{grid-template-columns:1fr 390px;gap:1.5rem}.collage{transform:scale(.86);transform-origin:center right}.skills-layout{grid-template-columns:repeat(2,1fr)}.about-grid,.contact-panel{grid-template-columns:1fr}.project-grid{grid-template-columns:repeat(2,1fr)}}
-    @media(max-width:670px){.wrap{width:min(100% - 2rem,1220px)}.nav{height:67px}.nav-state{display:none}.menu{display:block}.nav-links{display:none;position:absolute;top:66px;left:0;right:0;background:var(--ink);padding:0 1rem;border-bottom:1px solid rgba(243,239,231,.25);flex-direction:column;gap:0;align-items:stretch}.nav-links.open{display:flex}.nav-links a{padding:.8rem 0;border-bottom:1px solid rgba(243,239,231,.16)}.hero,.hero-grid{min-height:770px}.hero-grid{display:block;padding:116px 0 0}.hero h1{font-size:clamp(4.3rem,20vw,6.4rem)}.hero-stats{gap:1.2rem;margin-top:2.6rem}.collage{position:absolute;right:-84px;bottom:-20px;width:400px;height:390px;transform:scale(.75);transform-origin:bottom right;opacity:.75}.hero-scroll{display:none}section{padding:75px 0}.section-intro{grid-template-columns:1fr;gap:1.3rem}.section-intro h2{font-size:clamp(3.3rem,15vw,5rem)}.about-grid{margin-top:3.2rem;gap:2.5rem}.skills-layout{margin-top:3rem;gap:.7rem}.skill{min-height:230px}.featured-project{grid-template-columns:1fr;min-height:0}.feature-art{height:280px}.feature-content{padding:1.65rem}.project-grid{grid-template-columns:1fr}.contact-panel{margin-top:3rem;padding:1.5rem}.contact-panel h3{font-size:3.9rem}.dialog-body{padding:1.4rem}.dialog-info{grid-template-columns:1fr}footer{display:block;line-height:2.1}.hero-actions .button{font-size:.58rem}}
-    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none}.marquee-inner{animation:none}}
-  </style>
-</head>
-<body>
-  <header class="hero" id="top">
-    <div class="topbar"><div class="wrap nav"><a href="#top" class="brand"><b>Peemapol P.</b>Game Designer / Portfolio</a><nav class="nav-links" id="navlinks"><a href="#about">Profile</a><a href="#skills">Toolkit</a><a href="#work">Selected work</a><a href="#contact">Contact</a></nav><span class="nav-state">● Available for internship</span><button class="menu" aria-label="เปิดเมนู" aria-controls="navlinks" aria-expanded="false">☰</button></div></div>
-    <div class="wrap hero-grid">
-      <div class="hero-copy reveal"><div class="eyebrow"><span>01</span> / Interactive &amp; Game Design</div><h1>Worlds<br>made to <i>play.</i></h1><p class="hero-desc">พีมพล พ่วงเจริญ — Game Designer ผู้ชอบเปลี่ยนไอเดียสนุก ๆ ให้กลายเป็นประสบการณ์ที่ผู้เล่นสัมผัสและอยากเล่นซ้ำได้จริง</p><div class="hero-actions"><a class="button signal" href="#work">See my work <b>↘</b></a><a class="button dark" href="resume.pdf" download>Download résumé <b>↓</b></a></div><div class="hero-stats"><div class="hero-stat"><b>06</b><span>Projects built</span></div><div class="hero-stat"><b>07</b><span>Days / Game Jam</span></div><div class="hero-stat"><b>01</b><span>Goal: Internship</span></div></div></div>
-      <div class="collage reveal"><figure class="frame portrait"><img src="profile.png" alt="Peemapol Phuangcharoen"><figcaption class="frame-label">PEEMAPOL / PLAYER 01</figcaption></figure><figure class="frame snapshot"><img src="project2.jpg" alt="Screenshot from Unknown Knight"></figure><aside class="frame sticky"><div class="eyebrow">CURRENT QUEST</div><b>Make play<br>meaningful.</b><p>Design with empathy, prototype with curiosity.</p></aside></div>
-    </div><div class="hero-scroll">Scroll to enter ↓</div>
-  </header>
-  <div class="marquee" aria-hidden="true"><div class="marquee-inner">Game Design <b>✦</b> Narrative <b>✦</b> Systems <b>✦</b> Level Design <b>✦</b> Sound <b>✦</b> Game Design <b>✦</b> Narrative <b>✦</b> Systems <b>✦</b> Level Design <b>✦</b> Sound <b>✦</b></div></div>
-  <main>
-    <section id="about"><div class="wrap"><div class="section-intro reveal"><div class="eyebrow"><span>02</span> / About me</div><div><h2>Design with <em>feeling.</em></h2><p class="section-copy">ผมเชื่อว่าดีไซน์ที่ดีควรพาผู้เล่น “รู้สึก” ได้ก่อนจะรู้ตัวว่าระบบทำงานอย่างไร</p></div></div><div class="about-grid reveal"><div><p class="about-lead">ผมสนใจการสร้างเกมที่มีทั้ง <b>ความสนุก และ ความหมาย</b> ตั้งแต่การออกแบบ gameplay, ระบบเกม, level, narrative ไปจนถึงเสียงที่ทำให้โลกในเกมมีชีวิต</p><p class="about-detail">มีพื้นฐาน C# ใน Unity พร้อมทำงานกับ AI tools เพื่อ prototype และแก้ปัญหาได้รวดเร็ว กำลังมองหาโอกาสฝึกงานเพื่อเรียนรู้จากทีมมืออาชีพและเติบโตในสาย Game Development</p></div><div class="facts"><div class="fact"><span>Education</span><b>Sripatum University</b></div><div class="fact"><span>Program</span><b>Interactive &amp; Game Design</b></div><div class="fact"><span>GPA</span><b class="highlight">3.30 / 4.00</b></div><div class="fact"><span>Based in</span><b>Samut Prakan, Thailand</b></div><div class="fact"><span>Seeking</span><b class="highlight">Game Designer Internship</b></div></div></div></div></section>
-    <section id="skills"><div class="wrap"><div class="section-intro reveal"><div class="eyebrow"><span>03</span> / Loadout</div><div><h2>Tools for <em>play.</em></h2><p class="section-copy">ลงมือได้ตั้งแต่ช่วงหา core mechanic ไปจนถึงการ build และขัดเกลาประสบการณ์</p></div></div><div class="skills-layout reveal"><article class="skill"><b class="num">01 / DESIGN</b><span class="symbol">✦</span><h3>Game<br>Experience</h3><ul><li>Gameplay Design</li><li>Level Design</li><li>Game Systems</li><li>Fast Iteration</li></ul></article><article class="skill"><b class="num">02 / NARRATIVE</b><span class="symbol">✎</span><h3>Stories<br>&amp; Sound</h3><ul><li>Story &amp; Dialog</li><li>Character Tone</li><li>Sound Direction</li><li>Audacity</li></ul></article><article class="skill"><b class="num">03 / BUILD</b><span class="symbol">&lt;/&gt;</span><h3>Technical<br>Tools</h3><ul><li>Unity / C#</li><li>Unreal (Basic)</li><li>Prototype Design</li><li>Problem Solving</li></ul></article><article class="skill"><b class="num">04 / ASSET</b><span class="symbol">◒</span><h3>Visual<br>Craft</h3><ul><li>Maya</li><li>Substance Painter</li><li>After Effects</li><li>Illustrator</li></ul></article></div></div></section>
-    <section id="work"><div class="wrap"><div class="section-intro reveal"><div class="eyebrow"><span>04</span> / Selected work</div><div><h2>Built to be <em>played.</em></h2><p class="section-copy">ทุกโปรเจกต์คือสนามทดลอง ทั้งในฐานะ game designer, developer และ teammate</p></div></div><div class="filters reveal" aria-label="ตัวกรองผลงาน"><button class="filter active" data-filter="all">All projects</button><button class="filter" data-filter="design">Game Design</button><button class="filter" data-filter="code">Programming</button><button class="filter" data-filter="art">3D Art</button></div>
-      <article class="featured-project reveal"><div class="feature-art"><span class="feature-type">FEATURED / PRJ 006</span></div><div class="feature-content"><span class="pill">Thailand Summer Jam 2026</span><h3>Songkran:<br>The Office Run</h3><span class="role">GAME DESIGNER · GDD AUTHOR · 7-DAY GAME JAM</span><p>Rage game 3D ธีมสงกรานต์ เมื่อพนักงานออฟฟิศต้องวิ่งไปตอกบัตรให้ทันเที่ยง โดยห้ามโดนน้ำแม้แต่หยดเดียว ทุกสิ่งรอบตัวอาจเป็นกับดัก—และทุกการแพ้คือบทเรียนสำหรับการวิ่งรอบต่อไป</p><div class="tags"><span class="tag">Unity 3D</span><span class="tag">Trap Design</span><span class="tag">Time Attack</span><span class="tag">GDD</span></div><button class="case" data-case="songkran">Open full case study →</button></div></article>
-      <div class="project-grid reveal">
-        <article class="project" data-type="design code"><div class="project-image"><img src="project-ramen.jpg" alt="Ramen Rider"></div><span class="project-num">PRJ 001 / TEAM OF 5</span><h3>Ramen Rider</h3><span class="role">STORY · DIALOG SYSTEM · SOUND</span><p>เกม Time Management รับบทเด็กหนุ่มสายซิ่งที่ต้องรักษาร้านราเมงของครอบครัวไว้ให้ได้</p><button class="case" data-case="ramen">View project →</button></article>
-        <article class="project" data-type="design code"><div class="project-image"><img src="project1.jpg" alt="Abandoned Rails"></div><span class="project-num">PRJ 002 / SOLO</span><h3>Abandoned Rails</h3><span class="role">GAME DESIGNER · PROGRAMMER</span><p>Horror สำรวจทางรถไฟร้าง ที่ไม่มีระบบต่อสู้ ความกลัวมาจากบรรยากาศและสิ่งที่คาดเดาไม่ได้</p><button class="case" data-case="rails">View project →</button></article>
-        <article class="project" data-type="design code"><div class="project-image"><img src="project2.jpg" alt="Unknown Knight"></div><span class="project-num">PRJ 003 / CO-OP</span><h3>Unknown Knight</h3><span class="role">LEVEL DESIGN · NARRATIVE · CODE</span><p>Action RPG co-op ที่มีอัศวินปริศนาและดันเจี้ยนรอให้ผู้เล่นร่วมกันเอาชีวิตรอด</p><button class="case" data-case="knight">View project →</button></article>
-        <article class="project" data-type="art"><div class="project-image"><img src="project3.jpg" alt="3D Asset Workflow"></div><span class="project-num">PRJ 004 / 3D ART</span><h3>3D Asset Workflow</h3><span class="role">MODELING · TEXTURING · SETUP</span><p>กระบวนการสร้าง asset ตั้งแต่ Maya และ PBR texturing จนถึง scene setup ใน engine</p><button class="case" data-case="asset">View project →</button></article>
-        <article class="project" data-type="code"><div class="project-image"><img src="project-ball.jpg" alt="Ball Platformer"></div><span class="project-num">PRJ 005 / YEAR 1</span><h3>Ball Platformer</h3><span class="role">DEVELOPER · UNITY 2D / C#</span><p>เกมแรกที่ทำให้ได้เรียนรู้การออกแบบ movement, score, health, respawn และ progression</p><button class="case" data-case="ball">View project →</button></article>
-      </div></div></section>
-    <section class="contact" id="contact"><div class="wrap"><div class="section-intro reveal"><div class="eyebrow"><span>05</span> / Contact</div><div><h2>Next quest:<br><em>make it together.</em></h2></div></div><div class="contact-panel reveal"><div><div class="eyebrow">Open for collaboration</div><h3>Let's build<br>something <b>fun.</b></h3><p>หากคุณกำลังมองหา Game Designer Intern ที่พร้อมเรียนรู้ ลงมือทำ และช่วยทำให้ไอเดียของทีมสนุกขึ้น ผมยินดีอย่างยิ่งที่จะได้คุยกันครับ</p></div><div class="contact-links"><a class="contact-link" href="mailto:lnwpureza2545@gmail.com"><span>Email</span>lnwpureza2545@gmail.com</a><a class="contact-link" href="tel:+66955058088"><span>Phone</span>095-505-8088</a><a class="contact-link" href="https://github.com/lnwpureza2545" target="_blank" rel="noreferrer"><span>GitHub</span>github.com/lnwpureza2545 ↗</a><div class="contact-link"><span>Based in</span>Samut Prakan, Thailand</div></div></div></div></section>
-  </main>
-  <footer class="wrap"><span>© 2026 Peemapol Phuangcharoen</span><span>Game Designer / Made with intention</span></footer>
-  <dialog id="case-dialog" aria-labelledby="case-title"><div class="dialog-bar"><span id="case-id">PROJECT FILE</span><button class="dialog-close" aria-label="ปิดหน้ารายละเอียด">[ CLOSE ]</button></div><div class="dialog-body"><span class="pill" id="case-label"></span><h2 id="case-title"></h2><span class="role" id="case-role"></span><p id="case-summary"></p><div class="case-media" id="case-media" hidden></div><div class="tags" id="case-tags"></div><div class="dialog-info"><div><h4>Design focus</h4><p id="case-focus"></p></div><div><h4>My contribution</h4><p id="case-contribution"></p></div></div></div></dialog>
-  <script>
-    const projectData={
-      songkran:{id:'PRJ 006 / GAME JAM',label:'Featured case study',title:'Songkran: The Office Run',role:'GAME DESIGNER · GDD AUTHOR · 7-DAY GAME JAM',summary:'เกม Rage / Trap 3D ที่ผู้เล่นเป็นพนักงานออฟฟิศผู้โชคร้าย ต้องวิ่งไปทำงานในวันสงกรานต์โดยเสื้อผ้าต้องแห้งสนิท การแพ้ซ้ำ ๆ คือส่วนหนึ่งของมุกและการหาทางที่ดีที่สุด',tags:['Unity 3D','Trap Design','Time Attack','Comedic Evasion'],focus:'ให้ผู้เล่นชั่งน้ำหนักระหว่างการทำเวลาและการอ่านความเสี่ยงของพื้นที่ ผ่านกับดัก 6 รูปแบบที่จดจำและเรียนรู้ได้',contribution:'เขียน GDD, ออกแบบ core loop, กับดัก, checkpoint flow และ art / audio direction',image:'Peemapol_TSJ2026.png',caption:'Thailand Summer Jam 2026 — Certificate of Participation'},
-      ramen:{id:'PRJ 001 / TEAM OF 5',label:'Team project',title:'Ramen Rider',role:'STORY · DIALOG SYSTEM · SOUND · PROGRAMMER',summary:'Time Management Action Casual เมื่อเด็กหนุ่มสายซิ่งต้องรับช่วงร้านราเมงของครอบครัวและพาธุรกิจเดลิเวอรี่ไปต่อ',tags:['Unity','C#','Audacity','Narrative'],focus:'เชื่อมอารมณ์เรื่องครอบครัวเข้ากับจังหวะการส่งอาหารที่เร่งด่วน และใช้ dialog/เสียงคุมโทน comic',contribution:'ออกแบบโครงเรื่องและบทสนทนา, พัฒนา dialog system Unity/C#, สร้าง SFX ด้วย Audacity',video:'ramen-rider-video.mp4'},
-      rails:{id:'PRJ 002 / SOLO',label:'Solo project',title:'Abandoned Rails',role:'GAME DESIGNER · PROGRAMMER',summary:'เกม First-person Horror สำรวจทางรถไฟร้าง โดยผู้เล่นรวบรวมกุญแจสามดอกเพื่อเข้าสู่อุโมงค์และตื่นจากฝัน',tags:['Unity','Horror','Exploration','Solo'],focus:'สร้างความกลัวจากสิ่งที่มองไม่เห็นผ่านเสียง, ระยะมองเห็น และ environmental storytelling',contribution:'ออกแบบ game flow, สร้างฉาก, เขียนระบบ และวางเรื่องราวใน environment',video:'abandoned-rails-video.mp4'},
-      knight:{id:'PRJ 003 / CO-OP',label:'Co-op project',title:'Unknown Knight',role:'SUB-DEVELOPER · LEVEL DESIGNER · NARRATIVE',summary:'Action RPG co-op ที่ผู้เล่นตื่นในดันเจี้ยนและต้องร่วมมือกับอัศวินปริศนาเพื่อเอาชีวิตรอด',tags:['Unity','3D','Co-op','Level Design'],focus:'สร้างพื้นที่ dungeon ที่ให้การเล่นร่วมกันและจังหวะ discovery สนับสนุนกัน',contribution:'Level design, narrative และพัฒนาระบบ checkpoint',video:'unknown-knight-video.mp4'},
-      asset:{id:'PRJ 004 / 3D ART',label:'3D art case',title:'3D Asset Workflow',role:'MODELING · PBR TEXTURING · SCENE SETUP',summary:'กระบวนการแปลง reference เป็น 3D asset ที่พร้อมใช้งานใน game engine ตั้งแต่ blockout จนถึง material และ lighting',tags:['Maya','Substance Painter','PBR','Unreal'],focus:'รักษา silhouette และ material read ให้ชัด ใช้งานได้ดีทั้งด้านภาพและ performance',contribution:'ทำ high/low poly, UV, bake map, PBR texturing และ scene setup',image:'3d-realwork.jpg',caption:'3D Asset — Final real-time scene'},
-      ball:{id:'PRJ 005 / YEAR 1',label:'Foundation project',title:'2D Ball Platformer',role:'DEVELOPER · UNITY 2D / C#',summary:'2D casual platformer ที่พาผู้เล่นควบคุมลูกบอลผ่านสามด่านไปยัง portal ปลายทาง',tags:['Unity 2D','C#','Platformer'],focus:'ออกแบบ movement และ jump feedback ให้เข้าใจง่าย พร้อมความยากที่เพิ่มขึ้นแบบมีจังหวะ',contribution:'พัฒนาการเคลื่อนไหว, score, health, respawn และ level progression',video:'ball-game-video.mp4'}
-    };
-    const dialog=document.querySelector('#case-dialog');function openProject(key){const p=projectData[key],media=document.querySelector('#case-media');document.querySelector('#case-id').textContent=p.id;document.querySelector('#case-label').textContent=p.label;document.querySelector('#case-title').textContent=p.title;document.querySelector('#case-role').textContent=p.role;document.querySelector('#case-summary').textContent=p.summary;document.querySelector('#case-focus').textContent=p.focus;document.querySelector('#case-contribution').textContent=p.contribution;document.querySelector('#case-tags').innerHTML=p.tags.map(t=>'<span class="tag">'+t+'</span>').join('');if(p.video){media.hidden=false;media.innerHTML='<video controls preload="metadata" playsinline><source src="'+p.video+'" type="video/mp4">Your browser does not support the video tag.</video><figcaption>Gameplay footage</figcaption>'}else if(p.image){media.hidden=false;media.innerHTML='<img src="'+p.image+'" alt="'+p.title+'"><figcaption>'+p.caption+'</figcaption>'}else{media.hidden=true;media.innerHTML=''}dialog.showModal()}document.querySelectorAll('[data-case]').forEach(el=>el.addEventListener('click',()=>openProject(el.dataset.case)));document.querySelector('.dialog-close').addEventListener('click',()=>dialog.close());dialog.addEventListener('close',()=>dialog.querySelectorAll('video').forEach(video=>{video.pause();video.currentTime=0}));
-    const menu=document.querySelector('.menu'),links=document.querySelector('.nav-links');menu.addEventListener('click',()=>{const isOpen=links.classList.toggle('open');menu.setAttribute('aria-expanded',isOpen)});links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{links.classList.remove('open');menu.setAttribute('aria-expanded','false')}));
-    document.querySelectorAll('.filter').forEach(filter=>filter.addEventListener('click',()=>{document.querySelector('.filter.active').classList.remove('active');filter.classList.add('active');document.querySelectorAll('.project').forEach(card=>card.classList.toggle('hidden',filter.dataset.filter!=='all'&&!card.dataset.type.includes(filter.dataset.filter)))}));
-    const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');revealObserver.unobserve(e.target)}}),{threshold:.08});document.querySelectorAll('.reveal').forEach(e=>revealObserver.observe(e));
-  </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>Peemapol Phuangcharoen — Game Designer</title>
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Thai:wght@400;600&display=swap');
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+
+:root{
+  --black:    #0A0A0B;
+  --black-2:  #131314;
+  --black-3:  #1B1B1C;
+  --black-4:  #242425;
+
+  --orange:      #FF5A1F;
+  --orange-lt:   #FF8A54;
+  --orange-dk:   #C7440F;
+  --orange-dim:  rgba(255,90,31,0.08);
+  --orange-mid:  rgba(255,90,31,0.25);
+  --orange-line: rgba(255,90,31,0.45);
+
+  --white: #F6F4EF;
+  --ink:   #E7E5DF;
+  --ink-2: #9B9994;
+  --ink-3: #87847C;
+  --ink-4: #2E2E2C;
+
+  --line:  rgba(246,244,239,0.09);
+  --line-2:rgba(246,244,239,0.17);
+}
+
+body{
+  background:var(--black);
+  color:var(--ink);
+  font-family:'IBM Plex Sans Thai',sans-serif;
+  font-size:15.5px;
+  line-height:1.8;
+  overflow-x:hidden;
+  min-width:320px;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:'Big Shoulders Display',sans-serif;color:var(--white);font-weight:800;text-transform:uppercase;line-height:1;}
+a{text-decoration:none;color:inherit;}
+img{display:block;max-width:100%;}
+ul{list-style:none;}
+button{font:inherit;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--black-2);}
+::-webkit-scrollbar-thumb{background:var(--orange-dk);}
+::selection{background:var(--orange);color:var(--black);}
+a:focus-visible,button:focus-visible{outline:2px solid var(--orange);outline-offset:2px;}
+
+.skip-link{position:absolute;top:-40px;left:0;background:var(--orange);color:var(--black);padding:.6rem 1rem;z-index:9999;font-family:'IBM Plex Mono';font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;transition:top .2s;}
+.skip-link:focus{top:0;}
+
+/* blueprint grid backdrop */
+.bp-grid{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,90,31,0.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,90,31,0.055) 1px,transparent 1px);
+  background-size:44px 44px;
+  mask-image:radial-gradient(ellipse 85% 65% at 50% 20%,#000 0%,transparent 78%);
+  -webkit-mask-image:radial-gradient(ellipse 85% 65% at 50% 20%,#000 0%,transparent 78%);
+}
+body::after{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 0%,rgba(255,90,31,0.05) 0%,transparent 60%),
+    radial-gradient(ellipse 80% 60% at 100% 100%,rgba(0,0,0,0.5) 0%,transparent 55%);
+}
+
+#progress{position:fixed;top:0;left:0;height:2px;width:0%;z-index:10001;background:var(--orange);box-shadow:0 0 10px rgba(255,90,31,0.6);}
+
+/* corner registration brackets — signature motif, used sparingly */
+.corners{position:relative;}
+.corners::before{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:
+    linear-gradient(var(--orange),var(--orange)) top left/13px 2px no-repeat,
+    linear-gradient(var(--orange),var(--orange)) top left/2px 13px no-repeat,
+    linear-gradient(var(--orange),var(--orange)) top right/13px 2px no-repeat,
+    linear-gradient(var(--orange),var(--orange)) top right/2px 13px no-repeat,
+    linear-gradient(var(--orange),var(--orange)) bottom left/13px 2px no-repeat,
+    linear-gradient(var(--orange),var(--orange)) bottom left/2px 13px no-repeat,
+    linear-gradient(var(--orange),var(--orange)) bottom right/13px 2px no-repeat,
+    linear-gradient(var(--orange),var(--orange)) bottom right/2px 13px no-repeat;
+  opacity:.6;transition:opacity .25s;
+}
+.corners:hover::before{opacity:1;}
+
+/* ══════ NAV ══════ */
+nav{position:sticky;top:0;z-index:300;background:rgba(10,10,11,0.95);border-bottom:1px solid var(--line-2);backdrop-filter:blur(14px);padding:0 max(1.5rem,5vw);}
+.nav-inner{max-width:1360px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;gap:1rem;}
+.nav-logo{font-family:'Big Shoulders Display';font-size:1.15rem;font-weight:800;letter-spacing:.02em;color:var(--white);line-height:1;text-transform:uppercase;}
+.nav-logo span{display:block;font-family:'IBM Plex Mono';font-size:.5rem;font-weight:500;letter-spacing:.22em;color:var(--orange);text-transform:uppercase;margin-top:.2rem;}
+.nav-links{display:flex;gap:2.2rem;}
+.nav-links a{font-family:'IBM Plex Mono';font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2);transition:color .2s;position:relative;padding:.3rem 0;}
+.nav-links a::after{content:'';position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--orange);transform:scaleX(0);transform-origin:left;transition:transform .25s;}
+.nav-links a:hover{color:var(--white);}
+.nav-links a:hover::after{transform:scaleX(1);}
+.nav-status{display:flex;align-items:center;gap:.5rem;font-family:'IBM Plex Mono';font-size:.58rem;letter-spacing:.12em;color:var(--orange);border:1px solid var(--orange-line);padding:.32rem .7rem;text-transform:uppercase;white-space:nowrap;flex-shrink:0;}
+.nav-dot{width:6px;height:6px;border-radius:50%;background:var(--orange);animation:pulse 2.2s ease-in-out infinite;flex-shrink:0;}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 8px rgba(255,90,31,.7);}50%{opacity:.35;box-shadow:0 0 3px rgba(255,90,31,.4);}}
+.nav-toggle{display:none;flex-direction:column;gap:4px;background:none;border:none;cursor:pointer;padding:.4rem;flex-shrink:0;}
+.nav-toggle span{width:20px;height:2px;background:var(--white);display:block;transition:transform .25s,opacity .25s;}
+.nav-toggle.open span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+.nav-toggle.open span:nth-child(2){opacity:0;}
+.nav-toggle.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+
+.page-wrap{max-width:1360px;margin:0 auto;padding:0 max(1.5rem,5vw);position:relative;z-index:1;}
+
+/* ══════ HERO ══════ */
+.hero{padding:3.5rem 0 4.5rem;position:relative;}
+.hero-eyebrow{font-family:'IBM Plex Mono';font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3);margin-bottom:2.1rem;display:flex;align-items:center;gap:.7rem;}
+.hero-eyebrow::before{content:'';width:26px;height:1px;background:var(--orange);}
+.hero-top{display:flex;gap:2.2rem;align-items:flex-end;flex-wrap:wrap;margin-bottom:1.9rem;}
+.avatar{width:132px;height:132px;flex-shrink:0;border:1px solid var(--line-2);overflow:hidden;background:var(--black-3);position:relative;}
+.avatar img{width:100%;height:100%;object-fit:cover;filter:grayscale(.9) contrast(1.05);}
+.avatar-tag{position:absolute;left:0;right:0;bottom:0;background:rgba(10,10,11,.88);font-family:'IBM Plex Mono';font-size:.42rem;letter-spacing:.13em;color:var(--orange-lt);padding:.26rem .4rem;text-align:center;text-transform:uppercase;}
+.hero-name{font-size:clamp(2.6rem,7.2vw,5.4rem);font-weight:900;letter-spacing:-.01em;margin-bottom:.8rem;}
+.hero-name em{font-style:normal;color:var(--orange);display:block;}
+.stamp{display:inline-flex;align-items:center;gap:.5em;border:2px solid var(--orange);border-radius:999px;padding:.42rem 1.15rem;transform:rotate(-3deg);color:var(--orange);font-family:'IBM Plex Mono';font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;position:relative;}
+.stamp::after{content:'';position:absolute;inset:3px;border:1px solid var(--orange);border-radius:999px;opacity:.45;}
+.hero-bio{max-width:640px;color:var(--ink-2);font-size:.95rem;line-height:1.95;margin-bottom:2.6rem;padding-left:1.3rem;border-left:2px solid var(--orange-dk);}
+
+.hero-panels{display:grid;grid-template-columns:0.85fr 1.35fr;gap:1.4rem;margin-bottom:2.3rem;align-items:stretch;}
+.stat-panel{background:var(--black-2);border:1px solid var(--line);padding:1.6rem 1.7rem;}
+.stat-panel-head{font-family:'IBM Plex Mono';font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--orange);margin-bottom:1.2rem;padding-bottom:.7rem;border-bottom:1px solid var(--line);}
+.stat-row{display:flex;align-items:center;gap:.9rem;padding:.42rem 0;}
+.stat-label{font-family:'IBM Plex Mono';font-size:.6rem;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3);width:84px;flex-shrink:0;}
+.stat-track{flex:1;height:5px;background:var(--ink-4);position:relative;}
+.stat-fill{position:absolute;left:0;top:0;bottom:0;background:var(--orange);}
+.stat-fill.dim{background:var(--ink-3);}
+.stat-grade{font-family:'Big Shoulders Display';font-weight:800;font-size:1rem;width:26px;text-align:right;color:var(--white);flex-shrink:0;}
+
+.feat-card{background:var(--black-2);border:1px solid var(--orange-line);cursor:pointer;overflow:hidden;transition:transform .3s,box-shadow .3s;display:flex;flex-direction:column;position:relative;}
+.feat-card:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.5);}
+.feat-media{flex:1;min-height:150px;position:relative;background:var(--black);display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.feat-media::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 30%,rgba(255,90,31,.16),transparent 65%);}
+.feat-media-label{position:relative;z-index:1;text-align:center;padding:1rem;}
+.feat-eyebrow{font-family:'IBM Plex Mono';font-size:.55rem;letter-spacing:.24em;color:var(--orange-lt);margin-bottom:.35rem;text-transform:uppercase;}
+.feat-word{font-family:'Big Shoulders Display';font-size:1.9rem;font-weight:900;color:var(--white);letter-spacing:.03em;line-height:1;}
+.feat-sub{font-family:'IBM Plex Mono';font-size:.56rem;letter-spacing:.2em;color:var(--orange);margin-top:.4rem;}
+.feat-badge{position:absolute;top:.8rem;left:.8rem;z-index:2;font-family:'IBM Plex Mono';font-size:.5rem;letter-spacing:.14em;background:var(--orange);color:var(--black);padding:.16rem .55rem;font-weight:600;}
+.feat-body{padding:1.2rem 1.4rem 1.4rem;border-top:1px solid var(--line);}
+.feat-cat{font-family:'IBM Plex Mono';font-size:.52rem;letter-spacing:.1em;color:var(--ink-3);text-transform:uppercase;margin-bottom:.3rem;}
+.feat-name{font-size:1.3rem;margin-bottom:.25rem;}
+.feat-role{font-size:.78rem;color:var(--ink-2);margin-bottom:.6rem;}
+.feat-desc{font-size:.83rem;color:var(--ink-2);line-height:1.8;margin-bottom:.8rem;}
+.feat-cta{font-family:'IBM Plex Mono';font-size:.6rem;letter-spacing:.14em;color:var(--orange);text-transform:uppercase;display:flex;align-items:center;gap:.4rem;}
+
+.chip-row{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.9rem;}
+.chip{font-family:'IBM Plex Mono';font-size:.62rem;letter-spacing:.05em;color:var(--ink-2);border:1px solid var(--line-2);padding:.28rem .8rem;transition:all .2s;}
+.chip:hover{border-color:var(--orange);color:var(--orange);}
+
+.btn-row{display:flex;gap:.8rem;flex-wrap:wrap;}
+.btn{display:inline-flex;align-items:center;gap:.5rem;font-family:'IBM Plex Mono';font-weight:600;font-size:.68rem;letter-spacing:.12em;padding:.85rem 1.6rem;cursor:pointer;transition:all .25s;border:1px solid transparent;text-transform:uppercase;}
+.btn-primary{background:var(--orange);color:var(--black);}
+.btn-primary:hover{background:var(--orange-lt);transform:translateY(-2px);}
+.btn-outline{background:transparent;color:var(--white);border-color:var(--line-2);}
+.btn-outline:hover{border-color:var(--orange);color:var(--orange);transform:translateY(-2px);}
+
+/* ══════ SECTIONS ══════ */
+section{padding:5.5rem 0;border-top:1px solid var(--line);position:relative;}
+.sec-head{display:flex;align-items:center;gap:1.3rem;margin-bottom:1rem;}
+.sec-num{font-family:'IBM Plex Mono';font-size:.6rem;letter-spacing:.18em;color:var(--orange);border:1px solid var(--orange-line);padding:.15rem .6rem;flex-shrink:0;}
+.sec-title{font-size:clamp(1.7rem,3.6vw,2.4rem);}
+.sec-rule{flex:1;height:1px;background:var(--line-2);}
+.sec-meta{font-family:'IBM Plex Mono';font-size:.6rem;letter-spacing:.1em;color:var(--ink-3);text-transform:uppercase;margin-bottom:2.4rem;}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:4rem;align-items:start;}
+.about-text p{color:var(--ink-2);font-size:.92rem;line-height:2;margin-bottom:1.2rem;}
+.about-text p strong{color:var(--white);font-weight:600;}
+.edu-block{background:var(--black-2);border:1px solid var(--line);}
+.edu-head{font-family:'IBM Plex Mono';font-size:.6rem;letter-spacing:.2em;color:var(--orange);text-transform:uppercase;padding:.8rem 1.3rem;border-bottom:1px solid var(--line);}
+.edu-row{display:flex;justify-content:space-between;gap:1rem;padding:1.1rem 1.3rem;border-bottom:1px solid var(--line);}
+.edu-row:last-child{border-bottom:none;}
+.edu-name{font-family:'Big Shoulders Display';font-weight:700;font-size:1rem;color:var(--white);margin-bottom:.15rem;text-transform:uppercase;}
+.edu-dept{font-size:.76rem;color:var(--ink-2);}
+.edu-right{text-align:right;flex-shrink:0;}
+.edu-year{font-family:'IBM Plex Mono';font-size:.56rem;color:var(--ink-3);margin-bottom:.3rem;}
+.edu-gpa{font-family:'IBM Plex Mono';font-size:.72rem;font-weight:600;color:var(--black);background:var(--orange);padding:.1rem .5rem;display:inline-block;}
+
+/* SKILLS */
+.skills-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+.skill-cell{background:var(--black-2);padding:1.6rem 1.5rem;}
+.skill-cell-head{display:flex;align-items:baseline;gap:.5rem;margin-bottom:1.1rem;padding-bottom:.6rem;border-bottom:1px solid var(--line);}
+.skill-letter{font-family:'Big Shoulders Display';font-size:1.3rem;color:var(--orange);font-weight:800;}
+.skill-cat{font-family:'IBM Plex Mono';font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);}
+.skill-tags{display:flex;flex-direction:column;gap:.55rem;}
+.skill-tag{font-size:.83rem;color:var(--ink-2);}
+.skill-tag::before{content:'—';color:var(--ink-3);margin-right:.5rem;}
+
+/* PROJECTS */
+.proj-featured{display:grid;grid-template-columns:1fr 1.15fr;background:var(--black-2);border:1px solid var(--line);margin-bottom:1.4rem;cursor:pointer;transition:border-color .3s;position:relative;}
+.proj-featured:hover{border-color:var(--orange-line);}
+.proj-featured-media{position:relative;min-height:260px;background:var(--black);display:flex;align-items:center;justify-content:center;overflow:hidden;border-right:1px solid var(--line);}
+.proj-featured-media::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 25% 30%,rgba(255,90,31,.18),transparent 60%);}
+.pf-badge{position:absolute;top:1rem;left:1rem;font-family:'IBM Plex Mono';font-size:.52rem;letter-spacing:.14em;background:var(--orange);color:var(--black);padding:.18rem .6rem;font-weight:600;z-index:2;}
+.pf-type{position:absolute;top:1rem;right:1rem;font-family:'IBM Plex Mono';font-size:.5rem;letter-spacing:.12em;border:1px solid var(--orange-line);color:var(--orange);padding:.18rem .55rem;text-transform:uppercase;z-index:2;}
+.pf-center{text-align:center;position:relative;z-index:1;}
+.pf-eyebrow{font-family:'IBM Plex Mono';font-size:.58rem;letter-spacing:.26em;color:var(--orange-lt);margin-bottom:.4rem;}
+.pf-word1{font-family:'Big Shoulders Display';font-size:1.7rem;font-weight:900;color:var(--white);letter-spacing:.06em;line-height:1;}
+.pf-word2{font-family:'Big Shoulders Display';font-size:2.7rem;font-weight:900;color:var(--orange);letter-spacing:.02em;line-height:1.05;}
+.pf-sub{font-family:'IBM Plex Mono';font-size:.58rem;letter-spacing:.2em;color:var(--ink-2);margin-top:.5rem;}
+.proj-featured-body{padding:2rem 2.2rem;display:flex;flex-direction:column;justify-content:center;}
+.pf-cat{font-family:'IBM Plex Mono';font-size:.55rem;letter-spacing:.1em;color:var(--ink-3);text-transform:uppercase;margin-bottom:.5rem;}
+.pf-name{font-size:1.8rem;margin-bottom:.35rem;}
+.pf-role{font-size:.85rem;color:var(--ink-2);margin-bottom:.9rem;}
+.pf-desc{font-size:.87rem;color:var(--ink-2);line-height:1.9;margin-bottom:1.1rem;}
+.pf-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.2rem;}
+.pf-cta{font-family:'IBM Plex Mono';font-size:.63rem;letter-spacing:.14em;color:var(--orange);text-transform:uppercase;display:inline-flex;align-items:center;gap:.5rem;}
+
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.4rem;}
+.proj-card{background:var(--black-2);border:1px solid var(--line);cursor:pointer;overflow:hidden;transition:transform .3s,border-color .3s;display:flex;flex-direction:column;}
+.proj-card:hover{transform:translateY(-4px);border-color:var(--orange-line);}
+.proj-thumb{height:170px;overflow:hidden;position:relative;background:var(--black-3);}
+.proj-thumb img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.1) brightness(.75);transition:filter .5s,transform .6s;}
+.proj-card:hover .proj-thumb img{filter:grayscale(.35) contrast(1.05) brightness(.85);transform:scale(1.05);}
+.proj-thumb-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,11,.9),transparent 55%);}
+.p-badge{position:absolute;top:.7rem;left:.7rem;font-family:'IBM Plex Mono';font-size:.48rem;letter-spacing:.12em;background:var(--orange);color:var(--black);padding:.14rem .5rem;font-weight:600;z-index:2;}
+.p-type{position:absolute;top:.7rem;right:.7rem;font-family:'IBM Plex Mono';font-size:.46rem;letter-spacing:.1em;border:1px solid var(--orange-line);color:var(--orange);background:rgba(10,10,11,.75);padding:.14rem .5rem;text-transform:uppercase;z-index:2;}
+.proj-body{padding:1.15rem 1.3rem 1.35rem;flex:1;display:flex;flex-direction:column;}
+.p-cat{font-family:'IBM Plex Mono';font-size:.48rem;letter-spacing:.09em;color:var(--ink-3);text-transform:uppercase;margin-bottom:.3rem;}
+.p-name{font-size:1.15rem;margin-bottom:.2rem;}
+.p-role{font-size:.72rem;color:var(--ink-2);margin-bottom:.55rem;}
+.p-desc{font-size:.8rem;color:var(--ink-2);line-height:1.8;margin-bottom:.8rem;flex:1;}
+.p-tags{display:flex;flex-wrap:wrap;gap:.32rem;}
+.p-tag{font-family:'IBM Plex Mono';font-size:.5rem;letter-spacing:.05em;color:var(--orange);border:1px solid var(--orange-mid);padding:.12rem .5rem;}
+
+/* CONTACT */
+.contact-section{background:var(--black-2);border-top:1px solid var(--line);padding:5.5rem max(1.5rem,5vw);}
+.contact-inner{max-width:1360px;margin:0 auto;}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:4.5rem;align-items:start;}
+.contact-intro{color:var(--ink-2);font-size:.92rem;line-height:2;padding-left:1.3rem;border-left:2px solid var(--orange-dk);}
+.info-table{border:1px solid var(--line);background:var(--black);}
+.info-row{display:flex;padding:1rem 1.3rem;border-bottom:1px solid var(--line);gap:1.2rem;}
+.info-row:last-child{border-bottom:none;}
+.info-k{font-family:'IBM Plex Mono';font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);width:78px;flex-shrink:0;padding-top:.1rem;}
+.info-v{font-size:.88rem;color:var(--white);}
+.info-v a{color:var(--orange);transition:color .2s;}
+.info-v a:hover{color:var(--orange-lt);}
+.cta-btn{display:flex;align-items:center;justify-content:center;gap:.6rem;margin-top:1.1rem;padding:1.1rem;background:var(--orange);color:var(--black);text-align:center;font-family:'IBM Plex Mono';font-size:.78rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;transition:all .25s;}
+.cta-btn:hover{background:var(--orange-lt);transform:translateY(-2px);}
+
+footer{padding:2.4rem max(1.5rem,5vw);text-align:center;font-family:'IBM Plex Mono';font-size:.58rem;letter-spacing:.14em;color:var(--ink-3);background:var(--black);border-top:1px solid var(--line);text-transform:uppercase;}
+footer em{color:var(--orange);font-style:normal;}
+
+/* ══════ MODALS ══════ */
+.modal-overlay{displ…6208 tokens truncated…       <div class="info-row"><span class="info-k">GitHub</span><span class="info-v"><a href="https://github.com/lnwpureza2545" target="_blank">github.com/lnwpureza2545</a></span></div>
+        </div>
+        <a href="mailto:lnwpureza2545@gmail.com" class="cta-btn">Send Message →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>© 2026 Peemapol Phuangcharoen — <em>Game Designer</em> · Samut Prakan, Thailand</footer>
+
+<!-- LIGHTBOX -->
+<div id="lbx" class="lightbox" onclick="closeLbx()">
+  <span class="lightbox-close">[X]</span>
+  <img id="lbxImg" src="" alt="">
+</div>
+
+<!-- MODAL: RAMEN RIDER -->
+<div id="mr" class="modal-overlay"><div class="modal-box">
+  <div class="modal-bar"><span class="modal-id">// PRJ_001 — Ramen Rider</span><button class="modal-close" onclick="closeModal('mr')">✕</button></div>
+  <div class="modal-content">
+    <h3 class="modal-title">Ramen Rider</h3><div class="modal-subtitle">Sound · Story · Dialog System · Programmer | Team of 5</div>
+    <div class="modal-chips"><span class="modal-chip">Time Management</span><span class="modal-chip">Action Casual</span><span class="modal-chip">Unity / C#</span><span class="modal-chip">2D</span></div>
+    <div class="m-video"><video controls autoplay loop muted playsinline><source src="ramen-rider-video.mp4" type="video/mp4"></video></div>
+    <div class="m-sec">Progress Screenshots</div>
+    <div class="img-grid-3">
+      <div class="img-box"><img src="ramen-progress-1.jpg" alt="" onclick="openLbx(this.src)"><div class="img-label">In Progress</div></div>
+      <div class="img-box"><img src="ramen-progress-2.jpg" alt="" onclick="openLbx(this.src)"><div class="img-label">In Progress</div></div>
+      <div class="img-box"><img src="ramen-progress-3.jpg" alt="" onclick="openLbx(this.src)"><div class="img-label">In Progress</div></div>
+    </div>
+    <div class="m-sec">Responsibilities</div>
+    <ul>
+      <li><strong>Narrative & Dialog Design:</strong> ออกแบบโครงเรื่องหลัก และเขียนบทสนทนาสะท้อนคาแรคเตอร์</li>
+      <li><strong>Dialog System Programming:</strong> เขียนโค้ดพัฒนาระบบ Dialog ควบคุมการแสดงผลข้อความตามเหตุการณ์</li>
+      <li><strong>Audio Editing (Audacity):</strong> ใช้ Distortion และ Pitch Shift สร้างเอกลักษณ์เสียงสไตล์ Comic</li>
+    </ul>
+    <div class="m-sec">Game Story</div>
+    <p><strong>Kobayashi Ren</strong> เด็กหนุ่มสายซิ่งผู้โตมากับกลิ่นน้ำซุปของร้านราเมงเก่าแก่ ร้านกำลังโดนเจ้าหนี้กดดัน และธุรกิจเดลิเวอรี่ราเมงคือทางรอดเดียว</p>
+    <div class="m-sec">Dialog Sample</div>
+    <div class="dialog-block">
+      <div class="dialog-line"><strong>พ่อ »</strong> เมืองเปลี่ยนไปเยอะใช่ไหมล่ะ</div>
+      <div class="dialog-line"><strong>Ren »</strong> เปลี่ยนมาก ถนนเละ โค้งเยอะ รถติด… เหมาะกับเด็กแว้นสุดๆ</div>
+      <div class="dialog-line"><strong>พ่อ »</strong> นี่ไม่ใช่สนามแข่งนะ!</div>
+      <div class="dialog-line"><strong>Ren »</strong> สำหรับผม มันคือด่านแรกของเกมครับพ่อ</div>
+    </div>
+  </div>
+</div></div>
+
+<!-- MODAL: ABANDONED RAILS -->
+<div id="ma" class="modal-overlay"><div class="modal-box">
+  <div class="modal-bar"><span class="modal-id">// PRJ_002 — Abandoned Rails</span><button class="modal-close" onclick="closeModal('ma')">✕</button></div>
+  <div class="modal-content">
+    <h3 class="modal-title">Abandoned Rails</h3><div class="modal-subtitle">Game Designer & Programmer (Solo) | Unity C#</div>
+    <div class="modal-chips"><span class="modal-chip">First-Person</span><span class="modal-chip">Exploration</span><span class="modal-chip">Horror</span></div>
+    <div class="m-video"><video controls autoplay loop muted playsinline><source src="abandoned-rails-video.mp4" type="video/mp4"></video></div>
+    <div class="m-sec">Gameplay Overview</div>
+    <p>ผู้เล่นรับบทเป็นนักสำรวจที่มายังทางรถไฟร้างเพื่อค้นหาความจริงในอดีต ไม่มีระบบต่อสู้ ความน่ากลัวเกิดจากบรรยากาศ เสียงที่ไม่คาดคิด และเรื่องราวที่เล่าผ่านสภาพแวดล้อม เป้าหมายคือรวบรวมกุญแจ 3 ดอก และเข้าสู่อุโมงค์เพื่อตื่นจากฝัน</p>
+    <div class="m-sec">Key Features</div>
+    <ul>
+      <li>สภาพแวดล้อมทางรถไฟร้างที่บรรยากาศน่าขนลุก</li>
+      <li>ไม่มีระบบต่อสู้ เน้น Psychological Horror</li>
+      <li>Environmental Storytelling ผ่านกระดาษโน้ตและเสียง</li>
+      <li>ผีที่มองเห็นได้แต่ไม่ทำอันตรายโดยตรง สร้างความตึงเครียดผ่านการมองเห็น</li>
+    </ul>
+  </div>
+</div></div>
+
+<!-- MODAL: UNKNOWN KNIGHT -->
+<div id="mk" class="modal-overlay"><div class="modal-box">
+  <div class="modal-bar"><span class="modal-id">// PRJ_003 — Unknown Knight</span><button class="modal-close" onclick="closeModal('mk')">✕</button></div>
+  <div class="modal-content">
+    <h3 class="modal-title">Unknown Knight</h3><div class="modal-subtitle">Sub-Developer & Level Designer | Co-op</div>
+    <div class="modal-chips"><span class="modal-chip">Action RPG</span><span class="modal-chip">Third-Person 3D</span></div>
+    <div class="m-video"><video controls autoplay loop muted playsinline><source src="unknown-knight-video.mp4" type="video/mp4"></video></div>
+    <div class="m-sec">Story Concept</div>
+    <p>วันหนึ่ง คุณตื่นขึ้นมาในดันเจี้ยน มีเพียงอัศวินปริศนาอยู่ข้างๆ รอบตัวเต็มไปด้วยมอนสเตอร์ คุณต้องหยิบดาบขึ้นมาต่อสู้เพื่อเอาชีวิตรอดและหาทางหนีออกให้จงได้</p>
+    <div class="m-sec">Responsibilities</div>
+    <ul>
+      <li><strong>Level Design:</strong> นำ 3D Asset มาจัดวางขึ้นเป็นฉากดันเจี้ยนที่น่าสนใจ</li>
+      <li><strong>Narrative Design:</strong> เขียนโครงเรื่องและบทสนทนาของตัวละคร</li>
+      <li><strong>Programming:</strong> เขียนระบบ Checkpoint เพื่ออำนวยความสะดวกให้ผู้เล่น</li>
+    </ul>
+  </div>
+</div></div>
+
+<!-- MODAL: 3D WORKFLOW -->
+<div id="m3" class="modal-overlay"><div class="modal-box">
+  <div class="modal-bar"><span class="modal-id">// PRJ_004 — 3D Asset Workflow</span><button class="modal-close" onclick="closeModal('m3')">✕</button></div>
+  <div class="modal-content">
+    <h3 class="modal-title">3D Asset Workflow</h3><div class="modal-subtitle">3D Artist | Maya · Substance · Unreal · Unity</div>
+    <div class="modal-chips"><span class="modal-chip">3D Modeling</span><span class="modal-chip">PBR Texturing</span><span class="modal-chip">Unreal/Unity</span></div>
+    <div class="m-sec">Asset Process</div>
+    <div class="img-grid-2">
+      <div class="img-box"><img src="3d-reference.jpg" alt="" onclick="openLbx(this.src)"><div class="img-label">Reference (AI)</div></div>
+      <div class="img-box"><img src="3d-realwork.jpg" alt="" onclick="openLbx(this.src)"><div class="img-label">Real Work</div></div>
+    </div>
+    <div class="m-sec">Workflow</div>
+    <ul>
+      <li><strong>3D Modeling (Maya):</strong> High-Poly, Low-Poly และ UV Unwrapping</li>
+      <li><strong>Texturing & Baking (Substance):</strong> Bake maps และ PBR Material</li>
+      <li><strong>Scene Setup:</strong> Import สู่ Engine, ตั้งค่า Material และ Lighting</li>
+    </ul>
+  </div>
+</div></div>
+
+<!-- MODAL: BALL PLATFORMER -->
+<div id="mb" class="modal-overlay"><div class="modal-box">
+  <div class="modal-bar"><span class="modal-id">// PRJ_005 — 2D Ball Platformer</span><button class="modal-close" onclick="closeModal('mb')">✕</button></div>
+  <div class="modal-content">
+    <h3 class="modal-title">2D Ball Platformer</h3><div class="modal-subtitle">Developer (Year 1 Project) | Unity 2D C#</div>
+    <div class="modal-chips"><span class="modal-chip">2D Platformer</span><span class="modal-chip">Casual</span><span class="modal-chip">C# Basic</span></div>
+    <div class="m-video"><video controls autoplay loop muted playsinline><source src="ball-game-video.mp4" type="video/mp4"></video></div>
+    <div class="m-sec">Overview</div>
+    <p>โปรเจกต์เกมแรกในช่วงปี 1 เป็น 2D Platformer บังคับลูกบอลชายหาดกระโดดข้ามแพลตฟอร์มต่างๆ ไปยัง Portal ในแต่ละด่าน</p>
+    <div class="m-sec">Key Features</div>
+    <ul>
+      <li><strong>Platforming Mechanics:</strong> ฟิสิกส์ 2D พื้นฐาน กลิ้งและกระโดดข้ามสิ่งกีดขวาง</li>
+      <li><strong>Score System:</strong> เก็บเพชรเพิ่มคะแนนในแต่ละด่าน</li>
+      <li><strong>Health & Restart:</strong> ระบบ Hearts และ Respawn</li>
+      <li><strong>3 Levels:</strong> ความยากเพิ่มขึ้น พร้อมระบบเปลี่ยนด่าน</li>
+    </ul>
+  </div>
+</div></div>
+
+<!-- MODAL: SONGKRAN -->
+<div id="msj" class="modal-overlay"><div class="modal-box">
+  <div class="modal-bar"><span class="modal-id">// PRJ_006 — Songkran: The Office Run</span><button class="modal-close" onclick="closeModal('msj')">✕</button></div>
+  <div class="modal-content">
+
+    <div class="sj-hero">
+      <div class="sj-badge">Thailand Summer Jam 2026 · 17–24 April</div>
+      <h3 class="sj-title">Songkran:<em>The Office Run</em></h3>
+      <div class="sj-subtitle">Game Designer & GDD Author · 7-Day Game Jam</div>
+      <div class="sj-chip-row">
+        <span class="sj-chip">3D Trap</span>
+        <span class="sj-chip">Rage Game</span>
+        <span class="sj-chip">Comedic Evasion</span>
+        <span class="sj-chip">Time Attack</span>
+      </div>
+    </div>
+
+    <div class="m-sec">Certificate of Participation</div>
+    <div class="sj-cert" onclick="openLbx(this.querySelector('img').src)">
+      <img src="Peemapol_TSJ2026.png" alt="Thailand Summer Jam 2026 Certificate">
+      <div class="sj-cert-label"><span>THAILAND SUMMER JAM 2026 · REFRESH</span><span>CLICK TO EXPAND ↗</span></div>
+    </div>
+
+    <div class="sj-stats">
+      <div class="sj-stat"><div class="sj-stat-val">7</div><div class="sj-stat-lbl">Days to Build</div></div>
+      <div class="sj-stat"><div class="sj-stat-val">8<span style="font-size:.9rem">min</span></div><div class="sj-stat-lbl">Play Session</div></div>
+      <div class="sj-stat"><div class="sj-stat-val">3D</div><div class="sj-stat-lbl">Low-poly Stylized</div></div>
+      <div class="sj-stat"><div class="sj-stat-val">6</div><div class="sj-stat-lbl">Unique Traps</div></div>
+    </div>
+
+    <div class="m-sec">Game Concept</div>
+    <p>ผู้เล่นรับบทเป็น <strong>พนักงานออฟฟิศผู้โชคร้าย</strong> ที่ถูกหัวหน้าเรียกเข้าบริษัทด่วนในวันสงกรานต์ เป้าหมายเดียวคือวิ่งจากปากซอยไปตอกบัตรให้ทัน 12.00 น. โดยที่ <strong>เสื้อผ้าต้องแห้งสนิท</strong> — โลกทั้งใบถูกตั้งโปรแกรมมาเพื่อดักสาดน้ำผู้เล่น</p>
+
+    <div class="m-sec">Gameplay Loop</div>
+    <div class="sj-loop">
+      <div class="sj-loop-item"><div class="sj-loop-num">01</div><div class="sj-loop-text"><strong>Race Against Time</strong> — นาฬิกานับถอยหลังทันทีที่เริ่มด่าน ครึ่งชั่วโมงในเกม = 1 นาทีจริง</div></div>
+      <div class="sj-loop-item"><div class="sj-loop-num">02</div><div class="sj-loop-text"><strong>Trigger Traps</strong> — เหยียบจุดซ่อน → กับดักทำงาน → โดนน้ำแม้แต่หยดเดียว = แพ้ทันที</div></div>
+      <div class="sj-loop-item"><div class="sj-loop-num">03</div><div class="sj-loop-text"><strong>Die or Time Out</strong> — ระแวงมากเกินไปจนเวลาหมด ก็แพ้เหมือนกัน ต้องสมดุลระหว่างความเร็วและความระวัง</div></div>
+      <div class="sj-loop-item"><div class="sj-loop-num">04</div><div class="sj-loop-text"><strong>Respawn & Rush</strong> — กลับที่ Checkpoint จำตำแหน่งกับดัก หาเส้นทางที่ทำเวลาได้ดีที่สุด</div></div>
+    </div>
+
+    <div class="m-sec">Trap Design</div>
+    <div class="sj-traps">
+      <div class="sj-trap"><div class="sj-trap-icon">☂️</div><div class="sj-trap-name">ร่มเงาหลอกลวง</div><div class="sj-trap-desc">ผ้าใบรับน้ำหนักน้ำขังไม่ไหว ขาดดังแคว่ก สาดน้ำใส่ทั้งตัวในทันที</div></div>
+      <div class="sj-trap"><div class="sj-trap-icon">🪣</div><div class="sj-trap-name">ขันนำวิถี</div><div class="sj-trap-desc">ขันลอยขึ้นแล้วพุ่งตาม Homing — ต้องวิ่งให้มันชนกำแพงเอง</div></div>
+      <div class="sj-trap"><div class="sj-trap-icon">💀</div><div class="sj-trap-name">ขันพิฆาต</div><div class="sj-trap-desc">โผล่จากมุมอับ ติด Slow Status — แทบการันตี Game Over เพราะเวลาจำกัด</div></div>
+      <div class="sj-trap"><div class="sj-trap-icon">🔫</div><div class="sj-trap-name">GunSplasher</div><div class="sj-trap-desc">ปืนฉีดน้ำ Burst Fire เมื่อเหยียบ Trigger ติด Slow ระหว่างโดนยิง</div></div>
+      <div class="sj-trap"><div class="sj-trap-icon">⚠️</div><div class="sj-trap-name">Troll Checkpoint</div><div class="sj-trap-desc">จุดเซฟบางจุดเป็นกับดักซะเอง มือยื่นมาสาดน้ำมนต์ใส่หลังกดเซฟ</div></div>
+      <div class="sj-trap"><div class="sj-trap-icon">🎭</div><div class="sj-trap-name">Fake-out Ending</div><div class="sj-trap-desc">ขึ้น "SUCCESS!" ก่อนถึงออฟฟิศ — แต่หัวหน้ารอดักอยู่หลังประตูพร้อมถังน้ำ</div></div>
+    </div>
+
+    <div class="m-sec">Art & Audio Direction</div>
+    <div class="sj-art">
+      <div>
+        <div class="sj-art-title">🎨 Visual</div>
+        <div class="sj-art-item">3D Low-poly Stylized</div>
+        <div class="sj-art-item">สีสดใสแบบซัมเมอร์ไทย</div>
+        <div class="sj-art-item">คอนทราสต์กับการตายสุดโหดร้าย</div>
+        <div class="sj-art-item">Ragdoll ตอนโดนน้ำ</div>
+        <div class="sj-art-item">ท่าวิ่งตาลีตาเหลือก</div>
+      </div>
+      <div>
+        <div class="sj-art-title">🔊 Audio</div>
+        <div class="sj-art-item">นาฬิกา "ติ๊ก...ติ๊ก..." กดดันตลอด</div>
+        <div class="sj-art-item">SFX ตลกๆ ตอนโดนสาด</div>
+        <div class="sj-art-item">เพลงสามช่า/รำวงตอนกับดักใหญ่</div>
+        <div class="sj-art-item">ดนตรีบรรเลงก่อน Fake-out</div>
+      </div>
+    </div>
+
+    <div class="m-sec">Game Build</div>
+    <a href="https://drive.google.com/file/d/13BKO-qGR6SphK81vxuove4v1s6JDkv-R/view" target="_blank" class="sj-dl">
+      <span>↓ DOWNLOAD GAME BUILD</span>
+      <span>↗</span>
+    </a>
+
+  </div>
+</div></div>
+
+<script>
+const ro=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+function openModal(id){const m=document.getElementById(id);m.style.display='flex';setTimeout(()=>m.classList.add('show'),10);document.body.style.overflow='hidden';}
+function closeModal(id){const m=document.getElementById(id);m.classList.remove('show');const v=m.querySelector('video');if(v)v.pause();setTimeout(()=>{m.style.display='none';},320);document.body.style.overflow='';}
+window.addEventListener('click',e=>{if(e.target.classList.contains('modal-overlay'))closeModal(e.target.id);});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.querySelectorAll('.modal-overlay.show').forEach(m=>closeModal(m.id));closeLbx();}});
+
+function openLbx(src){const lb=document.getElementById('lbx');document.getElementById('lbxImg').src=src;lb.style.display='flex';setTimeout(()=>lb.classList.add('show'),10);}
+function closeLbx(){const lb=document.getElementById('lbx');lb.classList.remove('show');setTimeout(()=>lb.style.display='none',260);}
+
+const navToggle=document.getElementById('navToggle');
+const navLinksEl=document.getElementById('navLinks');
+navToggle.addEventListener('click',()=>{
+  const open=navLinksEl.classList.toggle('open');
+  navToggle.classList.toggle('open',open);
+  navToggle.setAttribute('aria-expanded',open?'true':'false');
+});
+navLinksEl.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+  navLinksEl.classList.remove('open');
+  navToggle.classList.remove('open');
+  navToggle.setAttribute('aria-expanded','false');
+}));
+
+const progressBar=document.getElementById('progress');
+addEventListener('scroll',()=>{
+  const h=document.documentElement,p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  progressBar.style.width=p+'%';
+},{passive:true});
+
+console.log('%c// PORTFOLIO_DOCUMENT LOADED — GAME DESIGNER: PEEMAPOL PHUANGCHAROEN','color:#FF5A1F;font-family:monospace;');
+</script>
 </body>
 </html>
+
